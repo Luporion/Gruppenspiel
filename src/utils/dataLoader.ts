@@ -22,7 +22,7 @@ export async function loadMap(mapId: string): Promise<MapDefinition> {
     
     return map;
   } catch (error) {
-    throw new Error(`Failed to load map ${mapId}: ${error}`);
+    throw new Error(`Failed to load map ${mapId}: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -54,7 +54,7 @@ export async function loadMinigame(minigameId: string): Promise<MinigameDefiniti
     
     return minigame;
   } catch (error) {
-    throw new Error(`Failed to load minigame ${minigameId}: ${error}`);
+    throw new Error(`Failed to load minigame ${minigameId}: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -71,8 +71,9 @@ export async function loadMinigames(minigameIds: string[]): Promise<MinigameDefi
 /**
  * Get available sample data
  * This is a convenience function to load the built-in sample data
+ * @returns Promise resolving to object containing the sample map and array of sample minigames
  */
-export async function loadSampleData() {
+export async function loadSampleData(): Promise<{ map: MapDefinition; minigames: MinigameDefinition[] }> {
   const [map, physicalMinigame, quizMinigame] = await Promise.all([
     loadMap('sample_map'),
     loadMinigame('sample_physical'),
