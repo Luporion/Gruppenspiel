@@ -4,7 +4,7 @@ A multiplayer group game application built with Vite + React + TypeScript.
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [Node.js](https://nodejs.org/) (Node 20.19+ or 22.12+ recommended)
 - npm (comes with Node.js)
 
 ## Getting Started
