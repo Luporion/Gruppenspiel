@@ -5,25 +5,32 @@
 
 import type { MapDefinition, MinigameDefinition } from '../types';
 
+// Vite-safe module maps using import.meta.glob
+const mapModules = import.meta.glob('../data/maps/*.json');
+const minigameModules = import.meta.glob('../data/minigames/*.json');
+
 /**
  * Load a map definition from a JSON file
  * @param mapId - The ID of the map to load
  * @returns Promise resolving to the map definition
  */
 export async function loadMap(mapId: string): Promise<MapDefinition> {
-  try {
-    const module = await import(`../data/maps/${mapId}.json`);
-    const map = module.default as MapDefinition;
-    
-    // Basic validation
-    if (!map.id || !map.name || !map.length || !Array.isArray(map.tiles)) {
-      throw new Error(`Invalid map format for ${mapId}`);
-    }
-    
-    return map;
-  } catch (error) {
-    throw new Error(`Failed to load map ${mapId}: ${error instanceof Error ? error.message : String(error)}`);
+  const key = `../data/maps/${mapId}.json`;
+  const loader = mapModules[key];
+  
+  if (!loader) {
+    throw new Error(`Map not found: ${mapId}`);
   }
+  
+  const module = await loader() as { default: MapDefinition };
+  const map = module.default;
+  
+  // Basic validation
+  if (!map.id || !map.name || !map.length || !Array.isArray(map.tiles)) {
+    throw new Error(`Invalid map format for ${mapId}`);
+  }
+  
+  return map;
 }
 
 /**
@@ -32,30 +39,33 @@ export async function loadMap(mapId: string): Promise<MapDefinition> {
  * @returns Promise resolving to the minigame definition
  */
 export async function loadMinigame(minigameId: string): Promise<MinigameDefinition> {
-  try {
-    const module = await import(`../data/minigames/${minigameId}.json`);
-    const minigame = module.default as MinigameDefinition;
-    
-    // Basic validation
-    if (!minigame.id || !minigame.name || !minigame.type || !minigame.scoring) {
-      throw new Error(`Invalid minigame format for ${minigameId}`);
-    }
-    
-    // Type-specific validation
-    if (minigame.type === 'physical') {
-      if (!Array.isArray(minigame.rules)) {
-        throw new Error(`Physical minigame ${minigameId} missing rules array`);
-      }
-    } else if (minigame.type === 'quiz') {
-      if (!minigame.question || !Array.isArray(minigame.options) || minigame.correctIndex === undefined) {
-        throw new Error(`Quiz minigame ${minigameId} missing required quiz fields`);
-      }
-    }
-    
-    return minigame;
-  } catch (error) {
-    throw new Error(`Failed to load minigame ${minigameId}: ${error instanceof Error ? error.message : String(error)}`);
+  const key = `../data/minigames/${minigameId}.json`;
+  const loader = minigameModules[key];
+  
+  if (!loader) {
+    throw new Error(`Minigame not found: ${minigameId}`);
   }
+  
+  const module = await loader() as { default: MinigameDefinition };
+  const minigame = module.default;
+  
+  // Basic validation
+  if (!minigame.id || !minigame.name || !minigame.type || !minigame.scoring) {
+    throw new Error(`Invalid minigame format for ${minigameId}`);
+  }
+  
+  // Type-specific validation
+  if (minigame.type === 'physical') {
+    if (!Array.isArray(minigame.rules)) {
+      throw new Error(`Physical minigame ${minigameId} missing rules array`);
+    }
+  } else if (minigame.type === 'quiz') {
+    if (!minigame.question || !Array.isArray(minigame.options) || minigame.correctIndex === undefined) {
+      throw new Error(`Quiz minigame ${minigameId} missing required quiz fields`);
+    }
+  }
+  
+  return minigame;
 }
 
 /**
