@@ -1,0 +1,17 @@
+{
+  "id": "physical_001",
+  "name": "Balance Challenge",
+  "type": "physical",
+  "description": "Teams must complete a physical balance challenge",
+  "timeLimitSec": 60,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Each team member must stand on one leg for 30 seconds",
+    "If anyone falls, the team loses",
+    "The last team standing wins",
+    "No holding onto objects or other players"
+  ]
+}

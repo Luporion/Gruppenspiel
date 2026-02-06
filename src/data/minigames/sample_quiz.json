@@ -1,0 +1,19 @@
+{
+  "id": "quiz_001",
+  "name": "Geography Quiz",
+  "type": "quiz",
+  "description": "Answer a geography question correctly to earn points",
+  "timeLimitSec": 30,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "What is the capital of France?",
+  "options": [
+    "London",
+    "Berlin",
+    "Paris",
+    "Madrid"
+  ],
+  "correctIndex": 2
+}
