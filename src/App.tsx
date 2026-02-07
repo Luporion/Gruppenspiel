@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Host from './pages/Host'
 import HostBoard from './pages/HostBoard'
 import HostMinigame from './pages/HostMinigame'
+import HostEnd from './pages/HostEnd'
 import Team from './pages/Team'
 import Player from './pages/Player'
 import './App.css'
@@ -14,6 +15,7 @@ function App() {
         <Route path="/host" element={<Host />} />
         <Route path="/host/board" element={<HostBoard />} />
         <Route path="/host/minigame" element={<HostMinigame />} />
+        <Route path="/host/end" element={<HostEnd />} />
         <Route path="/team" element={<Team />} />
         <Route path="/player" element={<Player />} />
       </Routes>

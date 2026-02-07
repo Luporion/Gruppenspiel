@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { loadMinigame } from '../utils/dataLoader'
-import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition } from '../types'
+import { loadMinigame, loadMap } from '../utils/dataLoader'
+import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition, MapDefinition } from '../types'
 import './HostMinigame.css'
 
 // Default points constants
@@ -14,6 +14,7 @@ function HostMinigame() {
   const { state, dispatch } = useGameStore()
   const [minigame, setMinigame] = useState<MinigameDefinition | null>(null)
   const [minigameError, setMinigameError] = useState<string | null>(null)
+  const [map, setMap] = useState<MapDefinition | null>(null)
   const [timeLeft, setTimeLeft] = useState<number>(0)
   const [timerRunning, setTimerRunning] = useState(false)
   const [showAnswer, setShowAnswer] = useState(false)
@@ -47,6 +48,15 @@ function HostMinigame() {
       abortToBoard()
     }
   }, [state.activeMinigameId, abortToBoard])
+
+  // Load map for win condition checking
+  useEffect(() => {
+    if (state.settings.mapId) {
+      loadMap(state.settings.mapId)
+        .then(loadedMap => setMap(loadedMap))
+        .catch(error => console.error('Error loading map:', error))
+    }
+  }, [state.settings.mapId])
 
   // Redirect to board if phase changes away from minigame
   useEffect(() => {
@@ -136,7 +146,27 @@ function HostMinigame() {
     // End minigame and advance to next team
     dispatch({ type: 'END_MINIGAME' })
     dispatch({ type: 'NEXT_TEAM' })
-    navigate('/host/board')
+
+    // Check win conditions after finishing minigame
+    if (checkWinConditions()) {
+      dispatch({ type: 'END_GAME' })
+      navigate('/host/end')
+    } else {
+      navigate('/host/board')
+    }
+  }
+
+  // Check if win conditions are met
+  const checkWinConditions = (): boolean => {
+    if (state.settings.winCondition === 'finish' && map) {
+      // Check if any team has reached the end (position >= map.length - 1)
+      return state.teams.some(team => team.position >= map.length - 1)
+    } else if (state.settings.winCondition === 'pointsAfterRounds') {
+      // Check if maxRounds exceeded
+      return state.round > state.settings.maxRounds
+    }
+
+    return false
   }
 
   const toggleCorrectTeam = (teamId: string) => {
