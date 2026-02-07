@@ -1,0 +1,373 @@
+.host-minigame {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.minigame-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.minigame-header h1 {
+  margin: 0;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.timer-label {
+  opacity: 0.9;
+}
+
+.timer-value {
+  font-family: 'Courier New', monospace;
+  font-size: 3rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+  min-width: 120px;
+  text-align: center;
+}
+
+.timer-value.timer-warning {
+  color: #ff6b6b;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.minigame-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.minigame-description {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.minigame-description p {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.btn-timer {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.btn-timer:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-timer:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Physical Minigame Styles */
+.physical-minigame {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.minigame-rules {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.minigame-rules h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.minigame-rules ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.minigame-rules li {
+  font-size: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  border-left: 4px solid #ffd93d;
+}
+
+.minigame-rules li:before {
+  content: "→ ";
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.winner-selection,
+.manual-points {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.winner-selection h2,
+.manual-points h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.team-select,
+.points-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.team-select option {
+  background: #764ba2;
+  color: white;
+}
+
+.points-input {
+  margin-bottom: 0.5rem;
+}
+
+.points-hint {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Quiz Minigame Styles */
+.quiz-minigame {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.quiz-question {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.quiz-question h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.question-text {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.quiz-options {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.quiz-options h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-options ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.option {
+  font-size: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  border-left: 4px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.option.correct-option {
+  border-left-color: #51cf66;
+  background: rgba(81, 207, 102, 0.2);
+  font-weight: bold;
+}
+
+.btn-reveal {
+  padding: 1.5rem 3rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  transition: all 0.3s ease;
+  align-self: center;
+}
+
+.btn-reveal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.correct-answer-display {
+  background: rgba(81, 207, 102, 0.2);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  border: 2px solid #51cf66;
+  backdrop-filter: blur(10px);
+}
+
+.correct-answer-display p {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.team-selection {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.team-selection h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.team-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.team-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.5rem;
+}
+
+.team-checkbox:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.team-checkbox input[type="checkbox"] {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.btn-finish {
+  padding: 1.5rem 3rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+  color: white;
+  transition: all 0.3s ease;
+  align-self: center;
+  margin-top: 1rem;
+}
+
+.btn-finish:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.error-message,
+.loading-message {
+  text-align: center;
+  font-size: 2rem;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.btn-back {
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}

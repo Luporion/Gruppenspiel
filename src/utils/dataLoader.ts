@@ -35,14 +35,24 @@ export async function loadMap(mapId: string): Promise<MapDefinition> {
 
 /**
  * Load a minigame definition from a JSON file
- * @param minigameId - The ID of the minigame to load
+ * @param minigameId - The ID of the minigame to load (can be filename or the id field in JSON)
  * @returns Promise resolving to the minigame definition
  */
 export async function loadMinigame(minigameId: string): Promise<MinigameDefinition> {
-  const key = `../data/minigames/${minigameId}.json`;
-  const loader = minigameModules[key];
+  // First try direct filename match
+  let key = `../data/minigames/${minigameId}.json`;
+  let loader = minigameModules[key];
   
+  // If not found, try to find by ID field in all minigames
   if (!loader) {
+    // Load all minigames and find the one with matching ID
+    const allKeys = Object.keys(minigameModules);
+    for (const k of allKeys) {
+      const mod = await minigameModules[k]() as { default: MinigameDefinition };
+      if (mod.default.id === minigameId) {
+        return mod.default;
+      }
+    }
     throw new Error(`Minigame not found: ${minigameId}`);
   }
   

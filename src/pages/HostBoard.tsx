@@ -29,6 +29,13 @@ function HostBoard() {
     }
   }, [state.settings.mapId])
 
+  // Navigate to minigame when phase changes
+  useEffect(() => {
+    if (state.phase === 'minigame') {
+      navigate('/host/minigame')
+    }
+  }, [state.phase, navigate])
+
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
