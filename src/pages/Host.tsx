@@ -13,6 +13,7 @@ function Host() {
   const [teams, setTeams] = useState<Team[]>(state.teams.length > 0 ? state.teams : [])
   const [winCondition, setWinCondition] = useState<'finish' | 'pointsAfterRounds'>(state.settings.winCondition)
   const [boardLength, setBoardLength] = useState<number>(state.settings.boardLength)
+  const [maxRounds, setMaxRounds] = useState<number>(state.settings.maxRounds ?? 10)
   const [diceOptions, setDiceOptions] = useState<number[]>(state.settings.diceOptions)
   const [minigameSelection, setMinigameSelection] = useState<'random' | 'manual'>(state.settings.minigameSelection)
   const [availableMinigames, setAvailableMinigames] = useState<MinigameDefinition[]>([])
@@ -34,8 +35,10 @@ function Host() {
 
   // If game has already started, navigate to board
   useEffect(() => {
-    if (state.phase === 'board' || state.phase === 'minigame' || state.phase === 'end') {
+    if (state.phase === 'board' || state.phase === 'minigame') {
       navigate('/host/board')
+    } else if (state.phase === 'end') {
+      navigate('/host/end')
     }
   }, [state.phase, navigate])
 
@@ -100,6 +103,7 @@ function Host() {
       payload: {
         winCondition,
         boardLength,
+        maxRounds,
         diceOptions,
         minigameSelection,
         enabledMinigameIds,
@@ -119,6 +123,7 @@ function Host() {
       setTeams([])
       setWinCondition('finish')
       setBoardLength(20)
+      setMaxRounds(10)
       setDiceOptions([6])
       setMinigameSelection('random')
       setEnabledMinigameIds(availableMinigames.map(m => m.id))
@@ -204,6 +209,19 @@ function Host() {
               className="setting-input"
             />
           </div>
+
+          {winCondition === 'pointsAfterRounds' && (
+            <div className="setting-group">
+              <label>Max Rounds:</label>
+              <input
+                type="number"
+                value={maxRounds}
+                onChange={e => setMaxRounds(parseInt(e.target.value) || 10)}
+                min="1"
+                className="setting-input"
+              />
+            </div>
+          )}
 
           <div className="setting-group">
             <label>Dice Options:</label>

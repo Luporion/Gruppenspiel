@@ -16,7 +16,7 @@ export interface Team {
 export interface GameSettings {
   winCondition: "finish" | "pointsAfterRounds";
   boardLength: number;
-  maxRounds?: number;
+  maxRounds: number; // Required, default 10
   /** Array of dice face counts available for selection (e.g., [6] for d6, [6, 8, 10] for multiple options) */
   diceOptions: number[]; // MVP: [6] or [6, 8, 10]
   minigameSelection: "random" | "manual";

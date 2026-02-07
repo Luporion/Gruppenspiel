@@ -36,6 +36,7 @@ function getInitialState(providedState?: GameState): GameState {
     {
       winCondition: 'finish',
       boardLength: 20,
+      maxRounds: 10,
       diceOptions: [6],
       minigameSelection: 'random',
       enabledMinigameIds: [],
@@ -69,6 +70,7 @@ export function GameStoreProvider({
       {
         winCondition: 'finish',
         boardLength: 20,
+        maxRounds: 10,
         diceOptions: [6],
         minigameSelection: 'random',
         enabledMinigameIds: [],

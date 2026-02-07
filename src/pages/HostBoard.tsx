@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { useState, useEffect, useRef } from 'react'
 import { loadMap } from '../utils/dataLoader'
+import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
 import './HostBoard.css'
 
@@ -33,6 +34,8 @@ function HostBoard() {
   useEffect(() => {
     if (state.phase === 'minigame') {
       navigate('/host/minigame')
+    } else if (state.phase === 'end') {
+      navigate('/host/end')
     }
   }, [state.phase, navigate])
 
@@ -45,6 +48,17 @@ function HostBoard() {
       setIsTimeoutPending(false)
     }
   }, [])
+
+  // Check win conditions and navigate to end screen if game is over
+  useEffect(() => {
+    if (!map || state.phase !== 'board') return
+
+    const shouldEndGame = checkWinConditions(state.settings, state.teams, state.round, map)
+    if (shouldEndGame) {
+      dispatch({ type: 'END_GAME' })
+      navigate('/host/end')
+    }
+  }, [state.teams, state.round, state.phase, state.settings, map, dispatch, navigate])
 
   const handleBackToSetup = () => {
     if (confirm('Are you sure you want to go back to setup? This will reset the game.')) {

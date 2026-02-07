@@ -1,0 +1,257 @@
+/* Host End Screen - Beamer-Friendly Styles */
+
+.host-end {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.end-container {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.end-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.end-header h1 {
+  font-size: 4rem;
+  margin: 0;
+  color: #333;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Winner Section */
+.winner-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.winner-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.winner-display {
+  display: inline-block;
+  padding: 2rem 4rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.winner-display:hover {
+  transform: scale(1.05);
+}
+
+.winner-name {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.5rem;
+}
+
+.winner-stats {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+/* Scoreboard Section */
+.scoreboard-section {
+  margin-bottom: 3rem;
+}
+
+.scoreboard-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+  text-align: center;
+}
+
+.scoreboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.scoreboard-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.scoreboard-table th {
+  padding: 1.5rem;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+.scoreboard-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s ease;
+}
+
+.scoreboard-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.scoreboard-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.scoreboard-table td {
+  padding: 1.5rem;
+  font-size: 1.6rem;
+}
+
+.winner-row {
+  background-color: #fff9e6 !important;
+  font-weight: bold;
+}
+
+.winner-row:hover {
+  background-color: #fff3d1 !important;
+}
+
+.rank-cell {
+  text-align: center;
+  font-weight: bold;
+  color: #667eea;
+  font-size: 1.8rem;
+}
+
+.team-cell {
+  font-weight: 500;
+}
+
+.team-display {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.team-color-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.team-name {
+  font-size: 1.6rem;
+}
+
+.score-cell,
+.position-cell {
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.end-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.btn-back-to-board,
+.btn-new-game {
+  padding: 1.5rem 3rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-back-to-board {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+}
+
+.btn-back-to-board:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-new-game {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.btn-new-game:hover {
+  background: linear-gradient(135deg, #218838 0%, #17a589 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-back-to-board:active,
+.btn-new-game:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .end-container {
+    padding: 2rem;
+  }
+
+  .end-header h1 {
+    font-size: 3rem;
+  }
+
+  .winner-section h2,
+  .scoreboard-section h2 {
+    font-size: 2rem;
+  }
+
+  .winner-name {
+    font-size: 2.5rem;
+  }
+
+  .winner-stats {
+    font-size: 1.5rem;
+  }
+
+  .scoreboard-table {
+    font-size: 1.2rem;
+  }
+
+  .scoreboard-table th,
+  .scoreboard-table td {
+    padding: 1rem;
+  }
+
+  .btn-back-to-board,
+  .btn-new-game {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+  }
+
+  .end-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
