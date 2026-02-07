@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { loadMap } from '../utils/dataLoader'
 import type { MapDefinition } from '../types'
 import './HostBoard.css'
@@ -11,6 +11,7 @@ function HostBoard() {
   const [map, setMap] = useState<MapDefinition | null>(null)
   const [mapError, setMapError] = useState<string | null>(null)
   const [lastRoll, setLastRoll] = useState<number | null>(null)
+  const nextTeamTimeoutRef = useRef<number | null>(null)
 
   // Load map when component mounts or mapId changes
   useEffect(() => {
@@ -26,6 +27,15 @@ function HostBoard() {
         })
     }
   }, [state.settings.mapId])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (nextTeamTimeoutRef.current !== null) {
+        clearTimeout(nextTeamTimeoutRef.current)
+      }
+    }
+  }, [])
 
   const handleBackToSetup = () => {
     if (confirm('Are you sure you want to go back to setup? This will reset the game.')) {
@@ -74,19 +84,11 @@ function HostBoard() {
     const currentPosition = currentTeam.position
     const newPosition = Math.min(currentPosition + roll, map.length - 1)
 
-    // Step 3: Move the team
+    // Step 3: Update position with MOVE_TEAM (always, to ensure capping is applied)
     dispatch({
-      type: 'ROLL_DICE',
-      payload: roll
+      type: 'MOVE_TEAM',
+      payload: { teamId: currentTeam.id, position: newPosition }
     })
-
-    // Update position to capped value
-    if (newPosition !== currentPosition + roll) {
-      dispatch({
-        type: 'MOVE_TEAM',
-        payload: { teamId: currentTeam.id, position: newPosition }
-      })
-    }
 
     // Step 4: Apply tile effects
     const landedTile = map.tiles.find(tile => tile.index === newPosition)
@@ -97,6 +99,11 @@ function HostBoard() {
 
   // Apply tile effects based on tile type
   const applyTileEffect = (tile: MapDefinition['tiles'][0]) => {
+    // Clear any pending timeout
+    if (nextTeamTimeoutRef.current !== null) {
+      clearTimeout(nextTeamTimeoutRef.current)
+    }
+
     switch (tile.type) {
       case 'bonus': {
         const points = tile.value ?? 3
@@ -106,7 +113,7 @@ function HostBoard() {
           payload: { teamId: currentTeam.id, score: newScore }
         })
         // Advance to next team after bonus
-        setTimeout(() => {
+        nextTeamTimeoutRef.current = window.setTimeout(() => {
           dispatch({ type: 'NEXT_TEAM' })
         }, 500)
         break
@@ -119,7 +126,7 @@ function HostBoard() {
           payload: { teamId: currentTeam.id, score: newScore }
         })
         // Advance to next team after penalty
-        setTimeout(() => {
+        nextTeamTimeoutRef.current = window.setTimeout(() => {
           dispatch({ type: 'NEXT_TEAM' })
         }, 500)
         break
@@ -141,7 +148,7 @@ function HostBoard() {
           })
         } else {
           // No minigames enabled, advance to next team
-          setTimeout(() => {
+          nextTeamTimeoutRef.current = window.setTimeout(() => {
             dispatch({ type: 'NEXT_TEAM' })
           }, 500)
         }
@@ -149,7 +156,7 @@ function HostBoard() {
       }
       default:
         // Normal tile - advance to next team
-        setTimeout(() => {
+        nextTeamTimeoutRef.current = window.setTimeout(() => {
           dispatch({ type: 'NEXT_TEAM' })
         }, 500)
         break
