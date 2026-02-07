@@ -7,9 +7,10 @@ import './HostBoard.css'
 
 function HostBoard() {
   const navigate = useNavigate()
-  const { state, resetSave } = useGameStore()
+  const { state, dispatch, resetSave } = useGameStore()
   const [map, setMap] = useState<MapDefinition | null>(null)
   const [mapError, setMapError] = useState<string | null>(null)
+  const [lastRoll, setLastRoll] = useState<number | null>(null)
 
   // Load map when component mounts or mapId changes
   useEffect(() => {
@@ -57,6 +58,110 @@ function HostBoard() {
   // Get current team
   const currentTeam = state.teams[state.currentTeamIndex]
 
+  // Roll dice and process turn
+  const handleRollDice = () => {
+    if (!map) return
+
+    // Step 1: Roll dice
+    // Pick a random dice option from settings (MVP: should be just one option)
+    const diceOptions = state.settings.diceOptions || [6]
+    const selectedDiceSides = diceOptions[Math.floor(Math.random() * diceOptions.length)]
+    const roll = Math.floor(Math.random() * selectedDiceSides) + 1
+    
+    setLastRoll(roll)
+
+    // Step 2: Calculate new position (capped at map length - 1)
+    const currentPosition = currentTeam.position
+    const newPosition = Math.min(currentPosition + roll, map.length - 1)
+
+    // Step 3: Move the team
+    dispatch({
+      type: 'ROLL_DICE',
+      payload: roll
+    })
+
+    // Update position to capped value
+    if (newPosition !== currentPosition + roll) {
+      dispatch({
+        type: 'MOVE_TEAM',
+        payload: { teamId: currentTeam.id, position: newPosition }
+      })
+    }
+
+    // Step 4: Apply tile effects
+    const landedTile = map.tiles.find(tile => tile.index === newPosition)
+    if (landedTile) {
+      applyTileEffect(landedTile)
+    }
+  }
+
+  // Apply tile effects based on tile type
+  const applyTileEffect = (tile: MapDefinition['tiles'][0]) => {
+    switch (tile.type) {
+      case 'bonus': {
+        const points = tile.value ?? 3
+        const newScore = currentTeam.score + points
+        dispatch({
+          type: 'UPDATE_SCORE',
+          payload: { teamId: currentTeam.id, score: newScore }
+        })
+        // Advance to next team after bonus
+        setTimeout(() => {
+          dispatch({ type: 'NEXT_TEAM' })
+        }, 500)
+        break
+      }
+      case 'penalty': {
+        const points = tile.value ?? -3
+        const newScore = currentTeam.score + points
+        dispatch({
+          type: 'UPDATE_SCORE',
+          payload: { teamId: currentTeam.id, score: newScore }
+        })
+        // Advance to next team after penalty
+        setTimeout(() => {
+          dispatch({ type: 'NEXT_TEAM' })
+        }, 500)
+        break
+      }
+      case 'minigame': {
+        // Pick minigame based on selection mode
+        const enabledMinigames = state.settings.enabledMinigameIds || []
+        if (enabledMinigames.length > 0) {
+          let minigameId: string
+          if (state.settings.minigameSelection === 'random') {
+            minigameId = enabledMinigames[Math.floor(Math.random() * enabledMinigames.length)]
+          } else {
+            // For manual selection, pick first one for now (can be improved later)
+            minigameId = enabledMinigames[0]
+          }
+          dispatch({
+            type: 'START_MINIGAME',
+            payload: minigameId
+          })
+        } else {
+          // No minigames enabled, advance to next team
+          setTimeout(() => {
+            dispatch({ type: 'NEXT_TEAM' })
+          }, 500)
+        }
+        break
+      }
+      default:
+        // Normal tile - advance to next team
+        setTimeout(() => {
+          dispatch({ type: 'NEXT_TEAM' })
+        }, 500)
+        break
+    }
+  }
+
+  // Manual next team button
+  const handleNextTeam = () => {
+    dispatch({ type: 'NEXT_TEAM' })
+    setLastRoll(null)
+  }
+
   return (
     <div className="host-board">
       <header className="board-header">
@@ -81,6 +186,30 @@ function HostBoard() {
           >
             {currentTeam?.name || 'No Team'}
           </div>
+        </div>
+
+        {/* Game Controls */}
+        <div className="game-controls">
+          <button 
+            onClick={handleRollDice} 
+            className="btn-roll-dice"
+            disabled={!map || state.phase !== 'board'}
+          >
+            🎲 Roll Dice
+          </button>
+          <button 
+            onClick={handleNextTeam} 
+            className="btn-next-team"
+            disabled={state.phase !== 'board'}
+          >
+            ➡️ Next Team
+          </button>
+          {lastRoll !== null && (
+            <div className="last-roll-display">
+              <span className="roll-label">Last Roll:</span>
+              <span className="roll-value">{lastRoll}</span>
+            </div>
+          )}
         </div>
 
         {/* Map Display */}
