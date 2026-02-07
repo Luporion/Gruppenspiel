@@ -354,6 +354,12 @@
   backdrop-filter: blur(10px);
 }
 
+.error-message-explanation {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  opacity: 0.9;
+}
+
 .btn-back {
   padding: 1rem 2rem;
   font-size: 1.25rem;

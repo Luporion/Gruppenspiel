@@ -171,7 +171,7 @@ function HostMinigame() {
       <div className="host-minigame">
         <div className="error-message">
           ℹ️ No active minigame selected
-          <p style={{ fontSize: '1.5rem', marginTop: '1rem', opacity: 0.9 }}>
+          <p className="error-message-explanation">
             Return to the game board to continue playing. Minigames are triggered when landing on a minigame tile.
           </p>
         </div>
