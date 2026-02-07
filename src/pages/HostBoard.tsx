@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { useState, useEffect, useRef } from 'react'
 import { loadMap } from '../utils/dataLoader'
+import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
 import './HostBoard.css'
 
@@ -52,27 +53,12 @@ function HostBoard() {
   useEffect(() => {
     if (!map || state.phase !== 'board') return
 
-    const shouldEndGame = checkWinConditions()
+    const shouldEndGame = checkWinConditions(state.settings, state.teams, state.round, map)
     if (shouldEndGame) {
       dispatch({ type: 'END_GAME' })
       navigate('/host/end')
     }
-  }, [state.teams, state.round, state.phase, map, dispatch, navigate])
-
-  // Check if win conditions are met
-  const checkWinConditions = (): boolean => {
-    if (!map) return false
-
-    if (state.settings.winCondition === 'finish') {
-      // Check if any team has reached the end (position >= map.length - 1)
-      return state.teams.some(team => team.position >= map.length - 1)
-    } else if (state.settings.winCondition === 'pointsAfterRounds') {
-      // Check if maxRounds exceeded
-      return state.round > state.settings.maxRounds
-    }
-
-    return false
-  }
+  }, [state.teams, state.round, state.phase, state.settings, map, dispatch, navigate])
 
   const handleBackToSetup = () => {
     if (confirm('Are you sure you want to go back to setup? This will reset the game.')) {

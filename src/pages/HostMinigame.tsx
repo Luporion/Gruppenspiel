@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { loadMinigame, loadMap } from '../utils/dataLoader'
+import { checkWinConditions } from '../utils/winConditions'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition, MapDefinition } from '../types'
 import './HostMinigame.css'
 
@@ -148,25 +149,12 @@ function HostMinigame() {
     dispatch({ type: 'NEXT_TEAM' })
 
     // Check win conditions after finishing minigame
-    if (checkWinConditions()) {
+    if (checkWinConditions(state.settings, state.teams, state.round, map)) {
       dispatch({ type: 'END_GAME' })
       navigate('/host/end')
     } else {
       navigate('/host/board')
     }
-  }
-
-  // Check if win conditions are met
-  const checkWinConditions = (): boolean => {
-    if (state.settings.winCondition === 'finish' && map) {
-      // Check if any team has reached the end (position >= map.length - 1)
-      return state.teams.some(team => team.position >= map.length - 1)
-    } else if (state.settings.winCondition === 'pointsAfterRounds') {
-      // Check if maxRounds exceeded
-      return state.round > state.settings.maxRounds
-    }
-
-    return false
   }
 
   const toggleCorrectTeam = (teamId: string) => {
