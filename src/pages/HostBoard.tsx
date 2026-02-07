@@ -11,6 +11,7 @@ function HostBoard() {
   const [map, setMap] = useState<MapDefinition | null>(null)
   const [mapError, setMapError] = useState<string | null>(null)
   const [lastRoll, setLastRoll] = useState<number | null>(null)
+  const [isTimeoutPending, setIsTimeoutPending] = useState(false)
   const nextTeamTimeoutRef = useRef<number | null>(null)
 
   // Load map when component mounts or mapId changes
@@ -34,6 +35,7 @@ function HostBoard() {
       if (nextTeamTimeoutRef.current !== null) {
         clearTimeout(nextTeamTimeoutRef.current)
       }
+      setIsTimeoutPending(false)
     }
   }, [])
 
@@ -108,8 +110,11 @@ function HostBoard() {
       clearTimeout(nextTeamTimeoutRef.current)
     }
     
+    setIsTimeoutPending(true)
     nextTeamTimeoutRef.current = window.setTimeout(() => {
       dispatch({ type: 'NEXT_TEAM' })
+      setIsTimeoutPending(false)
+      nextTeamTimeoutRef.current = null
     }, 500)
   }
 
@@ -174,6 +179,7 @@ function HostBoard() {
     if (nextTeamTimeoutRef.current !== null) {
       clearTimeout(nextTeamTimeoutRef.current)
       nextTeamTimeoutRef.current = null
+      setIsTimeoutPending(false)
     }
     
     dispatch({ type: 'NEXT_TEAM' })
@@ -218,14 +224,14 @@ function HostBoard() {
           <button 
             onClick={handleRollDice} 
             className="btn-roll-dice"
-            disabled={!map || !currentTeam || state.phase !== 'board'}
+            disabled={!map || !currentTeam || state.phase !== 'board' || isTimeoutPending}
           >
             🎲 Roll Dice
           </button>
           <button 
             onClick={handleNextTeam} 
             className="btn-next-team"
-            disabled={!currentTeam || state.phase !== 'board'}
+            disabled={!currentTeam || state.phase !== 'board' || isTimeoutPending}
           >
             ➡️ Next Team
           </button>
