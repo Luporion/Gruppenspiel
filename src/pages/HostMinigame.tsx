@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { loadMinigame } from '../utils/dataLoader'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition } from '../types'
 import './HostMinigame.css'
@@ -22,6 +22,13 @@ function HostMinigame() {
   const [selectedCorrectTeams, setSelectedCorrectTeams] = useState<Set<string>>(new Set())
   const timerRef = useRef<number | null>(null)
 
+  // Helper function to safely abort minigame and return to board
+  const abortToBoard = useCallback(() => {
+    dispatch({ type: 'END_MINIGAME' })
+    setTimerRunning(false)
+    navigate('/host/board', { replace: true })
+  }, [dispatch, navigate])
+
   // Load minigame when component mounts or activeMinigameId changes
   useEffect(() => {
     if (state.activeMinigameId) {
@@ -36,10 +43,10 @@ function HostMinigame() {
           setMinigameError(error.message)
         })
     } else {
-      // No active minigame, redirect back to board
-      navigate('/host/board')
+      // No active minigame, safely abort to board
+      abortToBoard()
     }
-  }, [state.activeMinigameId, navigate])
+  }, [state.activeMinigameId, abortToBoard])
 
   // Redirect to board if phase changes away from minigame
   useEffect(() => {
@@ -148,7 +155,7 @@ function HostMinigame() {
         <div className="error-message">
           ⚠️ Error loading minigame: {minigameError}
         </div>
-        <button onClick={() => navigate('/host/board')} className="btn-back">
+        <button onClick={abortToBoard} className="btn-back">
           ← Back to Board
         </button>
       </div>
