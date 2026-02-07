@@ -81,6 +81,79 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Game Controls */
+.game-controls {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-roll-dice,
+.btn-next-team {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+}
+
+.btn-roll-dice {
+  background-color: #646cff;
+}
+
+.btn-roll-dice:hover:not(:disabled) {
+  background-color: #535bf2;
+  transform: scale(1.05);
+}
+
+.btn-next-team {
+  background-color: #4caf50;
+}
+
+.btn-next-team:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.btn-roll-dice:disabled,
+.btn-next-team:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.last-roll-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: rgba(100, 108, 255, 0.2);
+  border-radius: 8px;
+  border: 2px solid #646cff;
+}
+
+.roll-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.roll-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #646cff;
+  min-width: 40px;
+  text-align: center;
+}
+
 /* Map Section */
 .map-section {
   background-color: rgba(255, 255, 255, 0.05);
@@ -287,7 +360,8 @@
   .current-team-indicator,
   .map-section,
   .scoreboard,
-  .game-info {
+  .game-info,
+  .game-controls {
     background-color: rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
@@ -336,5 +410,13 @@
 
   .error-message, .loading-message {
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  .roll-label {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .last-roll-display {
+    background-color: rgba(100, 108, 255, 0.1);
   }
 }
