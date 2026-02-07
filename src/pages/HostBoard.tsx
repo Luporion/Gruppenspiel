@@ -70,11 +70,12 @@ function HostBoard() {
 
   // Roll dice and process turn
   const handleRollDice = () => {
-    if (!map) return
+    if (!map || !currentTeam) return
 
     // Step 1: Roll dice
     // Pick a random dice option from settings (MVP: should be just one option)
-    const diceOptions = state.settings.diceOptions || [6]
+    // Fallback to [6] if diceOptions is missing OR empty
+    const diceOptions = state.settings.diceOptions?.length > 0 ? state.settings.diceOptions : [6]
     const selectedDiceSides = diceOptions[Math.floor(Math.random() * diceOptions.length)]
     const roll = Math.floor(Math.random() * selectedDiceSides) + 1
     
@@ -94,15 +95,27 @@ function HostBoard() {
     const landedTile = map.tiles.find(tile => tile.index === newPosition)
     if (landedTile) {
       applyTileEffect(landedTile)
+    } else {
+      // If tile not found, treat as normal tile and advance to next team
+      scheduleNextTeam()
     }
   }
 
-  // Apply tile effects based on tile type
-  const applyTileEffect = (tile: MapDefinition['tiles'][0]) => {
+  // Helper function to schedule next team transition
+  const scheduleNextTeam = () => {
     // Clear any pending timeout
     if (nextTeamTimeoutRef.current !== null) {
       clearTimeout(nextTeamTimeoutRef.current)
     }
+    
+    nextTeamTimeoutRef.current = window.setTimeout(() => {
+      dispatch({ type: 'NEXT_TEAM' })
+    }, 500)
+  }
+
+  // Apply tile effects based on tile type
+  const applyTileEffect = (tile: MapDefinition['tiles'][0]) => {
+    if (!currentTeam) return
 
     switch (tile.type) {
       case 'bonus': {
@@ -113,9 +126,7 @@ function HostBoard() {
           payload: { teamId: currentTeam.id, score: newScore }
         })
         // Advance to next team after bonus
-        nextTeamTimeoutRef.current = window.setTimeout(() => {
-          dispatch({ type: 'NEXT_TEAM' })
-        }, 500)
+        scheduleNextTeam()
         break
       }
       case 'penalty': {
@@ -126,9 +137,7 @@ function HostBoard() {
           payload: { teamId: currentTeam.id, score: newScore }
         })
         // Advance to next team after penalty
-        nextTeamTimeoutRef.current = window.setTimeout(() => {
-          dispatch({ type: 'NEXT_TEAM' })
-        }, 500)
+        scheduleNextTeam()
         break
       }
       case 'minigame': {
@@ -148,23 +157,25 @@ function HostBoard() {
           })
         } else {
           // No minigames enabled, advance to next team
-          nextTeamTimeoutRef.current = window.setTimeout(() => {
-            dispatch({ type: 'NEXT_TEAM' })
-          }, 500)
+          scheduleNextTeam()
         }
         break
       }
       default:
         // Normal tile - advance to next team
-        nextTeamTimeoutRef.current = window.setTimeout(() => {
-          dispatch({ type: 'NEXT_TEAM' })
-        }, 500)
+        scheduleNextTeam()
         break
     }
   }
 
   // Manual next team button
   const handleNextTeam = () => {
+    // Clear any pending timeout to prevent double NEXT_TEAM
+    if (nextTeamTimeoutRef.current !== null) {
+      clearTimeout(nextTeamTimeoutRef.current)
+      nextTeamTimeoutRef.current = null
+    }
+    
     dispatch({ type: 'NEXT_TEAM' })
     setLastRoll(null)
   }
@@ -184,6 +195,13 @@ function HostBoard() {
       </header>
 
       <div className="board-container">
+        {/* Show warning if no teams are configured */}
+        {!currentTeam && (
+          <div className="error-message" style={{ marginBottom: '2rem' }}>
+            ⚠️ No teams configured. Please go back to setup to add teams.
+          </div>
+        )}
+
         {/* Current Team Indicator */}
         <div className="current-team-indicator">
           <h2>Current Turn:</h2>
@@ -200,14 +218,14 @@ function HostBoard() {
           <button 
             onClick={handleRollDice} 
             className="btn-roll-dice"
-            disabled={!map || state.phase !== 'board'}
+            disabled={!map || !currentTeam || state.phase !== 'board'}
           >
             🎲 Roll Dice
           </button>
           <button 
             onClick={handleNextTeam} 
             className="btn-next-team"
-            disabled={state.phase !== 'board'}
+            disabled={!currentTeam || state.phase !== 'board'}
           >
             ➡️ Next Team
           </button>
