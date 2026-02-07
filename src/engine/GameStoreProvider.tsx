@@ -4,6 +4,7 @@
 import {
   useReducer,
   useEffect,
+  useCallback,
   type ReactNode,
 } from 'react';
 import type { GameState } from './types';
@@ -18,25 +19,53 @@ interface GameStoreProviderProps {
 }
 
 /**
+ * Creates the initial game state - moved outside component to avoid recreation
+ */
+function getInitialState(providedState?: GameState): GameState {
+  if (providedState) {
+    return providedState;
+  }
+
+  const savedState = loadGameState();
+  if (savedState) {
+    return savedState;
+  }
+
+  // Create a minimal default initial state for the app
+  return createInitialGameState(
+    {
+      winCondition: 'finish',
+      boardLength: 20,
+      diceOptions: [6],
+      minigameSelection: 'random',
+      enabledMinigameIds: [],
+    },
+    []
+  );
+}
+
+/**
  * Provider component that manages game state with localStorage persistence
  */
 export function GameStoreProvider({
   children,
   initialState,
 }: GameStoreProviderProps) {
-  // Try to load saved state, or use provided initial state, or create a default
-  const getInitialState = (): GameState => {
-    if (initialState) {
-      return initialState;
-    }
+  const [state, dispatch] = useReducer(
+    gameReducer,
+    initialState,
+    getInitialState
+  );
 
-    const savedState = loadGameState();
-    if (savedState) {
-      return savedState;
-    }
+  // Save to localStorage after each state change
+  useEffect(() => {
+    saveGameState(state);
+  }, [state]);
 
-    // Create a minimal default initial state for the app
-    return createInitialGameState(
+  const resetSave = useCallback(() => {
+    resetSavedGameState();
+    // Reset the in-memory state as well to maintain consistency
+    const freshState = createInitialGameState(
       {
         winCondition: 'finish',
         boardLength: 20,
@@ -46,20 +75,8 @@ export function GameStoreProvider({
       },
       []
     );
-  };
-
-  const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
-
-  // Save to localStorage after each state change
-  useEffect(() => {
-    saveGameState(state);
-  }, [state]);
-
-  const resetSave = () => {
-    resetSavedGameState();
-    // Optionally, you could also dispatch a reset action here
-    // For now, just clearing localStorage - app reload will get fresh state
-  };
+    dispatch({ type: 'RESET_STATE', payload: freshState });
+  }, []);
 
   return (
     <GameStoreContext.Provider value={{ state, dispatch, resetSave }}>
