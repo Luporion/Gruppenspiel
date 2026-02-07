@@ -41,7 +41,7 @@ function HostBoard() {
 
   // Get team initials (first 2 letters)
   const getTeamInitials = (teamName: string) => {
-    return teamName.substring(0, 2).toUpperCase()
+    return teamName.slice(0, 2).toUpperCase() || '??'
   }
 
   // Get tile type emoji/symbol
@@ -53,6 +53,9 @@ function HostBoard() {
       default: return '•'
     }
   }
+
+  // Get current team
+  const currentTeam = state.teams[state.currentTeamIndex]
 
   return (
     <div className="host-board">
@@ -74,9 +77,9 @@ function HostBoard() {
           <h2>Current Turn:</h2>
           <div 
             className="current-team-display"
-            style={{ backgroundColor: state.teams[state.currentTeamIndex]?.color }}
+            style={{ backgroundColor: currentTeam?.color }}
           >
-            {state.teams[state.currentTeamIndex]?.name || 'No Team'}
+            {currentTeam?.name || 'No Team'}
           </div>
         </div>
 
