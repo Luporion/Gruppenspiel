@@ -1,0 +1,126 @@
+/* Host Board Screen Styles */
+
+.host-board {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.board-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.btn-back {
+  background-color: #6c757d;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.board-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-card h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #646cff;
+}
+
+.info-card p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.team-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+.team-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.team-stats {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.placeholder-board {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 4rem 2rem;
+  border-radius: 12px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.placeholder-text {
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+}
+
+.placeholder-subtext {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+  .info-card {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .team-info {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  .team-stats {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .placeholder-board {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 2px dashed rgba(0, 0, 0, 0.2);
+  }
+
+  .placeholder-subtext {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
