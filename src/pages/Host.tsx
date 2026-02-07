@@ -26,13 +26,9 @@ function Host() {
     loadSampleData().then(({ map, minigames }) => {
       setAvailableMinigames(minigames)
       setAvailableMaps([map])
-      if (!selectedMapId && map) {
-        setSelectedMapId(map.id)
-      }
-      // Enable all minigames by default if none are enabled
-      if (enabledMinigameIds.length === 0) {
-        setEnabledMinigameIds(minigames.map(m => m.id))
-      }
+      // Set default selections only if not already set
+      setSelectedMapId(prev => prev || map.id)
+      setEnabledMinigameIds(prev => prev.length > 0 ? prev : minigames.map(m => m.id))
     })
   }, [])
 
@@ -90,13 +86,12 @@ function Host() {
 
     setErrors([])
 
-    // Update store with all teams
-    teams.forEach((team, index) => {
-      if (index < state.teams.length) {
-        dispatch({ type: 'UPDATE_TEAM', payload: { id: state.teams[index].id, updates: team } })
-      } else {
-        dispatch({ type: 'ADD_TEAM', payload: team })
-      }
+    // Clear existing teams from store and add all current teams
+    state.teams.forEach(team => {
+      dispatch({ type: 'REMOVE_TEAM', payload: team.id })
+    })
+    teams.forEach(team => {
+      dispatch({ type: 'ADD_TEAM', payload: team })
     })
 
     // Update settings
