@@ -44,11 +44,9 @@ function HostMinigame() {
           console.error('Error loading minigame:', error)
           setMinigameError(error.message)
         })
-    } else {
-      // No active minigame, safely abort to board
-      abortToBoard()
     }
-  }, [state.activeMinigameId, abortToBoard])
+    // Don't auto-redirect if no activeMinigameId - show fallback UI instead
+  }, [state.activeMinigameId])
 
   // Load map for win condition checking
   useEffect(() => {
@@ -59,12 +57,14 @@ function HostMinigame() {
     }
   }, [state.settings.mapId])
 
-  // Redirect to board if phase changes away from minigame
+  // Redirect to board if phase changes away from minigame (but not on initial mount)
   useEffect(() => {
-    if (state.phase !== 'minigame') {
+    // Only redirect if we have an activeMinigameId but phase is not minigame
+    // This prevents redirect on direct navigation while still handling phase changes during gameplay
+    if (state.activeMinigameId && state.phase !== 'minigame') {
       navigate('/host/board')
     }
-  }, [state.phase, navigate])
+  }, [state.phase, state.activeMinigameId, navigate])
 
   // Timer effect
   useEffect(() => {
@@ -165,6 +165,22 @@ function HostMinigame() {
       newSet.add(teamId)
     }
     setSelectedCorrectTeams(newSet)
+  }
+
+  // Show fallback UI if no active minigame
+  if (!state.activeMinigameId) {
+    return (
+      <div className="host-minigame">
+        <div className="no-minigame-message">
+          <h2>⚠️ No Active Minigame</h2>
+          <p>No minigame is currently selected.</p>
+          <p>This usually happens when you navigate here directly or when no minigames are enabled.</p>
+        </div>
+        <button onClick={abortToBoard} className="btn-back">
+          ← Back to Board
+        </button>
+      </div>
+    )
   }
 
   if (minigameError) {
