@@ -9,6 +9,9 @@ import type { MapDefinition, MinigameDefinition } from '../types';
 const mapModules = import.meta.glob('../data/maps/*.json');
 const minigameModules = import.meta.glob('../data/minigames/*.json');
 
+// Cache for minigame ID to file path mapping
+const minigameIdCache: Map<string, string> = new Map();
+
 /**
  * Load a map definition from a JSON file
  * @param mapId - The ID of the map to load
@@ -43,21 +46,35 @@ export async function loadMinigame(minigameId: string): Promise<MinigameDefiniti
   let key = `../data/minigames/${minigameId}.json`;
   let loader = minigameModules[key];
   
-  // If not found, try to find by ID field in all minigames
+  // If not found, check cache or search all minigames
   if (!loader) {
-    // Load all minigames and find the one with matching ID
-    const allKeys = Object.keys(minigameModules);
-    for (const k of allKeys) {
-      const mod = await minigameModules[k]() as { default: MinigameDefinition };
-      if (mod.default.id === minigameId) {
-        return mod.default;
+    // Check cache first
+    if (minigameIdCache.has(minigameId)) {
+      key = minigameIdCache.get(minigameId)!;
+      loader = minigameModules[key];
+    } else {
+      // Load all minigames and find the one with matching ID
+      const allKeys = Object.keys(minigameModules);
+      for (const k of allKeys) {
+        const mod = await minigameModules[k]() as { default: MinigameDefinition };
+        // Cache this ID for future lookups
+        minigameIdCache.set(mod.default.id, k);
+        
+        if (mod.default.id === minigameId) {
+          return mod.default;
+        }
       }
+      throw new Error(`Minigame not found: ${minigameId}`);
     }
-    throw new Error(`Minigame not found: ${minigameId}`);
   }
   
   const module = await loader() as { default: MinigameDefinition };
   const minigame = module.default;
+  
+  // Cache the ID if not already cached
+  if (!minigameIdCache.has(minigame.id)) {
+    minigameIdCache.set(minigame.id, key);
+  }
   
   // Basic validation
   if (!minigame.id || !minigame.name || !minigame.type || !minigame.scoring) {

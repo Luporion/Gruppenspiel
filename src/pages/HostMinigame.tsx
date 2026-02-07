@@ -5,6 +5,10 @@ import { loadMinigame } from '../utils/dataLoader'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition } from '../types'
 import './HostMinigame.css'
 
+// Default points constants
+const DEFAULT_WIN_POINTS = 10
+const DEFAULT_CORRECT_POINTS = 10
+
 function HostMinigame() {
   const navigate = useNavigate()
   const { state, dispatch } = useGameStore()
@@ -79,7 +83,7 @@ function HostMinigame() {
 
     // Award points based on winner selection or manual points
     if (selectedWinnerTeamId) {
-      const winPoints = minigame.scoring.win ?? 10
+      const winPoints = minigame.scoring.win ?? DEFAULT_WIN_POINTS
       const team = state.teams.find(t => t.id === selectedWinnerTeamId)
       if (team) {
         dispatch({
@@ -106,7 +110,7 @@ function HostMinigame() {
     if (!minigame || minigame.type !== 'quiz') return
 
     // Award points to selected correct teams
-    const correctPoints = minigame.scoring.correct ?? 10
+    const correctPoints = minigame.scoring.correct ?? DEFAULT_CORRECT_POINTS
     selectedCorrectTeams.forEach(teamId => {
       const team = state.teams.find(t => t.id === teamId)
       if (team) {
@@ -264,7 +268,7 @@ function PhysicalMinigameUI({
           <option value="">-- Select Team --</option>
           {teams.map(team => (
             <option key={team.id} value={team.id}>
-              {team.name} (+{minigame.scoring.win ?? 10} points)
+              {team.name} (+{minigame.scoring.win ?? DEFAULT_WIN_POINTS} points)
             </option>
           ))}
         </select>
@@ -275,7 +279,10 @@ function PhysicalMinigameUI({
         <input
           type="number"
           value={manualPoints}
-          onChange={e => setManualPoints(parseInt(e.target.value) || 0)}
+          onChange={e => {
+            const value = e.target.value === '' ? 0 : parseInt(e.target.value, 10)
+            setManualPoints(isNaN(value) ? 0 : value)
+          }}
           placeholder="0"
           className="points-input"
         />
@@ -359,7 +366,7 @@ function QuizMinigameUI({
               />
               <span style={{ color: team.color }}>{team.name}</span>
               <span className="points-hint">
-                (+{minigame.scoring.correct ?? 10} points)
+                (+{minigame.scoring.correct ?? DEFAULT_CORRECT_POINTS} points)
               </span>
             </label>
           ))}
