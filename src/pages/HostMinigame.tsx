@@ -44,11 +44,9 @@ function HostMinigame() {
           console.error('Error loading minigame:', error)
           setMinigameError(error.message)
         })
-    } else {
-      // No active minigame, safely abort to board
-      abortToBoard()
     }
-  }, [state.activeMinigameId, abortToBoard])
+    // Note: Don't auto-redirect if no activeMinigameId - show fallback UI instead
+  }, [state.activeMinigameId])
 
   // Load map for win condition checking
   useEffect(() => {
@@ -59,12 +57,12 @@ function HostMinigame() {
     }
   }, [state.settings.mapId])
 
-  // Redirect to board if phase changes away from minigame
+  // Redirect to board if phase changes away from minigame (but only if we had an active minigame before)
   useEffect(() => {
-    if (state.phase !== 'minigame') {
+    if (state.phase !== 'minigame' && state.activeMinigameId) {
       navigate('/host/board')
     }
-  }, [state.phase, navigate])
+  }, [state.phase, state.activeMinigameId, navigate])
 
   // Timer effect
   useEffect(() => {
@@ -165,6 +163,23 @@ function HostMinigame() {
       newSet.add(teamId)
     }
     setSelectedCorrectTeams(newSet)
+  }
+
+  // Show fallback UI if no active minigame is selected
+  if (!state.activeMinigameId) {
+    return (
+      <div className="host-minigame">
+        <div className="error-message">
+          ℹ️ No active minigame selected
+          <p className="error-message-explanation">
+            Return to the game board to continue playing. Minigames are triggered when landing on a minigame tile.
+          </p>
+        </div>
+        <button onClick={abortToBoard} className="btn-back">
+          ← Back to Board
+        </button>
+      </div>
+    )
   }
 
   if (minigameError) {
