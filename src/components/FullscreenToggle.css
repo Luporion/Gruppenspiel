@@ -1,0 +1,42 @@
+.fullscreen-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--button-padding-y) var(--button-padding-x);
+  font-size: var(--button-font-size);
+  font-weight: 600;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--button-border-radius);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fullscreen-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.02);
+}
+
+.fullscreen-toggle__icon {
+  font-size: 1.2em;
+}
+
+.fullscreen-toggle__text {
+  font-weight: 600;
+}
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+  .fullscreen-toggle {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #213547;
+  }
+
+  .fullscreen-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+}
