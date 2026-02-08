@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { loadSampleData } from '../utils/dataLoader'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
+import { useHotkeys } from '../utils/useHotkeys'
+import { toggleBeamerMode, applyBeamerMode } from '../utils/beamerMode'
+import { toggleFullscreen, exitFullscreen, isFullscreen } from '../utils/fullscreen'
 import './Host.css'
 
 function Host() {
@@ -131,6 +134,51 @@ function Host() {
       setErrors([])
     }
   }
+
+  // Handle beamer mode toggle
+  const handleToggleBeamer = () => {
+    const newState = toggleBeamerMode()
+    applyBeamerMode(newState)
+  }
+
+  // Handle fullscreen toggle
+  const handleToggleFullscreen = async () => {
+    try {
+      await toggleFullscreen()
+    } catch (error) {
+      console.error('Failed to toggle fullscreen:', error)
+    }
+  }
+
+  // Handle exit fullscreen
+  const handleExitFullscreen = async () => {
+    if (isFullscreen()) {
+      try {
+        await exitFullscreen()
+      } catch (error) {
+        console.error('Failed to exit fullscreen:', error)
+      }
+    }
+  }
+
+  // Setup keyboard hotkeys (global only, no board-specific hotkeys)
+  useHotkeys([
+    {
+      key: 'b',
+      handler: handleToggleBeamer,
+      description: 'Toggle Beamer Mode'
+    },
+    {
+      key: 'f',
+      handler: handleToggleFullscreen,
+      description: 'Toggle Fullscreen'
+    },
+    {
+      key: 'Escape',
+      handler: handleExitFullscreen,
+      description: 'Exit Fullscreen'
+    }
+  ])
 
   return (
     <div className="host-setup">

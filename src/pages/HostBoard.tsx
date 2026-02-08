@@ -6,6 +6,9 @@ import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
 import FullscreenToggle from '../components/FullscreenToggle'
+import { useHotkeys } from '../utils/useHotkeys'
+import { toggleBeamerMode, applyBeamerMode } from '../utils/beamerMode'
+import { toggleFullscreen, exitFullscreen, isFullscreen } from '../utils/fullscreen'
 import './HostBoard.css'
 
 function HostBoard() {
@@ -211,6 +214,63 @@ function HostBoard() {
     dispatch({ type: 'NEXT_TEAM' })
     setLastRoll(null)
   }
+
+  // Handle beamer mode toggle
+  const handleToggleBeamer = () => {
+    const newState = toggleBeamerMode()
+    applyBeamerMode(newState)
+  }
+
+  // Handle fullscreen toggle
+  const handleToggleFullscreen = async () => {
+    try {
+      await toggleFullscreen()
+    } catch (error) {
+      console.error('Failed to toggle fullscreen:', error)
+    }
+  }
+
+  // Handle exit fullscreen
+  const handleExitFullscreen = async () => {
+    if (isFullscreen()) {
+      try {
+        await exitFullscreen()
+      } catch (error) {
+        console.error('Failed to exit fullscreen:', error)
+      }
+    }
+  }
+
+  // Setup keyboard hotkeys
+  useHotkeys([
+    {
+      key: ' ', // Space
+      handler: handleRollDice,
+      enabled: state.phase === 'board',
+      description: 'Roll Dice'
+    },
+    {
+      key: 'n',
+      handler: handleNextTeam,
+      enabled: state.phase === 'board',
+      description: 'Next Team'
+    },
+    {
+      key: 'b',
+      handler: handleToggleBeamer,
+      description: 'Toggle Beamer Mode'
+    },
+    {
+      key: 'f',
+      handler: handleToggleFullscreen,
+      description: 'Toggle Fullscreen'
+    },
+    {
+      key: 'Escape',
+      handler: handleExitFullscreen,
+      description: 'Exit Fullscreen'
+    }
+  ])
 
   return (
     <div className="host-board">
