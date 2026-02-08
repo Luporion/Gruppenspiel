@@ -43,7 +43,7 @@ html.beamer {
   /* Increase root font size by 25% (16px → 20px) */
   font-size: 20px;
   
-  /* Increase all font sizes by 25% */
+  /* Increase font size variables by 25% (combined with root increase = ~56% total scaling) */
   --font-size-base: 1.25rem;
   --font-size-sm: 1.09375rem;
   --font-size-lg: 1.40625rem;
