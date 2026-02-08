@@ -41,12 +41,14 @@ export function toggleBeamerMode(): boolean {
 }
 
 /**
- * Apply beamer mode class to body element
+ * Apply beamer mode class to html and body elements
  */
 export function applyBeamerMode(enabled: boolean): void {
   if (enabled) {
+    document.documentElement.classList.add('beamer')
     document.body.classList.add('beamer')
   } else {
+    document.documentElement.classList.remove('beamer')
     document.body.classList.remove('beamer')
   }
 }
