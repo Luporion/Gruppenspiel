@@ -25,6 +25,7 @@ export function createInitialGameState(
   };
 
   return {
+    schemaVersion: 1,
     phase: 'setup',
     settings: finalSettings,
     teams: teams.map((team) => ({ ...team })), // Clone teams to avoid mutations

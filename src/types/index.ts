@@ -84,6 +84,7 @@ export interface LastAction {
 
 // Game state
 export interface GameState {
+  schemaVersion: number; // Current version: 1
   phase: "setup" | "board" | "minigame" | "end";
   settings: GameSettings;
   teams: Team[];
