@@ -4,6 +4,8 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { loadMinigame, loadMap } from '../utils/dataLoader'
 import { checkWinConditions } from '../utils/winConditions'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition, MapDefinition } from '../types'
+import BeamerToggle from '../components/BeamerToggle'
+import FullscreenToggle from '../components/FullscreenToggle'
 import './HostMinigame.css'
 
 // Default points constants
@@ -213,11 +215,15 @@ function HostMinigame() {
     <div className="host-minigame">
       <header className="minigame-header">
         <h1>🎮 {minigame.name}</h1>
-        <div className="timer-display">
-          <span className="timer-label">Time:</span>
-          <span className={`timer-value ${timeLeft < 10 ? 'timer-warning' : ''}`}>
-            {formatTime(timeLeft)}
-          </span>
+        <div className="minigame-header-controls">
+          <BeamerToggle />
+          <FullscreenToggle />
+          <div className="timer-display">
+            <span className="timer-label">Time:</span>
+            <span className={`timer-value ${timeLeft < 10 ? 'timer-warning' : ''}`}>
+              {formatTime(timeLeft)}
+            </span>
+          </div>
         </div>
       </header>
 
