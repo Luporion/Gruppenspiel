@@ -386,3 +386,98 @@
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
+
+/* Minigame Selection Styles */
+.minigame-selection-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.minigame-selection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.minigame-selection-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.minigame-selection-card:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.minigame-selection-info {
+  flex: 1;
+}
+
+.minigame-selection-info h2 {
+  margin: 0 0 1rem 0;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.minigame-selection-description {
+  font-size: 1.5rem;
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.minigame-selection-meta {
+  font-size: 1.25rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.btn-select-minigame {
+  padding: 1.5rem 3rem;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+  color: white;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-select-minigame:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.minigame-selection-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.btn-pick-random {
+  padding: 1.5rem 3rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-pick-random:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}

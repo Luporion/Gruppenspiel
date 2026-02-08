@@ -15,7 +15,8 @@ export type GameAction =
   | { type: 'ROLL_DICE'; payload: number } // dice result
   | { type: 'MOVE_TEAM'; payload: { teamId: string; position: number } }
   | { type: 'UPDATE_SCORE'; payload: { teamId: string; score: number } }
-  | { type: 'START_MINIGAME'; payload: string } // minigame id
+  | { type: 'START_MINIGAME'; payload: string | undefined } // minigame id (undefined for manual selection)
+  | { type: 'SET_ACTIVE_MINIGAME'; payload: string } // minigame id (used in manual selection flow)
   | { type: 'END_MINIGAME' }
   | { type: 'NEXT_ROUND' }
   | { type: 'UNDO_LAST_ACTION' }
