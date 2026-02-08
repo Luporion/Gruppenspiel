@@ -95,6 +95,8 @@ export function migrateGameState(saved: unknown): GameState | null {
         position?: number;
       }
       const teams = result.teams.map((team: TeamInput) => ({
+        // Note: Math.random() is only used for legacy migration of teams without IDs
+        // This is acceptable as it's a one-time migration fallback, not for new ID generation
         id: team.id || `team-${Math.random()}`,
         name: team.name || 'Unknown Team',
         color: team.color || '#000000',
