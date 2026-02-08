@@ -1,5 +1,8 @@
 /* Theme CSS Variables */
 :root {
+  /* Root font size - default 16px */
+  font-size: 16px;
+  
   /* Base font sizes */
   --font-size-base: 1rem;
   --font-size-sm: 0.875rem;
@@ -36,8 +39,11 @@
 }
 
 /* Beamer Mode - Larger fonts, higher contrast for projectors */
-body.beamer {
-  /* Increase all font sizes by 25% */
+html.beamer {
+  /* Increase root font size by 25% (16px → 20px) */
+  font-size: 20px;
+  
+  /* Increase font size variables by 25% (combined with root increase = ~56% total scaling) */
   --font-size-base: 1.25rem;
   --font-size-sm: 1.09375rem;
   --font-size-lg: 1.40625rem;
@@ -79,7 +85,7 @@ body.beamer {
     --text-secondary: rgba(0, 0, 0, 0.7);
   }
   
-  body.beamer {
+  html.beamer {
     --bg-primary: rgba(0, 0, 0, 0.08);
     --bg-secondary: rgba(0, 0, 0, 0.05);
     --border-color: rgba(0, 0, 0, 0.2);
