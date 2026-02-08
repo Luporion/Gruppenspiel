@@ -1,0 +1,19 @@
+{
+  "id": "quiz_006",
+  "name": "Church History Mini",
+  "type": "quiz",
+  "description": "Quick questions about church history",
+  "timeLimitSec": 30,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "Who is known as the father of the Protestant Reformation?",
+  "options": [
+    "John Calvin",
+    "Martin Luther",
+    "John Wesley",
+    "Augustine"
+  ],
+  "correctIndex": 1
+}

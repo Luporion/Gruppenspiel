@@ -1,0 +1,19 @@
+{
+  "id": "physical_009",
+  "name": "Balance Challenge v2",
+  "type": "physical",
+  "description": "Advanced balance challenge with multiple difficult tasks",
+  "timeLimitSec": 90,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Teams complete 3 balance tasks in sequence",
+    "Task 1: Stand on one leg for 20 seconds",
+    "Task 2: Walk backwards along a line for 2 meters",
+    "Task 3: Balance a book on your head while doing 5 squats",
+    "If anyone fails a task, restart that task",
+    "First team to complete all 3 tasks wins"
+  ]
+}

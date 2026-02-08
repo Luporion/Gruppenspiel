@@ -1,0 +1,19 @@
+{
+  "id": "quiz_007",
+  "name": "Guess the Candies",
+  "type": "quiz",
+  "description": "Estimate the number of candies in a jar",
+  "timeLimitSec": 60,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "How many candies are in this jar? (Host shows a jar with 47 candies)",
+  "options": [
+    "25-35",
+    "36-45",
+    "46-55",
+    "56-65"
+  ],
+  "correctIndex": 2
+}

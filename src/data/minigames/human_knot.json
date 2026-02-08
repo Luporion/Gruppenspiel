@@ -1,0 +1,18 @@
+{
+  "id": "physical_006",
+  "name": "Human Knot",
+  "type": "physical",
+  "description": "Untangle yourselves from a human knot without letting go",
+  "timeLimitSec": 180,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "All team members stand in a circle",
+    "Everyone reaches across and grabs two different people's hands",
+    "Without letting go, untangle into a circle",
+    "You can step over or under arms, but cannot release hands",
+    "First team to form a complete circle wins"
+  ]
+}

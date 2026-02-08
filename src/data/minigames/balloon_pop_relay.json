@@ -1,0 +1,18 @@
+{
+  "id": "physical_002",
+  "name": "Balloon Pop Relay",
+  "type": "physical",
+  "description": "Teams race to pop balloons in a relay format",
+  "timeLimitSec": 90,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Each team gets 5 balloons at the starting line",
+    "Players must run to the opposite end and pop one balloon by sitting on it",
+    "After popping, run back and tag the next teammate",
+    "First team to pop all their balloons wins",
+    "Balloons must be popped by sitting only - no hands allowed"
+  ]
+}

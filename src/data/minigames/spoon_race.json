@@ -1,0 +1,18 @@
+{
+  "id": "physical_007",
+  "name": "Spoon Race",
+  "type": "physical",
+  "description": "Balance an egg on a spoon while racing",
+  "timeLimitSec": 60,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Each player gets a spoon and a plastic/hard-boiled egg",
+    "Hold the spoon in your mouth (no hands)",
+    "Race from start to finish line",
+    "If you drop the egg, pick it up and continue",
+    "First team with all members finished wins"
+  ]
+}

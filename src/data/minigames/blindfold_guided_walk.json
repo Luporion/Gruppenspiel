@@ -1,0 +1,18 @@
+{
+  "id": "physical_005",
+  "name": "Blindfold Guided Walk",
+  "type": "physical",
+  "description": "Guide a blindfolded teammate through an obstacle course",
+  "timeLimitSec": 90,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "One team member is blindfolded",
+    "Other teammates guide them verbally through an obstacle course",
+    "Course includes: cones to weave through, a line to walk along, and an object to pick up",
+    "No physical touching of the blindfolded player",
+    "Fastest team to complete the course wins"
+  ]
+}
