@@ -75,7 +75,7 @@ export async function requestFullscreen(): Promise<void> {
  */
 export async function exitFullscreen(): Promise<void> {
   const doc = document as DocumentWithFullscreen
-  
+
   try {
     if (document.exitFullscreen) {
       await document.exitFullscreen()
