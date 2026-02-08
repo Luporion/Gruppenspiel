@@ -23,6 +23,10 @@ export interface HotkeyConfig {
   key: string
   handler: () => void
   enabled?: boolean
+  /**
+   * Optional description of what the hotkey does.
+   * Can be used for debugging, displaying help text, or generating keyboard shortcut documentation.
+   */
   description?: string
 }
 
@@ -45,13 +49,14 @@ export function useHotkeys(hotkeys: HotkeyConfig[]) {
         return
       }
 
-      const key = event.key.toLowerCase()
-
       // Find matching hotkey using the ref to avoid stale closures
       const hotkey = hotkeysRef.current.find(h => {
-        const hotkeyKey = h.key.toLowerCase()
         const enabled = h.enabled !== false // Default to enabled if not specified
-        return hotkeyKey === key && enabled
+        // Match keys case-insensitively for letters, but preserve case for special keys like 'Escape'
+        const eventKey = event.key
+        const hotkeyKey = h.key
+        const keysMatch = eventKey.toLowerCase() === hotkeyKey.toLowerCase()
+        return keysMatch && enabled
       })
 
       if (hotkey) {

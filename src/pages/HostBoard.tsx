@@ -218,7 +218,7 @@ function HostBoard() {
   // Setup keyboard hotkeys
   useHotkeys([
     {
-      key: ' ', // Space
+      key: ' ', // Spacebar produces event.key = ' ' (single space character)
       handler: handleRollDice,
       enabled: state.phase === 'board',
       description: 'Roll Dice'
