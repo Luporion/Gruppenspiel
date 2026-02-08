@@ -1,0 +1,19 @@
+{
+  "id": "quiz_002",
+  "name": "Bible Basics Quiz",
+  "type": "quiz",
+  "description": "Test your knowledge of basic Bible facts",
+  "timeLimitSec": 30,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "In which city was Jesus born?",
+  "options": [
+    "Jerusalem",
+    "Nazareth",
+    "Bethlehem",
+    "Capernaum"
+  ],
+  "correctIndex": 2
+}

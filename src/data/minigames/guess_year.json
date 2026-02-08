@@ -1,0 +1,19 @@
+{
+  "id": "quiz_008",
+  "name": "Guess the Year",
+  "type": "quiz",
+  "description": "Estimate when a historical event occurred",
+  "timeLimitSec": 45,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "In which year did the Berlin Wall fall?",
+  "options": [
+    "1985",
+    "1987",
+    "1989",
+    "1991"
+  ],
+  "correctIndex": 2
+}

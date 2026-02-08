@@ -1,0 +1,19 @@
+{
+  "id": "quiz_005",
+  "name": "Logic Riddle",
+  "type": "quiz",
+  "description": "Solve a tricky logic puzzle",
+  "timeLimitSec": 60,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "What has keys but no locks, space but no room, and you can enter but not go inside?",
+  "options": [
+    "A piano",
+    "A keyboard",
+    "A map",
+    "A book"
+  ],
+  "correctIndex": 1
+}

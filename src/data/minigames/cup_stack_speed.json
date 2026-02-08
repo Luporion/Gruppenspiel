@@ -1,0 +1,18 @@
+{
+  "id": "physical_003",
+  "name": "Cup Stack Speed",
+  "type": "physical",
+  "description": "Stack and unstack plastic cups as quickly as possible",
+  "timeLimitSec": 60,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Each team receives 10 plastic cups",
+    "Build a pyramid: 4 cups on bottom, 3-2-1 on top",
+    "Then unstack it back into a single stack",
+    "Fastest team to complete wins",
+    "If the pyramid falls, start building again from the beginning"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "quiz_003",
+  "name": "Geography Quickfire",
+  "type": "quiz",
+  "description": "Fast-paced geography questions",
+  "timeLimitSec": 20,
+  "scoring": {
+    "correct": 5,
+    "wrong": 0
+  },
+  "question": "Which is the largest continent by area?",
+  "options": [
+    "Africa",
+    "Asia",
+    "North America",
+    "Europe"
+  ],
+  "correctIndex": 1
+}

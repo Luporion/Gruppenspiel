@@ -1,0 +1,18 @@
+{
+  "id": "physical_008",
+  "name": "Object Hunt",
+  "type": "physical",
+  "description": "Race to find and bring back specific items",
+  "timeLimitSec": 120,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Teams receive a list of 5 common objects to find",
+    "Examples: something red, a pen, a coin, something soft, something with text",
+    "Items must be found in the designated area (room or building)",
+    "Bring all items back to the starting point",
+    "First team to return with all correct items wins"
+  ]
+}

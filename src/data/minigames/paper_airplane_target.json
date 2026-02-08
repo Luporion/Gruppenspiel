@@ -1,0 +1,18 @@
+{
+  "id": "physical_004",
+  "name": "Paper Airplane Target",
+  "type": "physical",
+  "description": "Fold and throw paper airplanes to hit targets",
+  "timeLimitSec": 120,
+  "scoring": {
+    "win": 10,
+    "lose": 0
+  },
+  "rules": [
+    "Each team gets 3 sheets of paper",
+    "Fold them into paper airplanes (any design)",
+    "Throw the planes to hit targets placed 3 meters away",
+    "Hitting the center target = 3 points, outer targets = 1 point each",
+    "Team with the most points wins"
+  ]
+}
