@@ -4,13 +4,13 @@ import { useGameStore } from '../engine/useGameStore'
 import { loadSampleData } from '../utils/dataLoader'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
 import { useHotkeys } from '../utils/useHotkeys'
-import { toggleBeamerMode, applyBeamerMode } from '../utils/beamerMode'
-import { toggleFullscreen, exitFullscreen, isFullscreen } from '../utils/fullscreen'
+import { useGlobalControls } from '../utils/useGlobalControls'
 import './Host.css'
 
 function Host() {
   const navigate = useNavigate()
   const { state, dispatch, resetSave } = useGameStore()
+  const { handleToggleBeamer, handleToggleFullscreen, handleExitFullscreen } = useGlobalControls()
   
   // Local form state
   const [teams, setTeams] = useState<Team[]>(state.teams.length > 0 ? state.teams : [])
@@ -132,32 +132,6 @@ function Host() {
       setEnabledMinigameIds(availableMinigames.map(m => m.id))
       setSelectedMapId(availableMaps[0]?.id)
       setErrors([])
-    }
-  }
-
-  // Handle beamer mode toggle
-  const handleToggleBeamer = () => {
-    const newState = toggleBeamerMode()
-    applyBeamerMode(newState)
-  }
-
-  // Handle fullscreen toggle
-  const handleToggleFullscreen = async () => {
-    try {
-      await toggleFullscreen()
-    } catch (error) {
-      console.error('Failed to toggle fullscreen:', error)
-    }
-  }
-
-  // Handle exit fullscreen
-  const handleExitFullscreen = async () => {
-    if (isFullscreen()) {
-      try {
-        await exitFullscreen()
-      } catch (error) {
-        console.error('Failed to exit fullscreen:', error)
-      }
     }
   }
 

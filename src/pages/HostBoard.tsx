@@ -7,8 +7,7 @@ import type { MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
 import FullscreenToggle from '../components/FullscreenToggle'
 import { useHotkeys } from '../utils/useHotkeys'
-import { toggleBeamerMode, applyBeamerMode } from '../utils/beamerMode'
-import { toggleFullscreen, exitFullscreen, isFullscreen } from '../utils/fullscreen'
+import { useGlobalControls } from '../utils/useGlobalControls'
 import './HostBoard.css'
 
 function HostBoard() {
@@ -19,6 +18,7 @@ function HostBoard() {
   const [lastRoll, setLastRoll] = useState<number | null>(null)
   const [isTimeoutPending, setIsTimeoutPending] = useState(false)
   const nextTeamTimeoutRef = useRef<number | null>(null)
+  const { handleToggleBeamer, handleToggleFullscreen, handleExitFullscreen } = useGlobalControls()
 
   // Load map when component mounts or mapId changes
   useEffect(() => {
@@ -213,32 +213,6 @@ function HostBoard() {
     
     dispatch({ type: 'NEXT_TEAM' })
     setLastRoll(null)
-  }
-
-  // Handle beamer mode toggle
-  const handleToggleBeamer = () => {
-    const newState = toggleBeamerMode()
-    applyBeamerMode(newState)
-  }
-
-  // Handle fullscreen toggle
-  const handleToggleFullscreen = async () => {
-    try {
-      await toggleFullscreen()
-    } catch (error) {
-      console.error('Failed to toggle fullscreen:', error)
-    }
-  }
-
-  // Handle exit fullscreen
-  const handleExitFullscreen = async () => {
-    if (isFullscreen()) {
-      try {
-        await exitFullscreen()
-      } catch (error) {
-        console.error('Failed to exit fullscreen:', error)
-      }
-    }
   }
 
   // Setup keyboard hotkeys

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 /**
  * Check if the event target is an input field where we should not trigger hotkeys
@@ -31,6 +31,13 @@ export interface HotkeyConfig {
  * Automatically prevents hotkeys from triggering while typing in input fields
  */
 export function useHotkeys(hotkeys: HotkeyConfig[]) {
+  const hotkeysRef = useRef(hotkeys)
+  
+  // Update ref when hotkeys change
+  useEffect(() => {
+    hotkeysRef.current = hotkeys
+  }, [hotkeys])
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Don't trigger hotkeys when typing in input fields
@@ -40,8 +47,8 @@ export function useHotkeys(hotkeys: HotkeyConfig[]) {
 
       const key = event.key.toLowerCase()
 
-      // Find matching hotkey
-      const hotkey = hotkeys.find(h => {
+      // Find matching hotkey using the ref to avoid stale closures
+      const hotkey = hotkeysRef.current.find(h => {
         const hotkeyKey = h.key.toLowerCase()
         const enabled = h.enabled !== false // Default to enabled if not specified
         return hotkeyKey === key && enabled
@@ -58,5 +65,5 @@ export function useHotkeys(hotkeys: HotkeyConfig[]) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [hotkeys])
+  }, []) // Empty dependency array - listener only set up once
 }
