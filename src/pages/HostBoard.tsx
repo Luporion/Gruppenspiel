@@ -172,17 +172,20 @@ function HostBoard() {
         // Pick minigame based on selection mode
         const enabledMinigames = state.settings.enabledMinigameIds || []
         if (enabledMinigames.length > 0) {
-          let minigameId: string
           if (state.settings.minigameSelection === 'random') {
-            minigameId = enabledMinigames[Math.floor(Math.random() * enabledMinigames.length)]
+            // Random mode: auto-select and start minigame
+            const minigameId = enabledMinigames[Math.floor(Math.random() * enabledMinigames.length)]
+            dispatch({
+              type: 'START_MINIGAME',
+              payload: minigameId
+            })
           } else {
-            // For manual selection, pick first one for now (can be improved later)
-            minigameId = enabledMinigames[0]
+            // Manual mode: navigate to minigame page without activeMinigameId to show selection UI
+            dispatch({
+              type: 'START_MINIGAME',
+              payload: undefined
+            })
           }
-          dispatch({
-            type: 'START_MINIGAME',
-            payload: minigameId
-          })
         } else {
           // No minigames enabled, advance to next team
           scheduleNextTeam()

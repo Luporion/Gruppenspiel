@@ -115,6 +115,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         phase: 'minigame',
+        activeMinigameId: action.payload, // Can be undefined for manual selection
+      };
+
+    case 'SET_ACTIVE_MINIGAME':
+      return {
+        ...state,
         activeMinigameId: action.payload,
       };
 

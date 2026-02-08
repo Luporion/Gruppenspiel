@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { loadMinigame, loadMap } from '../utils/dataLoader'
+import { loadMinigame, loadMinigames, loadMap } from '../utils/dataLoader'
 import { checkWinConditions } from '../utils/winConditions'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition, MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
@@ -24,6 +24,8 @@ function HostMinigame() {
   const [selectedWinnerTeamId, setSelectedWinnerTeamId] = useState<string>('')
   const [manualPoints, setManualPoints] = useState<number>(0)
   const [selectedCorrectTeams, setSelectedCorrectTeams] = useState<Set<string>>(new Set())
+  const [availableMinigames, setAvailableMinigames] = useState<MinigameDefinition[]>([])
+  const [loadingMinigames, setLoadingMinigames] = useState(false)
   const timerRef = useRef<number | null>(null)
 
   // Helper function to safely abort minigame and return to board
@@ -49,6 +51,26 @@ function HostMinigame() {
     }
     // Note: Don't auto-redirect if no activeMinigameId - show fallback UI instead
   }, [state.activeMinigameId])
+
+  // Load available minigames for manual selection mode
+  useEffect(() => {
+    if (!state.activeMinigameId && state.settings.minigameSelection === 'manual' && state.phase === 'minigame') {
+      const enabledIds = state.settings.enabledMinigameIds || []
+      if (enabledIds.length > 0) {
+        setLoadingMinigames(true)
+        loadMinigames(enabledIds)
+          .then(minigames => {
+            setAvailableMinigames(minigames)
+            setLoadingMinigames(false)
+          })
+          .catch(error => {
+            console.error('Error loading minigames:', error)
+            setMinigameError(error.message)
+            setLoadingMinigames(false)
+          })
+      }
+    }
+  }, [state.activeMinigameId, state.settings.minigameSelection, state.settings.enabledMinigameIds, state.phase])
 
   // Load map for win condition checking
   useEffect(() => {
@@ -167,8 +189,96 @@ function HostMinigame() {
     setSelectedCorrectTeams(newSet)
   }
 
+  const handleSelectMinigame = (minigameId: string) => {
+    dispatch({ type: 'SET_ACTIVE_MINIGAME', payload: minigameId })
+  }
+
+  const handlePickRandomMinigame = () => {
+    const enabledIds = state.settings.enabledMinigameIds || []
+    if (enabledIds.length > 0) {
+      const randomId = enabledIds[Math.floor(Math.random() * enabledIds.length)]
+      dispatch({ type: 'SET_ACTIVE_MINIGAME', payload: randomId })
+    }
+  }
+
   // Show fallback UI if no active minigame is selected
   if (!state.activeMinigameId) {
+    // Manual selection mode: show minigame selection UI
+    if (state.settings.minigameSelection === 'manual' && state.phase === 'minigame') {
+      const enabledIds = state.settings.enabledMinigameIds || []
+      
+      if (loadingMinigames) {
+        return (
+          <div className="host-minigame">
+            <div className="loading-message">Loading minigames...</div>
+          </div>
+        )
+      }
+
+      if (enabledIds.length === 0) {
+        return (
+          <div className="host-minigame">
+            <div className="error-message">
+              ⚠️ No minigames enabled
+              <p className="error-message-explanation">
+                Please configure at least one minigame in the game settings.
+              </p>
+            </div>
+            <button onClick={abortToBoard} className="btn-back">
+              ← Back to Board
+            </button>
+          </div>
+        )
+      }
+
+      return (
+        <div className="host-minigame">
+          <header className="minigame-header">
+            <h1>🎮 Choose a Minigame</h1>
+            <div className="minigame-header-controls">
+              <BeamerToggle />
+              <FullscreenToggle />
+            </div>
+          </header>
+
+          <div className="minigame-selection-container">
+            <div className="minigame-selection-list">
+              {availableMinigames.map(mg => (
+                <div key={mg.id} className="minigame-selection-card">
+                  <div className="minigame-selection-info">
+                    <h2>
+                      {mg.type === 'physical' ? '🏃' : '❓'} {mg.name}
+                    </h2>
+                    {mg.description && <p className="minigame-selection-description">{mg.description}</p>}
+                    <p className="minigame-selection-meta">
+                      Type: <strong>{mg.type === 'physical' ? 'Physical' : 'Quiz'}</strong> | 
+                      Time: <strong>{Math.floor(mg.timeLimitSec / 60)}:{(mg.timeLimitSec % 60).toString().padStart(2, '0')}</strong>
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => handleSelectMinigame(mg.id)} 
+                    className="btn-select-minigame"
+                  >
+                    Select
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="minigame-selection-actions">
+              <button onClick={handlePickRandomMinigame} className="btn-pick-random">
+                🎲 Pick Random
+              </button>
+              <button onClick={abortToBoard} className="btn-back">
+                ← Back to Board
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Default fallback for other cases
     return (
       <div className="host-minigame">
         <div className="error-message">
