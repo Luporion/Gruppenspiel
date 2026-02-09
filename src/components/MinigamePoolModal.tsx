@@ -56,11 +56,14 @@ export function MinigamePoolModal({
   }
 
   const selectAll = () => {
-    setSelectedIds(filteredMinigames.map(m => m.id))
+    // Select all available minigames, not just filtered ones
+    setSelectedIds(availableMinigames.map(m => m.id))
   }
 
   const selectNone = () => {
-    setSelectedIds([])
+    // Only deselect filtered minigames to preserve selections outside current filter
+    const filteredIds = new Set(filteredMinigames.map(m => m.id))
+    setSelectedIds(selectedIds.filter(id => !filteredIds.has(id)))
   }
 
   const handleSave = () => {
