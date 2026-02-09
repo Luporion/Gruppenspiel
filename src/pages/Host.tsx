@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { loadSampleData } from '../utils/dataLoader'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
+import { useHotkeys } from '../utils/useHotkeys'
+import { useGlobalControls } from '../utils/useGlobalControls'
 import './Host.css'
 
 function Host() {
   const navigate = useNavigate()
   const { state, dispatch, resetSave } = useGameStore()
+  const { handleToggleBeamer, handleToggleFullscreen, handleExitFullscreen } = useGlobalControls()
   
   // Local form state
   const [teams, setTeams] = useState<Team[]>(state.teams.length > 0 ? state.teams : [])
@@ -131,6 +134,25 @@ function Host() {
       setErrors([])
     }
   }
+
+  // Setup keyboard hotkeys (global only, no board-specific hotkeys)
+  useHotkeys([
+    {
+      key: 'b',
+      handler: handleToggleBeamer,
+      description: 'Toggle Beamer Mode'
+    },
+    {
+      key: 'f',
+      handler: handleToggleFullscreen,
+      description: 'Toggle Fullscreen'
+    },
+    {
+      key: 'Escape',
+      handler: handleExitFullscreen,
+      description: 'Exit Fullscreen'
+    }
+  ])
 
   return (
     <div className="host-setup">

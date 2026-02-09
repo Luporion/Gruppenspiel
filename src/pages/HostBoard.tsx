@@ -6,6 +6,8 @@ import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
 import FullscreenToggle from '../components/FullscreenToggle'
+import { useHotkeys } from '../utils/useHotkeys'
+import { useGlobalControls } from '../utils/useGlobalControls'
 import './HostBoard.css'
 
 function HostBoard() {
@@ -16,6 +18,7 @@ function HostBoard() {
   const [lastRoll, setLastRoll] = useState<number | null>(null)
   const [isTimeoutPending, setIsTimeoutPending] = useState(false)
   const nextTeamTimeoutRef = useRef<number | null>(null)
+  const { handleToggleBeamer, handleToggleFullscreen, handleExitFullscreen } = useGlobalControls()
 
   // Load map when component mounts or mapId changes
   useEffect(() => {
@@ -211,6 +214,37 @@ function HostBoard() {
     dispatch({ type: 'NEXT_TEAM' })
     setLastRoll(null)
   }
+
+  // Setup keyboard hotkeys
+  useHotkeys([
+    {
+      key: ' ', // Spacebar produces event.key = ' ' (single space character)
+      handler: handleRollDice,
+      enabled: state.phase === 'board',
+      description: 'Roll Dice'
+    },
+    {
+      key: 'n',
+      handler: handleNextTeam,
+      enabled: state.phase === 'board',
+      description: 'Next Team'
+    },
+    {
+      key: 'b',
+      handler: handleToggleBeamer,
+      description: 'Toggle Beamer Mode'
+    },
+    {
+      key: 'f',
+      handler: handleToggleFullscreen,
+      description: 'Toggle Fullscreen'
+    },
+    {
+      key: 'Escape',
+      handler: handleExitFullscreen,
+      description: 'Exit Fullscreen'
+    }
+  ])
 
   return (
     <div className="host-board">
