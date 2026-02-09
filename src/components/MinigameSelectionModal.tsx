@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type MouseEvent } from 'react'
 import type { MinigameDefinition } from '../types'
 import './MinigameSelectionModal.css'
 
@@ -97,7 +97,7 @@ function MinigameSelectionModal({
     onClose()
   }
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
+  const handleOverlayClick = (e: MouseEvent) => {
     if (e.target === e.currentTarget) {
       handleCancel()
     }
