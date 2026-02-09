@@ -5,6 +5,7 @@ import { loadSampleData, loadAllMinigames } from '../utils/dataLoader'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
 import { useHotkeys } from '../utils/useHotkeys'
 import { useGlobalControls } from '../utils/useGlobalControls'
+import MinigameSelectionModal from '../components/MinigameSelectionModal'
 import './Host.css'
 
 function Host() {
@@ -24,6 +25,7 @@ function Host() {
   const [availableMaps, setAvailableMaps] = useState<MapDefinition[]>([])
   const [selectedMapId, setSelectedMapId] = useState<string | undefined>(state.settings.mapId)
   const [errors, setErrors] = useState<string[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Load all minigames and sample map on mount
   useEffect(() => {
@@ -69,12 +71,8 @@ function Host() {
     setTeams(teams.map(t => t.id === teamId ? { ...t, ...updates } : t))
   }
 
-  const toggleMinigame = (minigameId: string) => {
-    if (enabledMinigameIds.includes(minigameId)) {
-      setEnabledMinigameIds(enabledMinigameIds.filter(id => id !== minigameId))
-    } else {
-      setEnabledMinigameIds([...enabledMinigameIds, minigameId])
-    }
+  const handleMinigameSelectionChange = (selectedIds: string[]) => {
+    setEnabledMinigameIds(selectedIds)
   }
 
   const validateAndStart = () => {
@@ -288,18 +286,13 @@ function Host() {
         {/* Minigames Section */}
         <section className="setup-section">
           <h2>Minigame Pool</h2>
-          <div className="minigames-list">
-            {availableMinigames.map(minigame => (
-              <label key={minigame.id} className="minigame-item">
-                <input
-                  type="checkbox"
-                  checked={enabledMinigameIds.includes(minigame.id)}
-                  onChange={() => toggleMinigame(minigame.id)}
-                />
-                <span className="minigame-name">{minigame.name}</span>
-                <span className="minigame-type">({minigame.type})</span>
-              </label>
-            ))}
+          <div className="minigame-selection-summary">
+            <p className="selected-summary">
+              Selected: {enabledMinigameIds.length} / {availableMinigames.length}
+            </p>
+            <button onClick={() => setIsModalOpen(true)} className="btn-choose-minigames">
+              Choose Minigames
+            </button>
           </div>
         </section>
 
@@ -328,6 +321,15 @@ function Host() {
           🚀 Start Game
         </button>
       </div>
+
+      {/* Minigame Selection Modal */}
+      <MinigameSelectionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        availableMinigames={availableMinigames}
+        selectedIds={enabledMinigameIds}
+        onSelectionChange={handleMinigameSelectionChange}
+      />
     </div>
   )
 }
