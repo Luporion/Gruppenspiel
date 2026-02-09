@@ -27,8 +27,25 @@ function MinigameSelectionModal({
   useEffect(() => {
     if (isOpen) {
       setLocalSelectedIds(selectedIds)
+      // Reset search and filter to neutral state when opening
+      setSearchTerm('')
+      setFilterType('all')
     }
   }, [isOpen, selectedIds])
+
+  // Prevent body scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('modal-open')
+    } else {
+      document.body.classList.remove('modal-open')
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('modal-open')
+    }
+  }, [isOpen])
 
   // Handle ESC key
   useEffect(() => {
@@ -88,9 +105,14 @@ function MinigameSelectionModal({
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content">
+      <div 
+        className="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
         <div className="modal-header">
-          <h2>Select Minigames</h2>
+          <h2 id="modal-title">Select Minigames</h2>
           <button onClick={handleCancel} className="modal-close-btn" aria-label="Close">
             ✕
           </button>

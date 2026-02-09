@@ -1,4 +1,10 @@
 /* Modal Overlay - Dark theme with beamer-friendly design */
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
