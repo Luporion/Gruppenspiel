@@ -106,6 +106,51 @@ export async function loadMinigames(minigameIds: string[]): Promise<MinigameDefi
 }
 
 /**
+ * Load all minigames from the minigames directory
+ * Validates each minigame and skips invalid ones with console warnings
+ * @returns Promise resolving to array of all valid minigame definitions
+ */
+export async function loadAllMinigames(): Promise<MinigameDefinition[]> {
+  const allKeys = Object.keys(minigameModules);
+  const minigames: MinigameDefinition[] = [];
+  
+  for (const key of allKeys) {
+    try {
+      const module = await minigameModules[key]() as { default: MinigameDefinition };
+      const minigame = module.default;
+      
+      // Validate required fields
+      if (!minigame.id || !minigame.name || !minigame.type || !minigame.scoring) {
+        console.warn(`Skipping invalid minigame ${key}: missing required fields (id, name, type, or scoring)`);
+        continue;
+      }
+      
+      // Type-specific validation
+      if (minigame.type === 'physical') {
+        if (!Array.isArray(minigame.rules)) {
+          console.warn(`Skipping invalid physical minigame ${key}: missing rules array`);
+          continue;
+        }
+      } else if (minigame.type === 'quiz') {
+        if (!minigame.question || !Array.isArray(minigame.options) || minigame.correctIndex === undefined) {
+          console.warn(`Skipping invalid quiz minigame ${key}: missing required quiz fields (question, options, or correctIndex)`);
+          continue;
+        }
+      }
+      
+      // Cache the ID for future lookups
+      minigameIdCache.set(minigame.id, key);
+      
+      minigames.push(minigame);
+    } catch (error) {
+      console.warn(`Skipping minigame ${key} due to error:`, error);
+    }
+  }
+  
+  return minigames;
+}
+
+/**
  * Get available sample data
  * This is a convenience function to load the built-in sample data
  * @returns Promise resolving to object containing the sample map and array of sample minigames

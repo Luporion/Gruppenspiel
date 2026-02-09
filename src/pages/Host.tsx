@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { loadSampleData } from '../utils/dataLoader'
+import { loadSampleData, loadAllMinigames } from '../utils/dataLoader'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
 import { useHotkeys } from '../utils/useHotkeys'
 import { useGlobalControls } from '../utils/useGlobalControls'
@@ -25,14 +25,19 @@ function Host() {
   const [selectedMapId, setSelectedMapId] = useState<string | undefined>(state.settings.mapId)
   const [errors, setErrors] = useState<string[]>([])
 
-  // Load sample data on mount
+  // Load all minigames and sample map on mount
   useEffect(() => {
-    loadSampleData().then(({ map, minigames }) => {
-      setAvailableMinigames(minigames)
+    Promise.all([
+      loadAllMinigames(),
+      loadSampleData()
+    ]).then(([minigames, { map }]) => {
+      // Sort minigames by name
+      const sortedMinigames = minigames.sort((a, b) => a.name.localeCompare(b.name));
+      setAvailableMinigames(sortedMinigames)
       setAvailableMaps([map])
       // Set default selections only if not already set
       setSelectedMapId(prev => prev || map.id)
-      setEnabledMinigameIds(prev => prev.length > 0 ? prev : minigames.map(m => m.id))
+      setEnabledMinigameIds(prev => prev.length > 0 ? prev : sortedMinigames.map(m => m.id))
     })
   }, [])
 
