@@ -48,7 +48,7 @@ npm run preview # Preview production build locally
 
 ### How Minigames are Discovered
 
-Minigames are automatically loaded from JSON files in the `src/data/minigames/` directory using Vite's `import.meta.glob()`. All `.json` files in this directory are discovered at build time.
+Minigames are automatically discovered from JSON files in the `src/data/minigames/` directory using Vite's `import.meta.glob()`. The file paths are resolved at build time, and the minigame modules are loaded dynamically at runtime when `loadAllMinigames()` is called.
 
 ### Minigame JSON Structure
 
