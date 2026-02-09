@@ -31,8 +31,8 @@ function Host() {
       loadAllMinigames(),
       loadSampleData()
     ]).then(([minigames, { map }]) => {
-      // Sort minigames by name
-      const sortedMinigames = minigames.sort((a, b) => a.name.localeCompare(b.name));
+      // Sort minigames by name (create new array to avoid mutation)
+      const sortedMinigames = [...minigames].sort((a, b) => a.name.localeCompare(b.name));
       setAvailableMinigames(sortedMinigames)
       setAvailableMaps([map])
       // Set default selections only if not already set
