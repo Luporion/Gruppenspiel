@@ -358,6 +358,91 @@
   font-size: 1.1rem;
 }
 
+/* Beamer Mode - Wide Screen Layout (2-column grid) */
+@media (min-width: 1024px) {
+  .beamer .host-board {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .beamer .board-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 1.5rem;
+    height: calc(100vh - 120px);
+  }
+
+  /* Current team indicator spans full width at top */
+  .beamer .current-team-indicator {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  /* Game controls below current team, on left column */
+  .beamer .game-controls {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  /* Map section takes left column, remaining height */
+  .beamer .map-section {
+    grid-column: 1;
+    grid-row: 3;
+    overflow-y: auto;
+  }
+
+  /* Scoreboard takes right column, row 2-3 */
+  .beamer .scoreboard {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Game info in right column, row 4 */
+  .beamer .game-info {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  /* Larger tiles in beamer mode for wide screens */
+  .beamer .tile {
+    min-width: 100px;
+    width: 100px;
+    height: 160px;
+  }
+
+  .beamer .tile-symbol {
+    font-size: 2.2rem;
+  }
+
+  .beamer .tile-index {
+    font-size: 1.1rem;
+  }
+
+  .beamer .tile-type {
+    font-size: 0.8rem;
+  }
+
+  .beamer .tile-value {
+    font-size: 1.1rem;
+  }
+
+  .beamer .team-token {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+
+  /* Ensure board tiles container can scroll horizontally if needed */
+  .beamer .board-tiles {
+    overflow-x: auto;
+    padding: 1rem 0;
+  }
+}
+
 /* Light mode adjustments */
 @media (prefers-color-scheme: light) {
   .current-team-indicator,
