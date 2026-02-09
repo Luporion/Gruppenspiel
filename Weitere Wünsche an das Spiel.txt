@@ -1,0 +1,34 @@
+PR ist gemerged und die Minigames werden angezeigt. Was sollten wir jetzt am besten machen? Wie weit sind wir im Projekt? Was sollten wir jetzt am besten machen? 
+Am wichtigsten ist erstmal, dass ich alles auf meinem Laptop anzeigen kann und auf einen anderen Monitor projiziere.
+Aktuell werden viele Sachen, unteranderem die Spiele bei manueller Auswahl untereinander angezeigt. Das zwar auf Handy praktisch, aber für eine Anzeige auf einem größeren Monitor oder Beamer ineffizient. Die Games sollten bei manueller Auswahl in einer Tabelle angezeigt werden.
+
+Es soll verschiedene Modis / Einstellungen geben. 
+Zum einen soll man einfach rumlaufen und bei einem Minispiel Feld kann man entweder auswählen welches Spiel oder Random wählen (wie aktuell, wenn man im Setup bei Minigame Selection "Manuell" wählt). Man soll auch wie vorher weiterhin einstellen können, dass die Minispielauswahl komplett random ist (wenn man im Setup bei Minigame Selection "Random" wählt)
+Zum anderen soll man einstellen können, dass die Quiz-Minispiele wie eine Art "Jeopardy" sind. Sobald jedes Team eine (einstellbare) Anzahl an Zügen gemacht hat, soll ein Minispiel getriggered werden. D.h. immer wenn ein Minispiel getriggered wird, soll man von der Jeopardy-Tabelle Minispiele auswählen. Ausgewählte Minispiele / Quizfragen / usw sollen entsprechend weggestrichen werden. Die Games sollen die Möglichkeit haben verschiedene Kategorien und Punktzahlen bekommen (je nachdem wie schwer / aufwändig sie sind). 
+
+Ich will die Möglichkeit (als host und entsprechend Schiedsrichter) Extrapunkte / Halbepunkte / Minuspunkte für spezielle Situationen im Spiel einzutragen. D.h. ich will auch manuell Punkte vergeben können.
+
+Es soll verschiedene Felder geben wie:
+Grünes-Feld (Plus-feld): Pluspunkte (davon soll es viele Felder geben)
+Rotes-Feld (Pechfeld): Minuspunkte / Minusgold (unterschiedliche Anzahlen)
+Kommunisten-Feld: alle Punkte werden eingesammelt und gleichmäßig verteilt an die Spieler.
+Minispiel-Feld (soll einstellbar sein, ob es in Jeopardy auftaucht): ein zufälliges Minispiel wird getriggered und die Teams treten gegeneinander an.
+Bunker-feld: hierdrauf ist man gegen Tauschitems immun
+Freeshop-Feld: 1 kostenloses Item aus dem Shop / rabatt
+Pickup-Feld: normales Feld, worauf ein Item liegt. Wer als erstes ankommt, kriegt das Item. Danach ist das Feld ein normales Feld
+
+Man soll neben Punkten auch Gold sammeln können in den Spielen. Das Gold soll im Shop ausgegeben werden können
+Es soll verschiedene Items geben:
+Random-Platztausch-Item: tausche die Plätze mit einem zufälligen Team auf den Spielfeld
+Gezielter-Platztausch-Item: tausche die Plätze mit einem beliebigen Team auf den Spielfeld. Das Team daruf ausgewählt werden.
+Schild-Item: Großer Schild: schütze dich für 3 Runden vor einem Platztausch. Kleiner-Schild: schütze dich für 2 Runden vor einem Platztausch. (Die Anzahl soll einen Standard haben, aber soll auch einstellbar sein im Setup)
+Herausforderungs-Item: Ein Team darf ein anderes Team herausfordern in einer Disziplin ihrer Wahl. Das herausgeforderte Team darf entscheiden ob es annimmt und wer ihr Champion ist.
+Verschiedene Würfel-items: 1-2-3 Würfel, 4-5-6 Würfel, Doppelwürfel (d.h. 2-12 als mögliche Augenzahl), Auswahl-Würfel
+
+Die einzelnen Minispiele sollen auch verschiedene "stages" haben können (ich weiß nicht wie ich das anders beschreiben soll, vielleicht fällt dir eine bessere Bezeichnung ein) (nicht alle müssen das haben). 
+Bzw soll ein Quiz mehrere Fragen enthalten können, die nacheinander angezeigt werden. Es sollen zuerst die Fragen und dann nach einem kleinen Countdown die Antwortmöglichkeiten angezeigt werden. D.h. es geht auf Schnelligkeit und das schnellste Team erhält den Punkt (d.h. man braucht eine Auswahl für das Team das den Punkt bekommt in den stages).
+In einem anderen Game sollen die Leute verschiedene Gegenstände holen. Die Gegenstände sollen nacheinander angezeigt und entsprechend gebracht werden.
+
+In einem Quiz mit Antwortmöglichkeiten wäre es cool die Antworten einzuloggen (Markierung in einer Farbe) und dann die richtige Antwort in Grün zu sehen.
+Wenn es ein Quiz ist wo mehrere Teams antworten, muss man natürlich eine Antwort pro Team einloggen.
+Das gilt aber nicht, wenn es ein Schnelligkeits Quiz ist.
