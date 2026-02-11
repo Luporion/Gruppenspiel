@@ -86,7 +86,8 @@ function MinigameSelectionModal({
   }
 
   const selectNone = () => {
-    setLocalSelectedIds([])
+    const toRemove = new Set(filteredMinigames.map(m => m.id))
+    setLocalSelectedIds(localSelectedIds.filter(id => !toRemove.has(id)))
   }
 
   const handleSave = () => {
