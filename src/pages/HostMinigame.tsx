@@ -337,54 +337,89 @@ function HostMinigame() {
         </div>
       </header>
 
-      <div className="minigame-container">
-        {minigame.description && (
-          <div className="minigame-description">
-            <p>{minigame.description}</p>
-          </div>
-        )}
+      <div className="minigame-layout">
+        <div className="minigame-main">
+          {minigame.description && (
+            <div className="minigame-description">
+              <p>{minigame.description}</p>
+            </div>
+          )}
 
-        <div className="timer-controls">
-          <button onClick={handleStartTimer} disabled={timerRunning} className="btn-timer">
-            ▶️ Start Timer
-          </button>
-          <button onClick={handleStopTimer} disabled={!timerRunning} className="btn-timer">
-            ⏸️ Stop Timer
-          </button>
-          <button onClick={handleResetTimer} className="btn-timer">
-            🔄 Reset Timer
-          </button>
+          {minigame.type === 'physical' && (
+            <PhysicalMinigameMainContent
+              minigame={minigame as PhysicalMinigameDefinition}
+            />
+          )}
+
+          {minigame.type === 'quiz' && (
+            <QuizMinigameMainContent
+              minigame={minigame as QuizMinigameDefinition}
+              showAnswer={showAnswer}
+              setShowAnswer={setShowAnswer}
+            />
+          )}
         </div>
 
-        {minigame.type === 'physical' && (
-          <PhysicalMinigameUI
-            minigame={minigame as PhysicalMinigameDefinition}
-            teams={state.teams}
-            selectedWinnerTeamId={selectedWinnerTeamId}
-            setSelectedWinnerTeamId={setSelectedWinnerTeamId}
-            manualPoints={manualPoints}
-            setManualPoints={setManualPoints}
-            onFinish={handleFinishPhysical}
-          />
-        )}
+        <div className="minigame-side">
+          <div className="timer-controls">
+            <button onClick={handleStartTimer} disabled={timerRunning} className="btn-timer">
+              ▶️ Start Timer
+            </button>
+            <button onClick={handleStopTimer} disabled={!timerRunning} className="btn-timer">
+              ⏸️ Stop Timer
+            </button>
+            <button onClick={handleResetTimer} className="btn-timer">
+              🔄 Reset Timer
+            </button>
+          </div>
 
-        {minigame.type === 'quiz' && (
-          <QuizMinigameUI
-            minigame={minigame as QuizMinigameDefinition}
-            teams={state.teams}
-            showAnswer={showAnswer}
-            setShowAnswer={setShowAnswer}
-            selectedCorrectTeams={selectedCorrectTeams}
-            toggleCorrectTeam={toggleCorrectTeam}
-            onFinish={handleFinishQuiz}
-          />
-        )}
+          {minigame.type === 'physical' && (
+            <PhysicalMinigameSideContent
+              minigame={minigame as PhysicalMinigameDefinition}
+              teams={state.teams}
+              selectedWinnerTeamId={selectedWinnerTeamId}
+              setSelectedWinnerTeamId={setSelectedWinnerTeamId}
+              manualPoints={manualPoints}
+              setManualPoints={setManualPoints}
+              onFinish={handleFinishPhysical}
+            />
+          )}
+
+          {minigame.type === 'quiz' && (
+            <QuizMinigameSideContent
+              minigame={minigame as QuizMinigameDefinition}
+              teams={state.teams}
+              selectedCorrectTeams={selectedCorrectTeams}
+              toggleCorrectTeam={toggleCorrectTeam}
+              onFinish={handleFinishQuiz}
+            />
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
-interface PhysicalMinigameUIProps {
+// Physical Minigame - Main Content (Rules)
+interface PhysicalMinigameMainContentProps {
+  minigame: PhysicalMinigameDefinition
+}
+
+function PhysicalMinigameMainContent({ minigame }: PhysicalMinigameMainContentProps) {
+  return (
+    <div className="minigame-rules">
+      <h2>Rules:</h2>
+      <ul>
+        {minigame.rules.map((rule, idx) => (
+          <li key={idx}>{rule}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+// Physical Minigame - Side Content (Winner Selection)
+interface PhysicalMinigameSideContentProps {
   minigame: PhysicalMinigameDefinition
   teams: Array<{ id: string; name: string; color: string }>
   selectedWinnerTeamId: string
@@ -394,7 +429,7 @@ interface PhysicalMinigameUIProps {
   onFinish: () => void
 }
 
-function PhysicalMinigameUI({
+function PhysicalMinigameSideContent({
   minigame,
   teams,
   selectedWinnerTeamId,
@@ -402,18 +437,9 @@ function PhysicalMinigameUI({
   manualPoints,
   setManualPoints,
   onFinish
-}: PhysicalMinigameUIProps) {
+}: PhysicalMinigameSideContentProps) {
   return (
-    <div className="physical-minigame">
-      <div className="minigame-rules">
-        <h2>Rules:</h2>
-        <ul>
-          {minigame.rules.map((rule, idx) => (
-            <li key={idx}>{rule}</li>
-          ))}
-        </ul>
-      </div>
-
+    <>
       <div className="winner-selection">
         <h2>Select Winner:</h2>
         <select
@@ -450,31 +476,24 @@ function PhysicalMinigameUI({
       <button onClick={onFinish} className="btn-finish">
         ✅ Finish & Return to Board
       </button>
-    </div>
+    </>
   )
 }
 
-interface QuizMinigameUIProps {
+// Quiz Minigame - Main Content (Question and Options)
+interface QuizMinigameMainContentProps {
   minigame: QuizMinigameDefinition
-  teams: Array<{ id: string; name: string; color: string }>
   showAnswer: boolean
   setShowAnswer: (show: boolean) => void
-  selectedCorrectTeams: Set<string>
-  toggleCorrectTeam: (teamId: string) => void
-  onFinish: () => void
 }
 
-function QuizMinigameUI({
+function QuizMinigameMainContent({
   minigame,
-  teams,
   showAnswer,
-  setShowAnswer,
-  selectedCorrectTeams,
-  toggleCorrectTeam,
-  onFinish
-}: QuizMinigameUIProps) {
+  setShowAnswer
+}: QuizMinigameMainContentProps) {
   return (
-    <div className="quiz-minigame">
+    <>
       <div className="quiz-question">
         <h2>Question:</h2>
         <p className="question-text">{minigame.question}</p>
@@ -509,7 +528,28 @@ function QuizMinigameUI({
           </p>
         </div>
       )}
+    </>
+  )
+}
 
+// Quiz Minigame - Side Content (Team Selection)
+interface QuizMinigameSideContentProps {
+  minigame: QuizMinigameDefinition
+  teams: Array<{ id: string; name: string; color: string }>
+  selectedCorrectTeams: Set<string>
+  toggleCorrectTeam: (teamId: string) => void
+  onFinish: () => void
+}
+
+function QuizMinigameSideContent({
+  minigame,
+  teams,
+  selectedCorrectTeams,
+  toggleCorrectTeam,
+  onFinish
+}: QuizMinigameSideContentProps) {
+  return (
+    <>
       <div className="team-selection">
         <h2>Which teams answered correctly?</h2>
         <div className="team-checkboxes">
@@ -532,7 +572,7 @@ function QuizMinigameUI({
       <button onClick={onFinish} className="btn-finish">
         ✅ Finish & Return to Board
       </button>
-    </div>
+    </>
   )
 }
 
