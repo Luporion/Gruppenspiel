@@ -490,75 +490,96 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Beamer Mode - Wide Screen Layout (2-column grid) */
+/* Wide Screen Layout - 2-column grid for desktop/beamer */
+/* Applies on wide screens OR when beamer mode is active */
 @media (min-width: 1024px) {
-  .beamer .host-minigame {
+  .host-minigame {
     padding: 1.5rem;
   }
 
-  .beamer .minigame-layout {
+  .minigame-layout {
     display: grid;
-    grid-template-columns: 1fr 450px;
+    grid-template-columns: 1fr 360px;
     gap: 2rem;
     max-width: 100%;
   }
 
-  .beamer .minigame-main {
+  .minigame-main {
     grid-column: 1;
   }
 
-  .beamer .minigame-side {
+  .minigame-side {
     grid-column: 2;
   }
 
   /* Ensure side panel is sticky and doesn't overflow */
-  .beamer .minigame-side {
+  .minigame-side {
     position: sticky;
     top: 1.5rem;
     max-height: calc(100vh - 180px);
     overflow-y: auto;
   }
+}
 
-  /* Larger font sizes for beamer mode */
-  .beamer .minigame-header h1 {
-    font-size: 3.5rem;
-  }
+/* Beamer Mode - Force wide layout even on narrow screens */
+.beamer .minigame-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 2rem;
+  max-width: 100%;
+}
 
-  .beamer .minigame-description p {
-    font-size: 1.8rem;
-  }
+.beamer .minigame-main {
+  grid-column: 1;
+}
 
-  .beamer .question-text {
-    font-size: 2.5rem;
-  }
+.beamer .minigame-side {
+  grid-column: 2;
+  position: sticky;
+  top: 1.5rem;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+}
 
-  .beamer .quiz-options h2,
-  .beamer .quiz-question h2,
-  .beamer .minigame-rules h2,
-  .beamer .winner-selection h2,
-  .beamer .manual-points h2,
-  .beamer .team-selection h2 {
-    font-size: 2.25rem;
-  }
+/* Beamer Mode - Larger font sizes for better readability on projectors */
+.beamer .minigame-header h1 {
+  font-size: 3.5rem;
+}
 
-  .beamer .option,
-  .beamer .minigame-rules li {
-    font-size: 1.75rem;
-  }
+.beamer .minigame-description p {
+  font-size: 1.8rem;
+}
 
-  .beamer .btn-timer,
-  .beamer .btn-reveal,
-  .beamer .btn-finish {
-    font-size: 1.5rem;
-    padding: 1.25rem 2.5rem;
-  }
+.beamer .question-text {
+  font-size: 2.5rem;
+}
 
-  .beamer .team-checkbox {
-    font-size: 1.5rem;
-  }
+.beamer .quiz-options h2,
+.beamer .quiz-question h2,
+.beamer .minigame-rules h2,
+.beamer .winner-selection h2,
+.beamer .manual-points h2,
+.beamer .team-selection h2 {
+  font-size: 2.25rem;
+}
 
-  .beamer .team-select,
-  .beamer .points-input {
-    font-size: 1.5rem;
-  }
+.beamer .option,
+.beamer .minigame-rules li {
+  font-size: 1.75rem;
+}
+
+.beamer .btn-timer,
+.beamer .btn-reveal,
+.beamer .btn-finish {
+  font-size: 1.5rem;
+  padding: 1.25rem 2.5rem;
+}
+
+.beamer .team-checkbox {
+  font-size: 1.5rem;
+}
+
+.beamer .team-select,
+.beamer .points-input {
+  font-size: 1.5rem;
 }
