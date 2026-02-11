@@ -80,14 +80,16 @@ function MinigameSelectionModal({
   }
 
   const selectAll = () => {
-    const ids = new Set(localSelectedIds)
-    filteredMinigames.forEach(m => ids.add(m.id))
-    setLocalSelectedIds(Array.from(ids))
+    setLocalSelectedIds((prev) => {
+      const ids = new Set(prev)
+      filteredMinigames.forEach(m => ids.add(m.id))
+      return Array.from(ids)
+    })
   }
 
   const selectNone = () => {
     const toRemove = new Set(filteredMinigames.map(m => m.id))
-    setLocalSelectedIds(localSelectedIds.filter(id => !toRemove.has(id)))
+    setLocalSelectedIds((prev) => prev.filter(id => !toRemove.has(id)))
   }
 
   const handleSave = () => {
