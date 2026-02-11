@@ -120,15 +120,15 @@ function Host() {
 
     // Generate map for Classic Board
     if (selectedMapId === 'sample_map') {
-      const seed = Date.now();
+      const mapSeed = Date.now();
       const generatedMap = generateClassicMap({
         boardLength,
-        seed,
+        seed: mapSeed,
       });
       
       dispatch({
         type: 'SET_MAP',
-        payload: { map: generatedMap, seed }
+        payload: { map: generatedMap, seed: mapSeed }
       });
     }
 

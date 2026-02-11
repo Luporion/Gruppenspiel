@@ -1,7 +1,7 @@
 /**
  * Map generator for creating procedural board layouts
  */
-import type { MapDefinition, Tile } from './types';
+import type { MapDefinition, Tile } from '../types';
 
 /**
  * Simple deterministic PRNG based on mulberry32
@@ -138,7 +138,7 @@ export function generateClassicMap(params: GenerateMapParams): MapDefinition {
   return {
     id: `generated_${numericSeed}`,
     name: `Classic Board (${boardLength} tiles)`,
-    length: boardLength,
+    length: boardLength + 1, // length represents number of tiles (0 to boardLength)
     tiles,
   };
 }
