@@ -522,6 +522,9 @@
 }
 
 /* Beamer Mode - Force wide layout even on narrow screens */
+/* Note: These rules intentionally duplicate the @media layout above
+   to ensure beamer mode shows 2-column layout regardless of screen size.
+   This is required per issue #41 - beamer mode must work on narrow screens. */
 .beamer .minigame-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
