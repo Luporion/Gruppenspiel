@@ -80,7 +80,9 @@ function MinigameSelectionModal({
   }
 
   const selectAll = () => {
-    setLocalSelectedIds(filteredMinigames.map(m => m.id))
+    const ids = new Set(localSelectedIds)
+    filteredMinigames.forEach(m => ids.add(m.id))
+    setLocalSelectedIds(Array.from(ids))
   }
 
   const selectNone = () => {
@@ -97,7 +99,7 @@ function MinigameSelectionModal({
     onClose()
   }
 
-  const handleOverlayClick = (e: MouseEvent) => {
+  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       handleCancel()
     }
