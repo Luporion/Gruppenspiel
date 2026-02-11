@@ -20,9 +20,14 @@ function HostBoard() {
   const nextTeamTimeoutRef = useRef<number | null>(null)
   const { handleToggleBeamer, handleToggleFullscreen, handleExitFullscreen } = useGlobalControls()
 
-  // Load map when component mounts or mapId changes
+  // Load map from state or from file
   useEffect(() => {
-    if (state.settings.mapId) {
+    // First check if we have a generated map in state
+    if (state.map) {
+      setMap(state.map)
+      setMapError(null)
+    } else if (state.settings.mapId) {
+      // Fall back to loading from file for backward compatibility
       loadMap(state.settings.mapId)
         .then(loadedMap => {
           setMap(loadedMap)
@@ -33,7 +38,7 @@ function HostBoard() {
           setMapError(error.message)
         })
     }
-  }, [state.settings.mapId])
+  }, [state.map, state.settings.mapId])
 
   // Navigate to minigame when phase changes
   useEffect(() => {
@@ -109,9 +114,10 @@ function HostBoard() {
     
     setLastRoll(roll)
 
-    // Step 2: Calculate new position (capped at map length - 1)
+    // Step 2: Calculate new position (capped at boardLength, which is the finish tile)
     const currentPosition = currentTeam.position
-    const newPosition = Math.min(currentPosition + roll, map.length - 1)
+    const boardLength = state.settings.boardLength
+    const newPosition = Math.min(currentPosition + roll, boardLength)
 
     // Step 3: Update position with MOVE_TEAM (always, to ensure capping is applied)
     dispatch({

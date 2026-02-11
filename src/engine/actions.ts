@@ -1,13 +1,14 @@
 /**
  * Action types for game state reducer
  */
-import type { GameState, Team, GameSettings } from './types';
+import type { GameState, Team, GameSettings, MapDefinition } from './types';
 
 // Action types
 export type GameAction =
   | { type: 'START_GAME' }
   | { type: 'SET_PHASE'; payload: GameState['phase'] }
   | { type: 'UPDATE_SETTINGS'; payload: Partial<GameSettings> }
+  | { type: 'SET_MAP'; payload: { map: MapDefinition; seed?: string | number } }
   | { type: 'ADD_TEAM'; payload: Team }
   | { type: 'REMOVE_TEAM'; payload: string } // team id
   | { type: 'UPDATE_TEAM'; payload: { id: string; updates: Partial<Team> } }

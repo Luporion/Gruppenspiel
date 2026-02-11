@@ -35,6 +35,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         },
       };
 
+    case 'SET_MAP':
+      return {
+        ...state,
+        map: action.payload.map,
+        seed: action.payload.seed,
+      };
+
     case 'ADD_TEAM':
       return {
         ...state,
