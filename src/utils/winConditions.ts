@@ -18,11 +18,17 @@ export function checkWinConditions(
   map: MapDefinition | null
 ): boolean {
   if (settings.winCondition === 'finish') {
-    // Check if any team has reached the end (position >= map.length - 1)
     if (!map) return false
-    return teams.some(team => team.position >= map.length - 1)
+
+    const tileCount = map.tiles?.length ?? 0
+    const finishIndex = tileCount > 0 ? tileCount - 1 : settings.boardLength
+
+    return teams.some((team) => team.position >= finishIndex)
   } else if (settings.winCondition === 'pointsAfterRounds') {
-    // Check if maxRounds exceeded
+    // End game after completing maxRounds
+    // currentRound is 1-based and increments at the START of each new round
+    // (when cycling back to first team). So round 11 means we've started round 11,
+    // which means we've completed round 10. Hence: currentRound > maxRounds.
     return currentRound > settings.maxRounds
   }
 

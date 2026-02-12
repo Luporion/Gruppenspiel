@@ -73,13 +73,16 @@ function HostMinigame() {
   }, [state.activeMinigameId, state.settings.minigameSelection, state.settings.enabledMinigameIds, state.phase])
 
   // Load map for win condition checking
+  // Prefer generated map from state, fall back to loading from file
   useEffect(() => {
-    if (state.settings.mapId) {
+    if (state.map) {
+      setMap(state.map)
+    } else if (state.settings.mapId) {
       loadMap(state.settings.mapId)
         .then(loadedMap => setMap(loadedMap))
         .catch(error => console.error('Error loading map:', error))
     }
-  }, [state.settings.mapId])
+  }, [state.map, state.settings.mapId])
 
   // Redirect to board if phase changes away from minigame (but only if we had an active minigame before)
   useEffect(() => {
