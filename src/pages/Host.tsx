@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
 import { loadSampleData, loadAllMinigames } from '../utils/dataLoader'
+import { generateClassicMap } from '../engine/mapGenerator'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
 import { useHotkeys } from '../utils/useHotkeys'
 import { useGlobalControls } from '../utils/useGlobalControls'
@@ -116,6 +117,20 @@ function Host() {
         mapId: selectedMapId,
       }
     })
+
+    // Generate map for Classic Board
+    if (selectedMapId === 'sample_map') {
+      const mapSeed = Date.now();
+      const generatedMap = generateClassicMap({
+        boardLength,
+        seed: mapSeed,
+      });
+      
+      dispatch({
+        type: 'SET_MAP',
+        payload: { map: generatedMap, seed: mapSeed }
+      });
+    }
 
     // Start the game
     dispatch({ type: 'START_GAME' })

@@ -92,4 +92,6 @@ export interface GameState {
   round: number;
   activeMinigameId?: string;
   lastAction?: LastAction;
+  map?: MapDefinition; // Generated or loaded map
+  seed?: string | number; // Seed used for map generation
 }
