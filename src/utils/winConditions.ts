@@ -18,9 +18,13 @@ export function checkWinConditions(
   map: MapDefinition | null
 ): boolean {
   if (settings.winCondition === 'finish') {
-    // Check if any team has reached the end (position >= map.length - 1)
-    if (!map) return false
-    return teams.some(team => team.position >= map.length - 1)
+    // Prefer real tile array length; fallback to boardLength
+    const finishIndex =
+      map?.tiles?.length && map.tiles.length > 0
+        ? map.tiles.length - 1
+        : settings.boardLength
+
+    return teams.some(team => team.position >= finishIndex)
   } else if (settings.winCondition === 'pointsAfterRounds') {
     // Check if maxRounds exceeded
     return currentRound > settings.maxRounds
