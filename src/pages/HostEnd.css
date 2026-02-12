@@ -186,7 +186,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  min-width: 0; /* Allow buttons to shrink if needed */
+  min-width: 120px; /* Ensure buttons remain usable while allowing flexibility */
 }
 
 .btn-back-to-board {
