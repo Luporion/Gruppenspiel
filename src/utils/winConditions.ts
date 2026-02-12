@@ -26,7 +26,10 @@ export function checkWinConditions(
 
     return teams.some(team => team.position >= finishIndex)
   } else if (settings.winCondition === 'pointsAfterRounds') {
-    // Check if maxRounds exceeded
+    // End game after completing maxRounds
+    // currentRound is 1-based and increments at the START of each new round
+    // (when cycling back to first team). So round 11 means we've started round 11,
+    // which means we've completed round 10. Hence: currentRound > maxRounds.
     return currentRound > settings.maxRounds
   }
 
