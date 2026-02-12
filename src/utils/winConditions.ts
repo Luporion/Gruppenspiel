@@ -18,13 +18,12 @@ export function checkWinConditions(
   map: MapDefinition | null
 ): boolean {
   if (settings.winCondition === 'finish') {
-    // Prefer real tile array length; fallback to boardLength
-    const finishIndex =
-      map?.tiles?.length && map.tiles.length > 0
-        ? map.tiles.length - 1
-        : settings.boardLength
+    if (!map) return false
 
-    return teams.some(team => team.position >= finishIndex)
+    const tileCount = map.tiles?.length ?? 0
+    const finishIndex = tileCount > 0 ? tileCount - 1 : settings.boardLength
+
+    return teams.some((team) => team.position >= finishIndex)
   } else if (settings.winCondition === 'pointsAfterRounds') {
     // End game after completing maxRounds
     // currentRound is 1-based and increments at the START of each new round
