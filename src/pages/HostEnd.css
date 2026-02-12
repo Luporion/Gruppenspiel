@@ -2,11 +2,13 @@
 
 .host-end {
   min-height: 100vh;
+  width: 100%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .end-container {
@@ -168,6 +170,7 @@
 /* Action Buttons */
 .end-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
@@ -183,6 +186,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  min-width: 0; /* Allow buttons to shrink if needed */
 }
 
 .btn-back-to-board {
