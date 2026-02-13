@@ -146,24 +146,21 @@ function HostMinigame() {
     // Apply scaling on mount, when beamer mode changes, or when content changes
     applyBeamerScaling()
 
-    // Listen for beamer mode changes via storage events (from BeamerToggle)
+    // Listen for beamer mode changes via custom event from BeamerToggle
     const handleBeamerChange = () => {
       applyBeamerScaling()
     }
 
-    window.addEventListener('storage', handleBeamerChange)
-    // Also listen for custom event from BeamerToggle if it dispatches one
     window.addEventListener('beamerModeChanged', handleBeamerChange)
 
     // Reapply on window resize
     window.addEventListener('resize', applyBeamerScaling)
 
     return () => {
-      window.removeEventListener('storage', handleBeamerChange)
       window.removeEventListener('beamerModeChanged', handleBeamerChange)
       window.removeEventListener('resize', applyBeamerScaling)
     }
-  }, [minigame, timeLeft, selectedWinnerTeamId, selectedCorrectTeams, showAnswer])
+  }, [minigame, selectedWinnerTeamId, selectedCorrectTeams, showAnswer])
 
   const handleStartTimer = () => {
     setTimerRunning(true)
