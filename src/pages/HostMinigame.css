@@ -552,16 +552,15 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Wide Screen Layout is now handled by earlier media queries */
-/* The @media (min-width: 768px) rules above already handle desktop layout */
-
-/* Beamer Mode - Ensure viewport-fit layout and slightly larger fonts */
-/* Force 2-column layout even on narrow screens in beamer mode */
+/* Beamer Mode - Force desktop viewport-fit layout even on narrow screens */
+/* Beamer mode must show 2-column layout regardless of screen size (issue #41) */
 .beamer.host-minigame {
   height: 100vh;
   overflow: hidden;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+  padding: clamp(1rem, 1.5vw, 1.5rem);
 }
 
 .beamer .minigame-layout {
@@ -573,11 +572,7 @@
   max-width: 100%;
 }
 
-.beamer .minigame-main {
-  min-height: 0;
-  overflow-y: auto;
-}
-
+.beamer .minigame-main,
 .beamer .minigame-side {
   min-height: 0;
   overflow-y: auto;
