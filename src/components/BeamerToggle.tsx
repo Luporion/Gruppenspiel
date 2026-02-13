@@ -14,6 +14,8 @@ function BeamerToggle() {
     const newState = toggleBeamerMode()
     setIsBeamerMode(newState)
     applyBeamerMode(newState)
+    // Dispatch custom event for other components to react to beamer mode changes
+    window.dispatchEvent(new CustomEvent('beamerModeChanged', { detail: { enabled: newState } }))
   }
 
   return (
