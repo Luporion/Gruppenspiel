@@ -19,6 +19,14 @@
   }
 }
 
+/* Constrained height: reduce overall padding and gaps */
+@media (min-width: 768px) and (max-height: 900px) {
+  .host-minigame {
+    gap: clamp(0.5rem, 0.65vw, 0.65rem);
+    padding: clamp(0.75rem, 1vw, 1rem);
+  }
+}
+
 .minigame-header {
   display: flex;
   justify-content: space-between;
@@ -113,6 +121,13 @@
   }
 }
 
+/* Constrained height: reduce grid gaps */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-layout {
+    gap: clamp(0.5rem, 0.65vw, 0.65rem);
+  }
+}
+
 /* Mobile: natural stacking */
 .minigame-main {
   display: flex;
@@ -120,12 +135,20 @@
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-/* Desktop: allow shrinking, no internal overflow - content should fit */
+/* Desktop: allow shrinking, minimize overflow */
 @media (min-width: 768px) {
   .minigame-main {
     min-height: 0;
     overflow-y: auto;
     gap: clamp(0.5rem, 1vw, 1rem);
+  }
+}
+
+/* Desktop with constrained height: reduce spacing to fit content */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-main {
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
+    overflow: hidden; /* Prioritize fit over scrolling */
   }
 }
 
@@ -147,6 +170,14 @@
   }
 }
 
+/* Desktop with constrained height: reduce spacing and prioritize fit */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-side {
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
+    overflow: hidden; /* Prioritize fit over scrolling, CTA is sticky */
+  }
+}
+
 .minigame-description {
   background: rgba(255, 255, 255, 0.15);
   padding: clamp(0.75rem, 1.25vw, 1.25rem);
@@ -160,10 +191,30 @@
   line-height: 1.4;
 }
 
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-description {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .minigame-description p {
+    font-size: clamp(1.15rem, 1.35vw, 1.35rem);
+    line-height: 1.25;
+  }
+}
+
 .timer-controls {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: clamp(0.5rem, 1vw, 12px);
+}
+
+/* Constrained height: reduce button sizes */
+@media (min-width: 768px) and (max-height: 900px) {
+  .timer-controls {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: clamp(0.35rem, 0.65vw, 8px);
+  }
 }
 
 .btn-timer {
@@ -179,6 +230,14 @@
   color: white;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+}
+
+/* Constrained height: reduce button padding and font size */
+@media (min-width: 768px) and (max-height: 900px) {
+  .btn-timer {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem) clamp(0.75rem, 1vw, 1.5rem);
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+  }
 }
 
 .btn-timer:hover:not(:disabled) {
@@ -222,6 +281,25 @@
   line-height: 1.3;
 }
 
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-rules {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .minigame-rules h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .minigame-rules li {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+    line-height: 1.2;
+  }
+}
+
 .minigame-rules li:before {
   content: "→ ";
   font-weight: bold;
@@ -241,6 +319,20 @@
   margin-top: 0;
   font-size: clamp(1.5rem, 1.75vw, 1.75rem);
   margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .winner-selection,
+  .manual-points {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .winner-selection h2,
+  .manual-points h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
 }
 
 .team-select,
@@ -304,6 +396,25 @@
   margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .quiz-question,
+  .quiz-options {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .quiz-question h2,
+  .quiz-options h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .question-text {
+    font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+    line-height: 1.2;
+  }
+}
+
 .quiz-options ul {
   list-style: none;
   padding: 0;
@@ -327,6 +438,15 @@
   border-left: 4px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
   line-height: 1.3;
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .option {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    line-height: 1.2;
+  }
 }
 
 .option.correct-option {
@@ -379,6 +499,18 @@
   margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .team-selection {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .team-selection h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+}
+
 .team-checkboxes {
   display: flex;
   flex-direction: column;
@@ -395,6 +527,15 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: clamp(1.1rem, 1.25vw, 1.25rem);
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .team-checkbox {
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    gap: clamp(0.35rem, 0.5vw, 0.5rem);
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+  }
 }
 
 .team-checkbox:hover {
@@ -421,9 +562,28 @@
   margin-top: clamp(0.5rem, 1vw, 1rem);
 }
 
+/* Desktop/Beamer: Pin CTA button to always be visible */
+@media (min-width: 768px) {
+  .btn-finish {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    margin-top: auto;
+    /* Add backdrop to ensure readability over content */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+  }
+}
+
 .btn-finish:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .btn-finish:hover {
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .error-message,
@@ -583,6 +743,15 @@
   gap: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
+/* Beamer with constrained height: prioritize fit over scrolling */
+@media (max-height: 900px) {
+  .beamer .minigame-main,
+  .beamer .minigame-side {
+    gap: clamp(0.35rem, 0.5vw, 0.5rem);
+    overflow: hidden; /* Prioritize fit, CTA is sticky */
+  }
+}
+
 /* Beamer Mode - Slightly larger font sizes for better readability on projectors */
 /* But keep them responsive with clamp() to prevent overflow */
 /* Reduce vertical padding/gaps to fit more content in viewport */
@@ -626,6 +795,49 @@
   line-height: 1.3;
 }
 
+/* Beamer with constrained height: reduce spacing further */
+@media (max-height: 900px) {
+  .beamer .minigame-header {
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .minigame-header h1 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  
+  .beamer .minigame-description {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+  
+  .beamer .minigame-description p {
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    line-height: 1.2;
+  }
+  
+  .beamer .question-text {
+    font-size: clamp(1.35rem, 1.75vw, 1.75rem);
+    line-height: 1.2;
+  }
+  
+  .beamer .quiz-options h2,
+  .beamer .quiz-question h2,
+  .beamer .minigame-rules h2,
+  .beamer .winner-selection h2,
+  .beamer .manual-points h2,
+  .beamer .team-selection h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .option,
+  .beamer .minigame-rules li {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+    line-height: 1.2;
+  }
+}
+
 .beamer .minigame-rules,
 .beamer .quiz-question,
 .beamer .quiz-options,
@@ -660,4 +872,43 @@
 
 .beamer .btn-finish {
   margin-top: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+/* Beamer with constrained height: reduce spacing further */
+@media (max-height: 900px) {
+  .beamer .minigame-rules,
+  .beamer .quiz-question,
+  .beamer .quiz-options,
+  .beamer .winner-selection,
+  .beamer .manual-points,
+  .beamer .team-selection {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+  
+  .beamer .btn-timer,
+  .beamer .btn-reveal,
+  .beamer .btn-finish {
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+    padding: clamp(0.5rem, 0.75vw, 0.75rem) clamp(1.25rem, 1.5vw, 1.5rem);
+  }
+  
+  .beamer .timer-controls {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .team-checkbox {
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .team-select,
+  .beamer .points-input {
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .btn-finish {
+    margin-top: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
 }
