@@ -29,6 +29,7 @@ function HostMinigame() {
   const [loadingMinigames, setLoadingMinigames] = useState(false)
   const timerRef = useRef<number | null>(null)
   const beamerRootRef = useRef<HTMLDivElement | null>(null)
+  const resizeTimeoutRef = useRef<number | null>(null)
 
   // Helper function to safely abort minigame and return to board
   const abortToBoard = useCallback(() => {
@@ -154,12 +155,11 @@ function HostMinigame() {
     window.addEventListener('beamerModeChanged', handleBeamerChange)
 
     // Debounced resize handler to avoid excessive recalculations
-    let resizeTimeout: number | null = null
     const handleResize = () => {
-      if (resizeTimeout !== null) {
-        clearTimeout(resizeTimeout)
+      if (resizeTimeoutRef.current !== null) {
+        clearTimeout(resizeTimeoutRef.current)
       }
-      resizeTimeout = window.setTimeout(applyBeamerScaling, 150)
+      resizeTimeoutRef.current = window.setTimeout(applyBeamerScaling, 150)
     }
 
     window.addEventListener('resize', handleResize)
@@ -167,8 +167,8 @@ function HostMinigame() {
     return () => {
       window.removeEventListener('beamerModeChanged', handleBeamerChange)
       window.removeEventListener('resize', handleResize)
-      if (resizeTimeout !== null) {
-        clearTimeout(resizeTimeout)
+      if (resizeTimeoutRef.current !== null) {
+        clearTimeout(resizeTimeoutRef.current)
       }
     }
     // Note: Dependencies include UI state that affects layout height (revealing answers, selecting teams, etc.)
