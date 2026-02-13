@@ -121,9 +121,13 @@ function HostMinigame() {
       if (!rootElement) return
 
       if (isBeamerMode) {
+        // Set transform origin once (only if not already set)
+        if (!rootElement.style.transformOrigin) {
+          rootElement.style.transformOrigin = 'top center'
+        }
+
         // Reset scale to measure actual height
         rootElement.style.transform = 'none'
-        rootElement.style.transformOrigin = 'top center'
 
         // Small delay to ensure DOM has updated
         requestAnimationFrame(() => {
@@ -159,7 +163,7 @@ function HostMinigame() {
       if (resizeTimeoutRef.current !== null) {
         clearTimeout(resizeTimeoutRef.current)
       }
-      resizeTimeoutRef.current = window.setTimeout(applyBeamerScaling, 150)
+      resizeTimeoutRef.current = setTimeout(applyBeamerScaling, 150)
     }
 
     window.addEventListener('resize', handleResize)
