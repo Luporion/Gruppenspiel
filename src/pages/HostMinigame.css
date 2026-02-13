@@ -499,13 +499,14 @@
 
   .minigame-layout {
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1fr) 360px;
     gap: 2rem;
     max-width: 100%;
   }
 
   .minigame-main {
     grid-column: 1;
+    min-width: 0;
   }
 
   .minigame-side {
@@ -527,13 +528,14 @@
    This is required per issue #41 - beamer mode must work on narrow screens. */
 .beamer .minigame-layout {
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: 2rem;
   max-width: 100%;
 }
 
 .beamer .minigame-main {
   grid-column: 1;
+  min-width: 0;
 }
 
 .beamer .minigame-side {
