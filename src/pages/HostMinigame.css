@@ -107,13 +107,15 @@
 }
 
 .timer-controls {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
   margin-bottom: 2rem;
 }
 
 .btn-timer {
+  width: 100%;
+  min-width: 0;
   padding: 1rem 2rem;
   font-size: 1.5rem;
   font-weight: bold;
@@ -578,6 +580,10 @@
 .beamer .btn-finish {
   font-size: 1.5rem;
   padding: 1.25rem 2.5rem;
+}
+
+.beamer .timer-controls {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
 .beamer .team-checkbox {
