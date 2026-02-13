@@ -153,13 +153,26 @@ function HostMinigame() {
 
     window.addEventListener('beamerModeChanged', handleBeamerChange)
 
-    // Reapply on window resize
-    window.addEventListener('resize', applyBeamerScaling)
+    // Debounced resize handler to avoid excessive recalculations
+    let resizeTimeout: number | null = null
+    const handleResize = () => {
+      if (resizeTimeout !== null) {
+        clearTimeout(resizeTimeout)
+      }
+      resizeTimeout = window.setTimeout(applyBeamerScaling, 150)
+    }
+
+    window.addEventListener('resize', handleResize)
 
     return () => {
       window.removeEventListener('beamerModeChanged', handleBeamerChange)
-      window.removeEventListener('resize', applyBeamerScaling)
+      window.removeEventListener('resize', handleResize)
+      if (resizeTimeout !== null) {
+        clearTimeout(resizeTimeout)
+      }
     }
+    // Note: Dependencies include UI state that affects layout height (revealing answers, selecting teams, etc.)
+    // These are necessary because content changes require recalculation of the scale factor
   }, [minigame, selectedWinnerTeamId, selectedCorrectTeams, showAnswer])
 
   const handleStartTimer = () => {
