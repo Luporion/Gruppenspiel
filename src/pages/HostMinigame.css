@@ -1,8 +1,21 @@
+/* Mobile-first: Allow scrolling and natural layout */
 .host-minigame {
   min-height: 100vh;
-  padding: 2rem;
+  padding: clamp(1rem, 2vw, 2rem);
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+}
+
+/* Desktop: Viewport-fit layout with CSS Grid */
+@media (min-width: 768px) {
+  .host-minigame {
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(1rem, 1.5vw, 1.5rem);
+    padding: clamp(1rem, 1.5vw, 1.5rem);
+  }
 }
 
 .minigame-header {
@@ -10,17 +23,23 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  border-radius: clamp(0.5rem, 0.75vw, 1rem);
   backdrop-filter: blur(10px);
+}
+
+@media (min-width: 768px) {
+  .minigame-header {
+    margin-bottom: 0;
+    min-height: 0;
+  }
 }
 
 .minigame-header h1 {
   margin: 0;
-  font-size: 3rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -34,8 +53,8 @@
 .timer-display {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 2rem;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  font-size: clamp(1.25rem, 1.75vw, 1.75rem);
   font-weight: bold;
 }
 
@@ -45,11 +64,11 @@
 
 .timer-value {
   font-family: 'Courier New', monospace;
-  font-size: 3rem;
-  padding: 0.5rem 1rem;
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  padding: clamp(0.25rem, 0.5vw, 0.5rem) clamp(0.5rem, 1vw, 1rem);
   background: rgba(0, 0, 0, 0.3);
   border-radius: 0.5rem;
-  min-width: 120px;
+  min-width: 100px;
   text-align: center;
 }
 
@@ -72,52 +91,83 @@
   margin: 0 auto;
 }
 
+/* Mobile-first: stacked layout with natural scrolling */
 .minigame-layout {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(1rem, 2vw, 2rem);
   max-width: 1400px;
   margin: 0 auto;
 }
 
+/* Desktop: 2-column grid that fits viewport */
+@media (min-width: 768px) {
+  .minigame-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    gap: clamp(1rem, 1.5vw, 1.5rem);
+    min-height: 0;
+    overflow: hidden;
+    max-width: 100%;
+  }
+}
+
+/* Mobile: natural stacking */
 .minigame-main {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(1rem, 2vw, 2rem);
 }
 
+/* Desktop: allow shrinking, internal overflow */
+@media (min-width: 768px) {
+  .minigame-main {
+    min-height: 0;
+    overflow-y: auto;
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  }
+}
+
+/* Mobile: natural stacking */
 .minigame-side {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+/* Desktop: fixed height with internal scrolling */
+@media (min-width: 768px) {
+  .minigame-side {
+    min-height: 0;
+    overflow-y: auto;
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  }
 }
 
 .minigame-description {
   background: rgba(255, 255, 255, 0.15);
-  padding: 1.5rem;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem);
   border-radius: 0.75rem;
-  margin-bottom: 2rem;
   backdrop-filter: blur(10px);
 }
 
 .minigame-description p {
   margin: 0;
-  font-size: 1.5rem;
-  line-height: 1.6;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  line-height: 1.5;
 }
 
 .timer-controls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: clamp(0.5rem, 1vw, 12px);
 }
 
 .btn-timer {
   width: 100%;
   min-width: 0;
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
+  padding: clamp(0.75rem, 1vw, 1rem) clamp(1rem, 1.5vw, 2rem);
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
   font-weight: bold;
   border: none;
   border-radius: 0.75rem;
@@ -142,15 +192,15 @@
 /* Physical Minigame Styles */
 .minigame-rules {
   background: rgba(255, 255, 255, 0.15);
-  padding: 2rem;
+  padding: clamp(1rem, 1.75vw, 1.75rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
 
 .minigame-rules h2 {
   margin-top: 0;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 1.75vw, 1.75rem);
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .minigame-rules ul {
@@ -160,12 +210,13 @@
 }
 
 .minigame-rules li {
-  font-size: 1.5rem;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
+  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
+  padding: clamp(0.75rem, 1vw, 1rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   border-left: 4px solid #ffd93d;
+  line-height: 1.4;
 }
 
 .minigame-rules li:before {
@@ -177,7 +228,7 @@
 .winner-selection,
 .manual-points {
   background: rgba(255, 255, 255, 0.15);
-  padding: 2rem;
+  padding: clamp(1rem, 1.75vw, 1.75rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -185,15 +236,15 @@
 .winner-selection h2,
 .manual-points h2 {
   margin-top: 0;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 1.75vw, 1.75rem);
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .team-select,
 .points-input {
   width: 100%;
-  padding: 1rem 1.5rem;
-  font-size: 1.5rem;
+  padding: clamp(0.75rem, 1vw, 1rem) clamp(1rem, 1.25vw, 1.25rem);
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.2);
@@ -211,7 +262,7 @@
 }
 
 .points-hint {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 1.1vw, 1.1rem);
   opacity: 0.8;
   font-style: italic;
 }
@@ -219,19 +270,19 @@
 /* Quiz Minigame Styles */
 .quiz-question {
   background: rgba(255, 255, 255, 0.15);
-  padding: 2rem;
+  padding: clamp(1rem, 1.75vw, 1.75rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
 
 .quiz-question h2 {
   margin-top: 0;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 1.75vw, 1.75rem);
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .question-text {
-  font-size: 2rem;
+  font-size: clamp(1.25rem, 1.75vw, 1.75rem);
   font-weight: bold;
   margin: 0;
   line-height: 1.4;
@@ -239,31 +290,40 @@
 
 .quiz-options {
   background: rgba(255, 255, 255, 0.15);
-  padding: 2rem;
+  padding: clamp(1rem, 1.75vw, 1.75rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
 
 .quiz-options h2 {
   margin-top: 0;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 1.75vw, 1.75rem);
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .quiz-options ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+/* 2-column layout for quiz options on desktop to reduce vertical height */
+@media (min-width: 768px) {
+  .quiz-options ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .option {
-  font-size: 1.5rem;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   border-left: 4px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
+  line-height: 1.4;
 }
 
 .option.correct-option {
@@ -273,8 +333,8 @@
 }
 
 .btn-reveal {
-  padding: 1.5rem 3rem;
-  font-size: 1.75rem;
+  padding: clamp(1rem, 1.25vw, 1.25rem) clamp(2rem, 2.5vw, 2.5rem);
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
   font-weight: bold;
   border: none;
   border-radius: 0.75rem;
@@ -292,7 +352,7 @@
 
 .correct-answer-display {
   background: rgba(81, 207, 102, 0.2);
-  padding: 2rem;
+  padding: clamp(1rem, 1.75vw, 1.75rem);
   border-radius: 0.75rem;
   border: 2px solid #51cf66;
   backdrop-filter: blur(10px);
@@ -300,38 +360,38 @@
 
 .correct-answer-display p {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
 }
 
 .team-selection {
   background: rgba(255, 255, 255, 0.15);
-  padding: 2rem;
+  padding: clamp(1rem, 1.75vw, 1.75rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
 
 .team-selection h2 {
   margin-top: 0;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 1.75vw, 1.75rem);
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .team-checkboxes {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
 .team-checkbox {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap: clamp(0.5rem, 0.75vw, 0.75rem);
+  padding: clamp(0.75rem, 1vw, 1rem);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
 }
 
 .team-checkbox:hover {
@@ -339,14 +399,14 @@
 }
 
 .team-checkbox input[type="checkbox"] {
-  width: 2rem;
-  height: 2rem;
+  width: clamp(1.5rem, 1.75vw, 1.75rem);
+  height: clamp(1.5rem, 1.75vw, 1.75rem);
   cursor: pointer;
 }
 
 .btn-finish {
-  padding: 1.5rem 3rem;
-  font-size: 1.75rem;
+  padding: clamp(1rem, 1.25vw, 1.25rem) clamp(2rem, 2.5vw, 2.5rem);
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
   font-weight: bold;
   border: none;
   border-radius: 0.75rem;
@@ -355,7 +415,7 @@
   color: white;
   transition: all 0.3s ease;
   align-self: center;
-  margin-top: 1rem;
+  margin-top: clamp(0.5rem, 1vw, 1rem);
 }
 
 .btn-finish:hover {
@@ -492,73 +552,49 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Wide Screen Layout - 2-column grid for desktop/beamer */
-/* Applies on wide screens OR when beamer mode is active */
-@media (min-width: 1024px) {
-  .host-minigame {
-    padding: 1.5rem;
-  }
+/* Wide Screen Layout is now handled by earlier media queries */
+/* The @media (min-width: 768px) rules above already handle desktop layout */
 
-  .minigame-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    gap: 2rem;
-    max-width: 100%;
-  }
-
-  .minigame-main {
-    grid-column: 1;
-    min-width: 0;
-  }
-
-  .minigame-side {
-    grid-column: 2;
-  }
-
-  /* Ensure side panel is sticky and doesn't overflow */
-  .minigame-side {
-    position: sticky;
-    top: 1.5rem;
-    max-height: calc(100vh - 180px);
-    overflow-y: auto;
-  }
+/* Beamer Mode - Ensure viewport-fit layout and slightly larger fonts */
+/* Force 2-column layout even on narrow screens in beamer mode */
+.beamer.host-minigame {
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
-/* Beamer Mode - Force wide layout even on narrow screens */
-/* Note: These rules intentionally duplicate the @media layout above
-   to ensure beamer mode shows 2-column layout regardless of screen size.
-   This is required per issue #41 - beamer mode must work on narrow screens. */
 .beamer .minigame-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+  min-height: 0;
+  overflow: hidden;
   max-width: 100%;
 }
 
 .beamer .minigame-main {
-  grid-column: 1;
-  min-width: 0;
-}
-
-.beamer .minigame-side {
-  grid-column: 2;
-  position: sticky;
-  top: 1.5rem;
-  max-height: calc(100vh - 180px);
+  min-height: 0;
   overflow-y: auto;
 }
 
-/* Beamer Mode - Larger font sizes for better readability on projectors */
+.beamer .minigame-side {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Beamer Mode - Slightly larger font sizes for better readability on projectors */
+/* But keep them responsive with clamp() to prevent overflow */
 .beamer .minigame-header h1 {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 3.5vw, 3rem);
 }
 
 .beamer .minigame-description p {
-  font-size: 1.8rem;
+  font-size: clamp(1.35rem, 1.75vw, 1.75rem);
 }
 
 .beamer .question-text {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 2vw, 2rem);
 }
 
 .beamer .quiz-options h2,
@@ -567,30 +603,30 @@
 .beamer .winner-selection h2,
 .beamer .manual-points h2,
 .beamer .team-selection h2 {
-  font-size: 2.25rem;
+  font-size: clamp(1.75rem, 2vw, 2rem);
 }
 
 .beamer .option,
 .beamer .minigame-rules li {
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
 }
 
 .beamer .btn-timer,
 .beamer .btn-reveal,
 .beamer .btn-finish {
-  font-size: 1.5rem;
-  padding: 1.25rem 2.5rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  padding: clamp(1rem, 1.25vw, 1.25rem) clamp(2rem, 2.5vw, 2.5rem);
 }
 
 .beamer .timer-controls {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .beamer .team-checkbox {
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
 }
 
 .beamer .team-select,
 .beamer .points-input {
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
 }
