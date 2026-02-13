@@ -6,6 +6,7 @@ import { checkWinConditions } from '../utils/winConditions'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition, MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
 import FullscreenToggle from '../components/FullscreenToggle'
+import { getBeamerMode } from '../utils/beamerMode'
 import './HostMinigame.css'
 
 // Default points constants
@@ -27,6 +28,7 @@ function HostMinigame() {
   const [availableMinigames, setAvailableMinigames] = useState<MinigameDefinition[]>([])
   const [loadingMinigames, setLoadingMinigames] = useState(false)
   const timerRef = useRef<number | null>(null)
+  const beamerRootRef = useRef<HTMLDivElement | null>(null)
 
   // Helper function to safely abort minigame and return to board
   const abortToBoard = useCallback(() => {
@@ -107,6 +109,61 @@ function HostMinigame() {
       }
     }
   }, [timerRunning, timeLeft])
+
+  // Beamer Mode Auto-Scaling Effect
+  // Ensures the entire page fits within 100vh when beamer mode is active
+  useEffect(() => {
+    const applyBeamerScaling = () => {
+      const isBeamerMode = getBeamerMode()
+      const rootElement = beamerRootRef.current
+
+      if (!rootElement) return
+
+      if (isBeamerMode) {
+        // Reset scale to measure actual height
+        rootElement.style.transform = 'none'
+        rootElement.style.transformOrigin = 'top center'
+
+        // Small delay to ensure DOM has updated
+        requestAnimationFrame(() => {
+          const contentHeight = rootElement.scrollHeight
+          const viewportHeight = window.innerHeight
+
+          // Only scale down if content exceeds viewport
+          if (contentHeight > viewportHeight) {
+            const scaleFactor = viewportHeight / contentHeight
+            rootElement.style.transform = `scale(${scaleFactor})`
+          } else {
+            rootElement.style.transform = 'none'
+          }
+        })
+      } else {
+        // Remove scaling when beamer mode is off
+        rootElement.style.transform = 'none'
+      }
+    }
+
+    // Apply scaling on mount, when beamer mode changes, or when content changes
+    applyBeamerScaling()
+
+    // Listen for beamer mode changes via storage events (from BeamerToggle)
+    const handleBeamerChange = () => {
+      applyBeamerScaling()
+    }
+
+    window.addEventListener('storage', handleBeamerChange)
+    // Also listen for custom event from BeamerToggle if it dispatches one
+    window.addEventListener('beamerModeChanged', handleBeamerChange)
+
+    // Reapply on window resize
+    window.addEventListener('resize', applyBeamerScaling)
+
+    return () => {
+      window.removeEventListener('storage', handleBeamerChange)
+      window.removeEventListener('beamerModeChanged', handleBeamerChange)
+      window.removeEventListener('resize', applyBeamerScaling)
+    }
+  }, [minigame, timeLeft, selectedWinnerTeamId, selectedCorrectTeams, showAnswer])
 
   const handleStartTimer = () => {
     setTimerRunning(true)
@@ -325,7 +382,7 @@ function HostMinigame() {
   }
 
   return (
-    <div className="host-minigame">
+    <div className="host-minigame" ref={beamerRootRef}>
       <header className="minigame-header">
         <h1>🎮 {minigame.name}</h1>
         <div className="minigame-header-controls">
