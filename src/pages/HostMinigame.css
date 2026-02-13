@@ -148,7 +148,7 @@
 @media (min-width: 768px) and (max-height: 900px) {
   .minigame-main {
     gap: clamp(0.35rem, 0.65vw, 0.65rem);
-    overflow: hidden; /* Prioritize fit over scrolling */
+    /* Keep overflow-y: auto from parent rule - sticky CTA ensures visibility */
   }
 }
 
@@ -170,11 +170,11 @@
   }
 }
 
-/* Desktop with constrained height: reduce spacing and prioritize fit */
+/* Desktop with constrained height: reduce spacing and keep scrolling if needed */
 @media (min-width: 768px) and (max-height: 900px) {
   .minigame-side {
     gap: clamp(0.35rem, 0.65vw, 0.65rem);
-    overflow: hidden; /* Prioritize fit over scrolling, CTA is sticky */
+    /* Keep overflow-y: auto from parent rule - sticky CTA ensures it's always visible */
   }
 }
 
@@ -743,12 +743,12 @@
   gap: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
-/* Beamer with constrained height: prioritize fit over scrolling */
+/* Beamer with constrained height: reduce spacing, keep scrolling if needed */
 @media (max-height: 900px) {
   .beamer .minigame-main,
   .beamer .minigame-side {
     gap: clamp(0.35rem, 0.5vw, 0.5rem);
-    overflow: hidden; /* Prioritize fit, CTA is sticky */
+    /* Keep overflow-y: auto from parent rule - sticky CTA ensures it's always visible */
   }
 }
 
