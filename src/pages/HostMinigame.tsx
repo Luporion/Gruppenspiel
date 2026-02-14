@@ -364,39 +364,46 @@ function HostMinigame() {
         </div>
 
         <div className="minigame-side">
-          <div className="timer-controls">
-            <button onClick={handleStartTimer} disabled={timerRunning} className="btn-timer">
-              ▶️ Start Timer
-            </button>
-            <button onClick={handleStopTimer} disabled={!timerRunning} className="btn-timer">
-              ⏸️ Stop Timer
-            </button>
-            <button onClick={handleResetTimer} className="btn-timer">
-              🔄 Reset Timer
-            </button>
+          <div className="minigame-side-content">
+            <div className="timer-controls">
+              <button onClick={handleStartTimer} disabled={timerRunning} className="btn-timer">
+                ▶️ Start Timer
+              </button>
+              <button onClick={handleStopTimer} disabled={!timerRunning} className="btn-timer">
+                ⏸️ Stop Timer
+              </button>
+              <button onClick={handleResetTimer} className="btn-timer">
+                🔄 Reset Timer
+              </button>
+            </div>
+
+            {minigame.type === 'physical' && (
+              <PhysicalMinigameSideContent
+                minigame={minigame as PhysicalMinigameDefinition}
+                teams={state.teams}
+                selectedWinnerTeamId={selectedWinnerTeamId}
+                setSelectedWinnerTeamId={setSelectedWinnerTeamId}
+                manualPoints={manualPoints}
+                setManualPoints={setManualPoints}
+              />
+            )}
+
+            {minigame.type === 'quiz' && (
+              <QuizMinigameSideContent
+                minigame={minigame as QuizMinigameDefinition}
+                teams={state.teams}
+                selectedCorrectTeams={selectedCorrectTeams}
+                toggleCorrectTeam={toggleCorrectTeam}
+              />
+            )}
           </div>
 
-          {minigame.type === 'physical' && (
-            <PhysicalMinigameSideContent
-              minigame={minigame as PhysicalMinigameDefinition}
-              teams={state.teams}
-              selectedWinnerTeamId={selectedWinnerTeamId}
-              setSelectedWinnerTeamId={setSelectedWinnerTeamId}
-              manualPoints={manualPoints}
-              setManualPoints={setManualPoints}
-              onFinish={handleFinishPhysical}
-            />
-          )}
-
-          {minigame.type === 'quiz' && (
-            <QuizMinigameSideContent
-              minigame={minigame as QuizMinigameDefinition}
-              teams={state.teams}
-              selectedCorrectTeams={selectedCorrectTeams}
-              toggleCorrectTeam={toggleCorrectTeam}
-              onFinish={handleFinishQuiz}
-            />
-          )}
+          <button 
+            onClick={minigame.type === 'physical' ? handleFinishPhysical : handleFinishQuiz} 
+            className="btn-finish"
+          >
+            ✅ Finish & Return to Board
+          </button>
         </div>
       </div>
     </div>
@@ -429,7 +436,6 @@ interface PhysicalMinigameSideContentProps {
   setSelectedWinnerTeamId: (id: string) => void
   manualPoints: number
   setManualPoints: (points: number) => void
-  onFinish: () => void
 }
 
 function PhysicalMinigameSideContent({
@@ -438,8 +444,7 @@ function PhysicalMinigameSideContent({
   selectedWinnerTeamId,
   setSelectedWinnerTeamId,
   manualPoints,
-  setManualPoints,
-  onFinish
+  setManualPoints
 }: PhysicalMinigameSideContentProps) {
   return (
     <>
@@ -475,10 +480,6 @@ function PhysicalMinigameSideContent({
           (for current team)
         </span>
       </div>
-
-      <button onClick={onFinish} className="btn-finish">
-        ✅ Finish & Return to Board
-      </button>
     </>
   )
 }
@@ -541,15 +542,13 @@ interface QuizMinigameSideContentProps {
   teams: Array<{ id: string; name: string; color: string }>
   selectedCorrectTeams: Set<string>
   toggleCorrectTeam: (teamId: string) => void
-  onFinish: () => void
 }
 
 function QuizMinigameSideContent({
   minigame,
   teams,
   selectedCorrectTeams,
-  toggleCorrectTeam,
-  onFinish
+  toggleCorrectTeam
 }: QuizMinigameSideContentProps) {
   return (
     <>
@@ -571,10 +570,6 @@ function QuizMinigameSideContent({
           ))}
         </div>
       </div>
-
-      <button onClick={onFinish} className="btn-finish">
-        ✅ Finish & Return to Board
-      </button>
     </>
   )
 }

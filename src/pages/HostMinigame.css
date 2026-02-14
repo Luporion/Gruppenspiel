@@ -113,7 +113,7 @@
 @media (min-width: 768px) {
   .minigame-layout {
     display: grid;
-    grid-template-columns: 1fr minmax(280px, 360px);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
     gap: clamp(0.75rem, 1vw, 1rem);
     min-height: 0;
     overflow: hidden;
@@ -135,11 +135,11 @@
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-/* Desktop: allow shrinking, no scrollbars */
+/* Desktop: allow shrinking, allow scrolling if needed */
 @media (min-width: 768px) {
   .minigame-main {
     min-height: 0;
-    overflow: hidden;
+    overflow-y: auto;
     gap: clamp(0.5rem, 1vw, 1rem);
   }
 }
@@ -158,20 +158,40 @@
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-/* Desktop: no scrollbars, flex layout to pin CTA button */
+/* Desktop: grid layout with fixed footer for CTA button */
 @media (min-width: 768px) {
   .minigame-side {
     min-height: 0;
-    overflow: hidden;
     gap: clamp(0.5rem, 1vw, 1rem);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr auto;
   }
 }
 
 /* Desktop with constrained height: reduce spacing */
 @media (min-width: 768px) and (max-height: 900px) {
   .minigame-side {
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
+  }
+}
+
+/* Content wrapper for scrollable area (everything except CTA button) */
+.minigame-side-content {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}
+
+@media (min-width: 768px) {
+  .minigame-side-content {
+    min-height: 0;
+    overflow-y: auto;
+    gap: clamp(0.5rem, 1vw, 1rem);
+  }
+}
+
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-side-content {
     gap: clamp(0.35rem, 0.65vw, 0.65rem);
   }
 }
@@ -560,14 +580,12 @@
   margin-top: clamp(0.5rem, 1vw, 1rem);
 }
 
-/* Desktop/Beamer: Pin CTA button to always be visible */
+/* Desktop/Beamer: Fixed footer in grid, always visible */
 @media (min-width: 768px) {
   .btn-finish {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-    margin-top: auto;
-    /* Add backdrop to ensure readability over content */
+    grid-row: 2;
+    margin-top: 0;
+    /* Add backdrop to ensure readability */
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
   }
@@ -727,7 +745,7 @@
 
 .beamer .minigame-layout {
   display: grid;
-  grid-template-columns: 1fr minmax(280px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   gap: clamp(0.75rem, 1vw, 1rem);
   min-height: 0;
   overflow: hidden;
@@ -737,8 +755,21 @@
 .beamer .minigame-main,
 .beamer .minigame-side {
   min-height: 0;
-  overflow: hidden;
   gap: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+.beamer .minigame-main {
+  overflow-y: auto;
+}
+
+.beamer .minigame-side {
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.beamer .minigame-side-content {
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* Beamer with constrained height: reduce spacing */
