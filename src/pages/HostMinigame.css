@@ -10,11 +10,20 @@
 @media (min-width: 768px) {
   .host-minigame {
     height: 100vh;
-    overflow: hidden;
+    height: 100dvh; /* Use dynamic viewport height when available */
     display: grid;
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: clamp(1rem, 1.5vw, 1.5rem);
+    grid-template-rows: auto 1fr;
+    gap: clamp(0.75rem, 1vw, 1rem);
     padding: clamp(1rem, 1.5vw, 1.5rem);
+    overflow: hidden;
+  }
+}
+
+/* Constrained height: reduce overall padding and gaps */
+@media (min-width: 768px) and (max-height: 900px) {
+  .host-minigame {
+    gap: clamp(0.5rem, 0.65vw, 0.65rem);
+    padding: clamp(0.75rem, 1vw, 1rem);
   }
 }
 
@@ -105,10 +114,17 @@
   .minigame-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-    gap: clamp(1rem, 1.5vw, 1.5rem);
+    gap: clamp(0.75rem, 1vw, 1rem);
     min-height: 0;
     overflow: hidden;
     max-width: 100%;
+  }
+}
+
+/* Constrained height: reduce grid gaps */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-layout {
+    gap: clamp(0.5rem, 0.65vw, 0.65rem);
   }
 }
 
@@ -119,12 +135,19 @@
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-/* Desktop: allow shrinking, internal overflow */
+/* Desktop: allow shrinking, allow scrolling if needed */
 @media (min-width: 768px) {
   .minigame-main {
     min-height: 0;
     overflow-y: auto;
-    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+    gap: clamp(0.5rem, 1vw, 1rem);
+  }
+}
+
+/* Desktop with constrained height: reduce spacing to fit content */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-main {
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
   }
 }
 
@@ -135,18 +158,47 @@
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-/* Desktop: fixed height with internal scrolling */
+/* Desktop: grid layout with fixed footer for CTA button */
 @media (min-width: 768px) {
   .minigame-side {
     min-height: 0;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+}
+
+/* Desktop with constrained height: reduce spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-side {
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
+  }
+}
+
+/* Content wrapper for scrollable area (everything except CTA button) */
+.minigame-side-content {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}
+
+@media (min-width: 768px) {
+  .minigame-side-content {
+    min-height: 0;
     overflow-y: auto;
-    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+    gap: clamp(0.5rem, 1vw, 1rem);
+  }
+}
+
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-side-content {
+    gap: clamp(0.35rem, 0.65vw, 0.65rem);
   }
 }
 
 .minigame-description {
   background: rgba(255, 255, 255, 0.15);
-  padding: clamp(0.75rem, 1.5vw, 1.5rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -154,13 +206,33 @@
 .minigame-description p {
   margin: 0;
   font-size: clamp(1.25rem, 1.5vw, 1.5rem);
-  line-height: 1.5;
+  line-height: 1.4;
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-description {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .minigame-description p {
+    font-size: clamp(1.15rem, 1.35vw, 1.35rem);
+    line-height: 1.25;
+  }
 }
 
 .timer-controls {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: clamp(0.5rem, 1vw, 12px);
+}
+
+/* Constrained height: reduce button sizes */
+@media (min-width: 768px) and (max-height: 900px) {
+  .timer-controls {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: clamp(0.35rem, 0.65vw, 8px);
+  }
 }
 
 .btn-timer {
@@ -178,6 +250,14 @@
   backdrop-filter: blur(10px);
 }
 
+/* Constrained height: reduce button padding and font size */
+@media (min-width: 768px) and (max-height: 900px) {
+  .btn-timer {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem) clamp(0.75rem, 1vw, 1.5rem);
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+  }
+}
+
 .btn-timer:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
@@ -192,7 +272,7 @@
 /* Physical Minigame Styles */
 .minigame-rules {
   background: rgba(255, 255, 255, 0.15);
-  padding: clamp(1rem, 1.75vw, 1.75rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -200,7 +280,7 @@
 .minigame-rules h2 {
   margin-top: 0;
   font-size: clamp(1.5rem, 1.75vw, 1.75rem);
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
 .minigame-rules ul {
@@ -211,12 +291,31 @@
 
 .minigame-rules li {
   font-size: clamp(1.1rem, 1.35vw, 1.35rem);
-  padding: clamp(0.75rem, 1vw, 1rem);
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
   margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   border-left: 4px solid #ffd93d;
-  line-height: 1.4;
+  line-height: 1.3;
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .minigame-rules {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .minigame-rules h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .minigame-rules li {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+    line-height: 1.2;
+  }
 }
 
 .minigame-rules li:before {
@@ -228,7 +327,7 @@
 .winner-selection,
 .manual-points {
   background: rgba(255, 255, 255, 0.15);
-  padding: clamp(1rem, 1.75vw, 1.75rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -237,7 +336,21 @@
 .manual-points h2 {
   margin-top: 0;
   font-size: clamp(1.5rem, 1.75vw, 1.75rem);
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .winner-selection,
+  .manual-points {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .winner-selection h2,
+  .manual-points h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
 }
 
 .team-select,
@@ -270,7 +383,7 @@
 /* Quiz Minigame Styles */
 .quiz-question {
   background: rgba(255, 255, 255, 0.15);
-  padding: clamp(1rem, 1.75vw, 1.75rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -278,19 +391,19 @@
 .quiz-question h2 {
   margin-top: 0;
   font-size: clamp(1.5rem, 1.75vw, 1.75rem);
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
 .question-text {
   font-size: clamp(1.25rem, 1.75vw, 1.75rem);
   font-weight: bold;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .quiz-options {
   background: rgba(255, 255, 255, 0.15);
-  padding: clamp(1rem, 1.75vw, 1.75rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -298,7 +411,26 @@
 .quiz-options h2 {
   margin-top: 0;
   font-size: clamp(1.5rem, 1.75vw, 1.75rem);
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .quiz-question,
+  .quiz-options {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .quiz-question h2,
+  .quiz-options h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .question-text {
+    font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+    line-height: 1.2;
+  }
 }
 
 .quiz-options ul {
@@ -318,12 +450,21 @@
 
 .option {
   font-size: clamp(1.1rem, 1.35vw, 1.35rem);
-  padding: clamp(0.75rem, 1.25vw, 1.25rem);
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   border-left: 4px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
-  line-height: 1.4;
+  line-height: 1.3;
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .option {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    line-height: 1.2;
+  }
 }
 
 .option.correct-option {
@@ -365,7 +506,7 @@
 
 .team-selection {
   background: rgba(255, 255, 255, 0.15);
-  padding: clamp(1rem, 1.75vw, 1.75rem);
+  padding: clamp(0.75rem, 1.25vw, 1.25rem);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
 }
@@ -373,7 +514,19 @@
 .team-selection h2 {
   margin-top: 0;
   font-size: clamp(1.5rem, 1.75vw, 1.75rem);
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .team-selection {
+    padding: clamp(0.5rem, 0.85vw, 0.85rem);
+  }
+  
+  .team-selection h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
 }
 
 .team-checkboxes {
@@ -386,12 +539,21 @@
   display: flex;
   align-items: center;
   gap: clamp(0.5rem, 0.75vw, 0.75rem);
-  padding: clamp(0.75rem, 1vw, 1rem);
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: clamp(1.1rem, 1.25vw, 1.25rem);
+}
+
+/* Constrained height: reduce padding and spacing */
+@media (min-width: 768px) and (max-height: 900px) {
+  .team-checkbox {
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    gap: clamp(0.35rem, 0.5vw, 0.5rem);
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+  }
 }
 
 .team-checkbox:hover {
@@ -418,9 +580,26 @@
   margin-top: clamp(0.5rem, 1vw, 1rem);
 }
 
+/* Desktop/Beamer: Fixed footer in grid, always visible */
+@media (min-width: 768px) {
+  .btn-finish {
+    grid-row: 2;
+    margin-top: 0;
+    /* Add backdrop to ensure readability */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+  }
+}
+
 .btn-finish:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .btn-finish:hover {
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .error-message,
@@ -556,17 +735,18 @@
 /* Beamer mode must show 2-column layout regardless of screen size (issue #41) */
 .beamer.host-minigame {
   height: 100vh;
-  overflow: hidden;
+  height: 100dvh; /* Use dynamic viewport height when available */
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: clamp(1rem, 1.5vw, 1.5rem);
-  padding: clamp(1rem, 1.5vw, 1.5rem);
+  grid-template-rows: auto 1fr;
+  gap: clamp(0.75rem, 1vw, 1rem);
+  padding: clamp(0.75rem, 1vw, 1rem);
+  overflow: hidden;
 }
 
 .beamer .minigame-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-  gap: clamp(1rem, 1.5vw, 1.5rem);
+  gap: clamp(0.75rem, 1vw, 1rem);
   min-height: 0;
   overflow: hidden;
   max-width: 100%;
@@ -575,21 +755,54 @@
 .beamer .minigame-main,
 .beamer .minigame-side {
   min-height: 0;
+  gap: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+.beamer .minigame-main {
   overflow-y: auto;
+}
+
+.beamer .minigame-side {
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.beamer .minigame-side-content {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Beamer with constrained height: reduce spacing */
+@media (max-height: 900px) {
+  .beamer .minigame-main,
+  .beamer .minigame-side {
+    gap: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
 }
 
 /* Beamer Mode - Slightly larger font sizes for better readability on projectors */
 /* But keep them responsive with clamp() to prevent overflow */
+/* Reduce vertical padding/gaps to fit more content in viewport */
+.beamer .minigame-header {
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
 .beamer .minigame-header h1 {
   font-size: clamp(2rem, 3.5vw, 3rem);
 }
 
+.beamer .minigame-description {
+  padding: clamp(0.75rem, 1vw, 1rem);
+}
+
 .beamer .minigame-description p {
   font-size: clamp(1.35rem, 1.75vw, 1.75rem);
+  line-height: 1.3;
 }
 
 .beamer .question-text {
   font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.3;
 }
 
 .beamer .quiz-options h2,
@@ -598,30 +811,132 @@
 .beamer .winner-selection h2,
 .beamer .manual-points h2,
 .beamer .team-selection h2 {
-  font-size: clamp(1.75rem, 2vw, 2rem);
+  font-size: clamp(1.5rem, 1.75vw, 1.75rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
 .beamer .option,
 .beamer .minigame-rules li {
-  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  margin-bottom: clamp(0.5rem, 0.75vw, 0.75rem);
+  line-height: 1.3;
+}
+
+/* Beamer with constrained height: reduce spacing further */
+@media (max-height: 900px) {
+  .beamer .minigame-header {
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .minigame-header h1 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  
+  .beamer .minigame-description {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+  
+  .beamer .minigame-description p {
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    line-height: 1.2;
+  }
+  
+  .beamer .question-text {
+    font-size: clamp(1.35rem, 1.75vw, 1.75rem);
+    line-height: 1.2;
+  }
+  
+  .beamer .quiz-options h2,
+  .beamer .quiz-question h2,
+  .beamer .minigame-rules h2,
+  .beamer .winner-selection h2,
+  .beamer .manual-points h2,
+  .beamer .team-selection h2 {
+    font-size: clamp(1.35rem, 1.5vw, 1.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .option,
+  .beamer .minigame-rules li {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+    margin-bottom: clamp(0.35rem, 0.5vw, 0.5rem);
+    line-height: 1.2;
+  }
+}
+
+.beamer .minigame-rules,
+.beamer .quiz-question,
+.beamer .quiz-options,
+.beamer .winner-selection,
+.beamer .manual-points,
+.beamer .team-selection {
+  padding: clamp(0.75rem, 1vw, 1rem);
 }
 
 .beamer .btn-timer,
 .beamer .btn-reveal,
 .beamer .btn-finish {
-  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
-  padding: clamp(1rem, 1.25vw, 1.25rem) clamp(2rem, 2.5vw, 2.5rem);
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
+  padding: clamp(0.75rem, 1vw, 1rem) clamp(1.5rem, 2vw, 2rem);
 }
 
 .beamer .timer-controls {
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
 .beamer .team-checkbox {
-  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
 }
 
 .beamer .team-select,
 .beamer .points-input {
-  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
+  padding: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+.beamer .btn-finish {
+  margin-top: clamp(0.5rem, 0.75vw, 0.75rem);
+}
+
+/* Beamer with constrained height: reduce spacing further */
+@media (max-height: 900px) {
+  .beamer .minigame-rules,
+  .beamer .quiz-question,
+  .beamer .quiz-options,
+  .beamer .winner-selection,
+  .beamer .manual-points,
+  .beamer .team-selection {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+  
+  .beamer .btn-timer,
+  .beamer .btn-reveal,
+  .beamer .btn-finish {
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+    padding: clamp(0.5rem, 0.75vw, 0.75rem) clamp(1.25rem, 1.5vw, 1.5rem);
+  }
+  
+  .beamer .timer-controls {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .team-checkbox {
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .team-select,
+  .beamer .points-input {
+    font-size: clamp(1rem, 1.1vw, 1.1rem);
+    padding: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
+  
+  .beamer .btn-finish {
+    margin-top: clamp(0.35rem, 0.5vw, 0.5rem);
+  }
 }
