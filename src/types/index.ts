@@ -29,6 +29,7 @@ export interface Tile {
   index: number;
   type: "normal" | "minigame" | "bonus" | "penalty";
   value?: number; // for bonus/penalty points
+  pos?: { x: number; y: number }; // optional 2D coordinates for grid layout
 }
 
 // Map definition

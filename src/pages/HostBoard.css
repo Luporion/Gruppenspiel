@@ -292,6 +292,16 @@
   padding: 1rem 0;
 }
 
+/* Grid layout for 2D boards */
+.board-grid {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  grid-auto-flow: dense;
+}
+
 .tile {
   min-width: 80px;
   width: 80px;

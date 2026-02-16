@@ -99,6 +99,12 @@ function HostBoard() {
     }
   }
 
+  // Check if map has grid layout (all tiles have pos coordinates)
+  const hasGridLayout = () => {
+    if (!map) return false
+    return map.tiles.every(tile => tile.pos !== undefined)
+  }
+
   // Get current team
   const currentTeam = state.teams[state.currentTeamIndex]
 
@@ -327,37 +333,82 @@ function HostBoard() {
             </div>
           )}
           {map && (
-            <div className="board-tiles">
-              {map.tiles.map((tile) => {
-                // Find teams at this position
-                const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
-                
-                return (
-                  <div key={tile.index} className={`tile tile-${tile.type}`}>
-                    <div className="tile-index">{tile.index}</div>
-                    <div className="tile-symbol">{getTileSymbol(tile.type)}</div>
-                    <div className="tile-type">{tile.type}</div>
-                    {tile.value && (
-                      <div className="tile-value">{tile.value > 0 ? `+${tile.value}` : tile.value}</div>
-                    )}
-                    {teamsAtPosition.length > 0 && (
-                      <div className="tile-tokens">
-                        {teamsAtPosition.map(team => (
-                          <div
-                            key={team.id}
-                            className="team-token"
-                            style={{ backgroundColor: team.color }}
-                            title={team.name}
-                          >
-                            {getTeamInitials(team.name)}
+            <>
+              {hasGridLayout() ? (
+                // Grid layout for 2D boards
+                <div className="board-grid">
+                  {map.tiles.map((tile) => {
+                    // Find teams at this position
+                    const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
+                    
+                    return (
+                      <div 
+                        key={tile.index} 
+                        className={`tile tile-${tile.type}`}
+                        style={{
+                          gridColumn: (tile.pos!.x + 1).toString(),
+                          gridRow: (tile.pos!.y + 1).toString(),
+                        }}
+                      >
+                        <div className="tile-index">{tile.index}</div>
+                        <div className="tile-symbol">{getTileSymbol(tile.type)}</div>
+                        <div className="tile-type">{tile.type}</div>
+                        {tile.value && (
+                          <div className="tile-value">{tile.value > 0 ? `+${tile.value}` : tile.value}</div>
+                        )}
+                        {teamsAtPosition.length > 0 && (
+                          <div className="tile-tokens">
+                            {teamsAtPosition.map(team => (
+                              <div
+                                key={team.id}
+                                className="team-token"
+                                style={{ backgroundColor: team.color }}
+                                title={team.name}
+                              >
+                                {getTeamInitials(team.name)}
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        )}
                       </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                // Linear layout for 1D boards
+                <div className="board-tiles">
+                  {map.tiles.map((tile) => {
+                    // Find teams at this position
+                    const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
+                    
+                    return (
+                      <div key={tile.index} className={`tile tile-${tile.type}`}>
+                        <div className="tile-index">{tile.index}</div>
+                        <div className="tile-symbol">{getTileSymbol(tile.type)}</div>
+                        <div className="tile-type">{tile.type}</div>
+                        {tile.value && (
+                          <div className="tile-value">{tile.value > 0 ? `+${tile.value}` : tile.value}</div>
+                        )}
+                        {teamsAtPosition.length > 0 && (
+                          <div className="tile-tokens">
+                            {teamsAtPosition.map(team => (
+                              <div
+                                key={team.id}
+                                className="team-token"
+                                style={{ backgroundColor: team.color }}
+                                title={team.name}
+                              >
+                                {getTeamInitials(team.name)}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </>
           )}
         </div>
 
