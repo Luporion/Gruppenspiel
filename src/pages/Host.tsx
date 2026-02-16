@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { loadSampleData, loadAllMinigames } from '../utils/dataLoader'
+import { loadSampleData, loadAllMinigames, loadMap } from '../utils/dataLoader'
 import { generateClassicMap } from '../engine/mapGenerator'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
 import { useHotkeys } from '../utils/useHotkeys'
@@ -32,12 +32,16 @@ function Host() {
   useEffect(() => {
     Promise.all([
       loadAllMinigames(),
-      loadSampleData()
-    ]).then(([minigames, { map }]) => {
+      loadSampleData(),
+      loadMap('grid_map').catch(() => null) // Try to load grid map, but don't fail if it doesn't exist
+    ]).then(([minigames, { map }, gridMap]) => {
       // Sort minigames by name (create new array to avoid mutation)
       const sortedMinigames = [...minigames].sort((a, b) => a.name.localeCompare(b.name));
       setAvailableMinigames(sortedMinigames)
-      setAvailableMaps([map])
+      // Add both sample map and grid map if available
+      const maps = [map]
+      if (gridMap) maps.push(gridMap)
+      setAvailableMaps(maps)
       // Set default selections only if not already set
       setSelectedMapId(prev => prev || map.id)
       setEnabledMinigameIds(prev => prev.length > 0 ? prev : sortedMinigames.map(m => m.id))
@@ -118,7 +122,7 @@ function Host() {
       }
     })
 
-    // Generate map for Classic Board
+    // Generate or load map
     if (selectedMapId === 'sample_map') {
       const mapSeed = Date.now();
       const generatedMap = generateClassicMap({
@@ -129,6 +133,26 @@ function Host() {
       dispatch({
         type: 'SET_MAP',
         payload: { map: generatedMap, seed: mapSeed }
+      });
+    } else if (selectedMapId === 'grid_map') {
+      // Load the grid map directly
+      loadMap('grid_map').then(gridMap => {
+        dispatch({
+          type: 'SET_MAP',
+          payload: { map: gridMap }
+        });
+      }).catch(error => {
+        console.error('Error loading grid map:', error);
+        // Fallback to generated map if grid map fails to load
+        const mapSeed = Date.now();
+        const generatedMap = generateClassicMap({
+          boardLength,
+          seed: mapSeed,
+        });
+        dispatch({
+          type: 'SET_MAP',
+          payload: { map: generatedMap, seed: mapSeed }
+        });
       });
     }
 
