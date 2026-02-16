@@ -6,6 +6,7 @@ import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
 import FullscreenToggle from '../components/FullscreenToggle'
+import OverflowWarning from '../components/OverflowWarning'
 import { useHotkeys } from '../utils/useHotkeys'
 import { useGlobalControls } from '../utils/useGlobalControls'
 import './HostBoard.css'
@@ -254,6 +255,7 @@ function HostBoard() {
 
   return (
     <div className="host-board">
+      <OverflowWarning />
       <header className="board-header">
         <h1>🎮 Game Board</h1>
         <div className="header-buttons">
