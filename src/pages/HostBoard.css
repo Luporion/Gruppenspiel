@@ -295,11 +295,13 @@
 /* Grid layout for 2D boards */
 .board-grid {
   display: grid;
+  /* Explicit 5x5 grid for proper positioning */
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   gap: 0.5rem;
   padding: 1rem;
   justify-content: center;
   align-items: center;
-  grid-auto-flow: dense;
   width: fit-content;
   margin: 0 auto;
 }

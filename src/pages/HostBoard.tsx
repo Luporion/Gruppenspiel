@@ -148,10 +148,10 @@ function HostBoard() {
     
     setLastRoll(roll)
 
-    // Step 2: Calculate new position (capped at boardLength, which is the finish tile)
+    // Step 2: Calculate new position (capped at last tile index, which is the finish tile)
     const currentPosition = currentTeam.position
-    const boardLength = state.settings.boardLength
-    const newPosition = Math.min(currentPosition + roll, boardLength)
+    const lastTileIndex = map.tiles.length - 1
+    const newPosition = Math.min(currentPosition + roll, lastTileIndex)
 
     // Step 3: Update position with MOVE_TEAM (always, to ensure capping is applied)
     dispatch({
@@ -430,7 +430,7 @@ function HostBoard() {
           <h2>Game Info</h2>
           <p><strong>Round:</strong> {state.round}</p>
           <p><strong>Phase:</strong> {state.phase}</p>
-          <p><strong>Board Length:</strong> {state.settings.boardLength}</p>
+          {map && <p><strong>Board Length:</strong> {map.tiles.length} tiles</p>}
           <p><strong>Win Condition:</strong> {state.settings.winCondition}</p>
           {map && <p><strong>Map:</strong> {map.name}</p>}
         </div>
