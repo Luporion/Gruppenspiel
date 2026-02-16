@@ -1,9 +1,32 @@
 /* Host Board Screen Styles */
 
+/* Mobile-first: Allow scrolling */
 .host-board {
   max-width: 1600px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+/* Desktop: Viewport-fit layout with grid (no scroll) */
+@media (min-width: 768px) {
+  .host-board {
+    max-width: 100%;
+    padding: clamp(0.75rem, 1vw, 1rem);
+    height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height when available */
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: clamp(0.75rem, 1vw, 1rem);
+    overflow: hidden;
+  }
+}
+
+/* Constrained height: reduce gaps */
+@media (min-width: 768px) and (max-height: 900px) {
+  .host-board {
+    gap: clamp(0.5rem, 0.75vw, 0.75rem);
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
 }
 
 .board-header {
@@ -13,6 +36,17 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
+}
+
+/* Desktop: Remove margin-bottom (grid gap handles spacing) */
+@media (min-width: 768px) {
+  .board-header {
+    margin-bottom: 0;
+    min-height: 0;
+    padding: clamp(0.75rem, 1vw, 1rem);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.75rem;
+  }
 }
 
 .board-header h1 {
@@ -59,6 +93,25 @@
   gap: 2rem;
 }
 
+/* Desktop: Grid layout that fits viewport */
+@media (min-width: 768px) {
+  .board-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    grid-template-rows: auto auto 1fr auto;
+    gap: clamp(0.75rem, 1vw, 1rem);
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+/* Constrained height: reduce gaps */
+@media (min-width: 768px) and (max-height: 900px) {
+  .board-container {
+    gap: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+}
+
 /* Current Team Indicator */
 .current-team-indicator {
   background-color: rgba(255, 255, 255, 0.05);
@@ -66,6 +119,22 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
+}
+
+/* Desktop: Grid positioning */
+@media (min-width: 768px) {
+  .current-team-indicator {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: clamp(0.75rem, 1vw, 1rem);
+  }
+}
+
+/* Constrained height: reduce padding */
+@media (min-width: 768px) and (max-height: 900px) {
+  .current-team-indicator {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
 }
 
 .current-team-indicator h2 {
@@ -94,6 +163,22 @@
   gap: 1rem;
   align-items: center;
   justify-content: center;
+}
+
+/* Desktop: Grid positioning */
+@media (min-width: 768px) {
+  .game-controls {
+    grid-column: 1;
+    grid-row: 2;
+    padding: clamp(0.75rem, 1vw, 1rem);
+  }
+}
+
+/* Constrained height: reduce padding */
+@media (min-width: 768px) and (max-height: 900px) {
+  .game-controls {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
 }
 
 .btn-roll-dice,
@@ -163,6 +248,24 @@
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Desktop: Grid positioning + scrollable */
+@media (min-width: 768px) {
+  .map-section {
+    grid-column: 1;
+    grid-row: 3;
+    overflow-y: auto;
+    min-height: 0;
+    padding: clamp(0.75rem, 1vw, 1rem);
+  }
+}
+
+/* Constrained height: reduce padding */
+@media (min-width: 768px) and (max-height: 900px) {
+  .map-section {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
 }
 
 .map-section h2 {
@@ -281,6 +384,26 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Desktop: Grid positioning + scrollable */
+@media (min-width: 768px) {
+  .scoreboard {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: clamp(0.75rem, 1vw, 1rem);
+  }
+}
+
+/* Constrained height: reduce padding */
+@media (min-width: 768px) and (max-height: 900px) {
+  .scoreboard {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+}
+
 .scoreboard h2 {
   margin: 0 0 1rem 0;
   font-size: 1.8rem;
@@ -347,6 +470,22 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Desktop: Grid positioning */
+@media (min-width: 768px) {
+  .game-info {
+    grid-column: 2;
+    grid-row: 4;
+    padding: clamp(0.75rem, 1vw, 1rem);
+  }
+}
+
+/* Constrained height: reduce padding */
+@media (min-width: 768px) and (max-height: 900px) {
+  .game-info {
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
+  }
+}
+
 .game-info h2 {
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
@@ -358,73 +497,19 @@
   font-size: 1.1rem;
 }
 
-/* Beamer Mode - Wide Screen Layout (viewport-fit with grid) */
+/* Beamer Mode - Additional enhancements for wide screens at higher breakpoint */
 @media (min-width: 1024px) {
   .beamer .host-board {
-    max-width: 100%;
-    padding: clamp(0.75rem, 1vw, 1rem);
-    height: 100vh;
-    height: 100dvh; /* Use dynamic viewport height when available */
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: clamp(0.75rem, 1vw, 1rem);
-    overflow: hidden;
+    /* Inherit desktop grid layout, no need to redefine */
   }
 
   .beamer .board-header {
-    margin-bottom: 0;
-    min-height: 0;
-    padding: clamp(0.75rem, 1vw, 1rem);
+    /* Slightly reduce padding for beamer on wide screens */
+    padding: clamp(0.5rem, 0.75vw, 0.75rem);
   }
 
   .beamer .board-container {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    grid-template-rows: auto auto 1fr auto;
-    gap: clamp(0.75rem, 1vw, 1rem);
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  /* Current team indicator spans full width at top */
-  .beamer .current-team-indicator {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    padding: clamp(0.75rem, 1vw, 1rem);
-  }
-
-  /* Game controls below current team, on left column */
-  .beamer .game-controls {
-    grid-column: 1;
-    grid-row: 2;
-    padding: clamp(0.75rem, 1vw, 1rem);
-  }
-
-  /* Map section takes left column, remaining height */
-  .beamer .map-section {
-    grid-column: 1;
-    grid-row: 3;
-    overflow-y: auto;
-    min-height: 0;
-    padding: clamp(0.75rem, 1vw, 1rem);
-  }
-
-  /* Scoreboard takes right column, row 2-3 */
-  .beamer .scoreboard {
-    grid-column: 2;
-    grid-row: 2 / 4;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: clamp(0.75rem, 1vw, 1rem);
-  }
-
-  /* Game info in right column, row 4 */
-  .beamer .game-info {
-    grid-column: 2;
-    grid-row: 4;
-    padding: clamp(0.75rem, 1vw, 1rem);
+    /* Inherit desktop grid layout */
   }
 
   /* Larger tiles in beamer mode for wide screens */

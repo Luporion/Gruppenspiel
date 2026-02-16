@@ -6,11 +6,16 @@ import { checkWinConditions } from '../utils/winConditions'
 import type { MinigameDefinition, PhysicalMinigameDefinition, QuizMinigameDefinition, MapDefinition } from '../types'
 import BeamerToggle from '../components/BeamerToggle'
 import FullscreenToggle from '../components/FullscreenToggle'
+import OverflowWarning from '../components/OverflowWarning'
 import './HostMinigame.css'
 
 // Default points constants
 const DEFAULT_WIN_POINTS = 10
 const DEFAULT_CORRECT_POINTS = 10
+
+// Content clamping thresholds
+const RULES_CLAMP_THRESHOLD = 3 // Show max 3 rules before "Show more" button
+const QUESTION_CLAMP_THRESHOLD = 200 // Character length before clamping question text
 
 function HostMinigame() {
   const navigate = useNavigate()
@@ -326,6 +331,7 @@ function HostMinigame() {
 
   return (
     <div className="host-minigame">
+      <OverflowWarning />
       <header className="minigame-header">
         <h1>🎮 {minigame.name}</h1>
         <div className="minigame-header-controls">
@@ -416,14 +422,24 @@ interface PhysicalMinigameMainContentProps {
 }
 
 function PhysicalMinigameMainContent({ minigame }: PhysicalMinigameMainContentProps) {
+  const [showAllRules, setShowAllRules] = useState(false)
+
   return (
     <div className="minigame-rules">
       <h2>Rules:</h2>
-      <ul>
+      <ul className={showAllRules ? '' : 'rules-clamped'}>
         {minigame.rules.map((rule, idx) => (
           <li key={idx}>{rule}</li>
         ))}
       </ul>
+      {minigame.rules.length > RULES_CLAMP_THRESHOLD && (
+        <button 
+          onClick={() => setShowAllRules(!showAllRules)} 
+          className="btn-show-more"
+        >
+          {showAllRules ? '▲ Show Less' : '▼ Show More'}
+        </button>
+      )}
     </div>
   )
 }
@@ -496,11 +512,23 @@ function QuizMinigameMainContent({
   showAnswer,
   setShowAnswer
 }: QuizMinigameMainContentProps) {
+  const [showFullQuestion, setShowFullQuestion] = useState(false)
+
   return (
     <>
       <div className="quiz-question">
         <h2>Question:</h2>
-        <p className="question-text">{minigame.question}</p>
+        <p className={`question-text ${showFullQuestion ? '' : 'question-clamped'}`}>
+          {minigame.question}
+        </p>
+        {minigame.question.length > QUESTION_CLAMP_THRESHOLD && (
+          <button 
+            onClick={() => setShowFullQuestion(!showFullQuestion)} 
+            className="btn-show-more"
+          >
+            {showFullQuestion ? '▲ Show Less' : '▼ Show More'}
+          </button>
+        )}
       </div>
 
       <div className="quiz-options">
