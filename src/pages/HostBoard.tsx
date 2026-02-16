@@ -106,6 +106,31 @@ function HostBoard() {
     return map.tiles.every(tile => tile.pos !== undefined)
   }, [map])
 
+  // Calculate grid dimensions for 2D grid layouts
+  // Memoized to avoid recalculating on every render
+  const gridDimensions = useMemo(() => {
+    if (!map || !hasGridLayout) return { cols: 5, rows: 5 }
+    
+    // Use explicit gridCols/gridRows if provided
+    if (map.gridCols !== undefined && map.gridRows !== undefined) {
+      return { cols: map.gridCols, rows: map.gridRows }
+    }
+    
+    // Otherwise, calculate optimal dimensions
+    // Find max x and y from tile positions
+    let maxX = 0
+    let maxY = 0
+    map.tiles.forEach(tile => {
+      if (tile.pos) {
+        maxX = Math.max(maxX, tile.pos.x)
+        maxY = Math.max(maxY, tile.pos.y)
+      }
+    })
+    
+    // Grid dimensions are max + 1 (since positions are 0-indexed)
+    return { cols: maxX + 1, rows: maxY + 1 }
+  }, [map, hasGridLayout])
+
   // Render a tile with all its content (index, symbol, type, value, team tokens)
   const renderTileContent = (tile: MapDefinition['tiles'][0], teamsAtPosition: typeof state.teams) => (
     <>
@@ -363,7 +388,13 @@ function HostBoard() {
             <>
               {hasGridLayout ? (
                 // Grid layout for 2D boards
-                <div className="board-grid">
+                <div 
+                  className="board-grid"
+                  style={{
+                    gridTemplateColumns: `repeat(${gridDimensions.cols}, 1fr)`,
+                    gridTemplateRows: `repeat(${gridDimensions.rows}, 1fr)`
+                  }}
+                >
                   {map.tiles.map((tile) => {
                     const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
                     

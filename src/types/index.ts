@@ -38,6 +38,8 @@ export interface MapDefinition {
   name: string;
   length: number;
   tiles: Tile[];
+  gridCols?: number; // Optional grid columns for 2D grid layouts
+  gridRows?: number; // Optional grid rows for 2D grid layouts
 }
 
 // Minigame scoring configuration
