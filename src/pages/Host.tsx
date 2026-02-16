@@ -38,7 +38,7 @@ function Host() {
       loadAllMinigames(),
       loadSampleData(),
       loadMap(GRID_MAP_ID).catch((error) => {
-        console.debug('Grid map not available:', error.message);
+        console.info('Grid map not available, using only classic board:', error.message);
         return null;
       })
     ]).then(([minigames, { map }, gridMap]) => {
