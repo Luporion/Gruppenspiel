@@ -122,7 +122,7 @@ function Host() {
       }
     })
 
-    // Generate or load map
+    // Generate map for Classic Board or load predefined map
     if (selectedMapId === 'sample_map') {
       const mapSeed = Date.now();
       const generatedMap = generateClassicMap({

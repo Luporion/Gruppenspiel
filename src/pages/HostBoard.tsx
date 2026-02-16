@@ -346,8 +346,8 @@ function HostBoard() {
                         key={tile.index} 
                         className={`tile tile-${tile.type}`}
                         style={{
-                          gridColumn: (tile.pos!.x + 1).toString(),
-                          gridRow: (tile.pos!.y + 1).toString(),
+                          gridColumn: tile.pos!.x + 1,
+                          gridRow: tile.pos!.y + 1,
                         }}
                       >
                         <div className="tile-index">{tile.index}</div>
