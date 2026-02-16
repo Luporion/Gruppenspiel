@@ -141,6 +141,7 @@
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .current-team-display {
@@ -272,6 +273,7 @@
   margin: 0 0 1.5rem 0;
   font-size: 1.8rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .error-message, .loading-message {
@@ -542,6 +544,7 @@
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .game-info p {
