@@ -33,7 +33,10 @@ function Host() {
     Promise.all([
       loadAllMinigames(),
       loadSampleData(),
-      loadMap('grid_map').catch(() => null) // Try to load grid map, but don't fail if it doesn't exist
+      loadMap('grid_map').catch((error) => {
+        console.debug('Grid map not available:', error.message);
+        return null;
+      })
     ]).then(([minigames, { map }, gridMap]) => {
       // Sort minigames by name (create new array to avoid mutation)
       const sortedMinigames = [...minigames].sort((a, b) => a.name.localeCompare(b.name));
@@ -122,18 +125,22 @@ function Host() {
       }
     })
 
-    // Generate map for Classic Board or load predefined map
-    if (selectedMapId === 'sample_map') {
+    // Helper to generate fallback map
+    const generateFallbackMap = () => {
       const mapSeed = Date.now();
       const generatedMap = generateClassicMap({
         boardLength,
         seed: mapSeed,
       });
-      
       dispatch({
         type: 'SET_MAP',
         payload: { map: generatedMap, seed: mapSeed }
       });
+    };
+
+    // Generate map for Classic Board or load predefined map
+    if (selectedMapId === 'sample_map') {
+      generateFallbackMap();
     } else if (selectedMapId === 'grid_map') {
       // Load the grid map directly
       loadMap('grid_map').then(gridMap => {
@@ -144,15 +151,7 @@ function Host() {
       }).catch(error => {
         console.error('Error loading grid map:', error);
         // Fallback to generated map if grid map fails to load
-        const mapSeed = Date.now();
-        const generatedMap = generateClassicMap({
-          boardLength,
-          seed: mapSeed,
-        });
-        dispatch({
-          type: 'SET_MAP',
-          payload: { map: generatedMap, seed: mapSeed }
-        });
+        generateFallbackMap();
       });
     }
 
