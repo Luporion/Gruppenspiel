@@ -13,6 +13,10 @@ import './HostMinigame.css'
 const DEFAULT_WIN_POINTS = 10
 const DEFAULT_CORRECT_POINTS = 10
 
+// Content clamping thresholds
+const RULES_CLAMP_THRESHOLD = 3 // Show max 3 rules before "Show more" button
+const QUESTION_CLAMP_THRESHOLD = 200 // Character length before clamping question text
+
 function HostMinigame() {
   const navigate = useNavigate()
   const { state, dispatch } = useGameStore()
@@ -428,7 +432,7 @@ function PhysicalMinigameMainContent({ minigame }: PhysicalMinigameMainContentPr
           <li key={idx}>{rule}</li>
         ))}
       </ul>
-      {minigame.rules.length > 3 && (
+      {minigame.rules.length > RULES_CLAMP_THRESHOLD && (
         <button 
           onClick={() => setShowAllRules(!showAllRules)} 
           className="btn-show-more"
@@ -517,7 +521,7 @@ function QuizMinigameMainContent({
         <p className={`question-text ${showFullQuestion ? '' : 'question-clamped'}`}>
           {minigame.question}
         </p>
-        {minigame.question.length > 200 && (
+        {minigame.question.length > QUESTION_CLAMP_THRESHOLD && (
           <button 
             onClick={() => setShowFullQuestion(!showFullQuestion)} 
             className="btn-show-more"

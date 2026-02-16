@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import './OverflowWarning.css'
 
+// Constants
+const DESKTOP_BREAKPOINT = 768
+const OVERFLOW_CHECK_INTERVAL = 5000 // Check every 5 seconds as fallback
+
 /**
  * Development-only warning component that alerts when viewport is overflowing
  * Shows a red banner at the top of the screen on desktop/beamer layouts
@@ -15,7 +19,7 @@ function OverflowWarning() {
     }
 
     // Only check on desktop/beamer (not mobile)
-    const isDesktop = window.innerWidth >= 768
+    const isDesktop = window.innerWidth >= DESKTOP_BREAKPOINT
 
     if (!isDesktop) {
       return
@@ -46,8 +50,8 @@ function OverflowWarning() {
     // Also check on window resize
     window.addEventListener('resize', checkOverflow)
 
-    // Recheck periodically (in case content changes dynamically)
-    const interval = setInterval(checkOverflow, 1000)
+    // Recheck periodically as fallback (in case content changes dynamically)
+    const interval = setInterval(checkOverflow, OVERFLOW_CHECK_INTERVAL)
 
     return () => {
       resizeObserver.disconnect()
@@ -62,7 +66,7 @@ function OverflowWarning() {
   }
 
   // Don't render on mobile
-  if (window.innerWidth < 768) {
+  if (window.innerWidth < DESKTOP_BREAKPOINT) {
     return null
   }
 
