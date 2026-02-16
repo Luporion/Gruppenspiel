@@ -60,8 +60,9 @@ function Host() {
     const selectedMap = availableMaps.find(m => m.id === selectedMapId)
     if (selectedMap && selectedMapId !== CLASSIC_MAP_ID) {
       // For fixed maps (not Classic Board), set board length to match map
-      setBoardLength(selectedMap.length)
+      setBoardLength(selectedMap.tiles.length)
     }
+    // For Classic Board, keep the user's chosen board length (don't reset it)
   }, [selectedMapId, availableMaps])
 
   // If game has already started, navigate to board
