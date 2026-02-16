@@ -141,6 +141,7 @@
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .current-team-display {
@@ -272,6 +273,7 @@
   margin: 0 0 1.5rem 0;
   font-size: 1.8rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .error-message, .loading-message {
@@ -295,9 +297,7 @@
 /* Grid layout for 2D boards */
 .board-grid {
   display: grid;
-  /* Explicit 5x5 grid for proper positioning */
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  /* Grid dimensions are set dynamically via inline styles */
   gap: 0.5rem;
   padding: 1rem;
   justify-content: center;
@@ -459,12 +459,15 @@
   margin: 0 0 1rem 0;
   font-size: 1.8rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .scoreboard-table {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .scoreboard-header {
@@ -541,6 +544,7 @@
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   color: #646cff;
+  flex-shrink: 0;
 }
 
 .game-info p {

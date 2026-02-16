@@ -2,6 +2,8 @@
   "id": "grid_map",
   "name": "Grid Board",
   "length": 21,
+  "gridCols": 5,
+  "gridRows": 5,
   "tiles": [
     { "index": 0, "type": "normal", "pos": { "x": 0, "y": 0 } },
     { "index": 1, "type": "normal", "pos": { "x": 1, "y": 0 } },
