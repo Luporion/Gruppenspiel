@@ -292,6 +292,55 @@
   padding: 1rem 0;
 }
 
+/* Grid layout for 2D boards */
+.board-grid {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  grid-auto-flow: dense;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+/* Make grid tiles slightly smaller to fit better */
+.board-grid .tile {
+  min-width: 70px;
+  width: 70px;
+  height: 120px;
+}
+
+/* Responsive grid: adjust tile size for smaller screens */
+@media (max-width: 768px) {
+  .board-grid .tile {
+    min-width: 60px;
+    width: 60px;
+    height: 100px;
+  }
+  
+  .board-grid .tile-symbol {
+    font-size: 1.4rem;
+  }
+  
+  .board-grid .tile-index {
+    font-size: 0.8rem;
+  }
+}
+
+/* Beamer mode: make grid tiles larger */
+@media (min-width: 1024px) {
+  .beamer .board-grid .tile {
+    min-width: 90px;
+    width: 90px;
+    height: 140px;
+  }
+  
+  .beamer .board-grid {
+    gap: 0.75rem;
+  }
+}
+
 .tile {
   min-width: 80px;
   width: 80px;

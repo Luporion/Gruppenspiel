@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { loadMap } from '../utils/dataLoader'
 import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
@@ -98,6 +98,39 @@ function HostBoard() {
       default: return '•'
     }
   }
+
+  // Check if map has grid layout (all tiles have pos coordinates)
+  // Memoized to avoid recalculating on every render
+  const hasGridLayout = useMemo(() => {
+    if (!map) return false
+    return map.tiles.every(tile => tile.pos !== undefined)
+  }, [map])
+
+  // Render a tile with all its content (index, symbol, type, value, team tokens)
+  const renderTileContent = (tile: MapDefinition['tiles'][0], teamsAtPosition: typeof state.teams) => (
+    <>
+      <div className="tile-index">{tile.index}</div>
+      <div className="tile-symbol">{getTileSymbol(tile.type)}</div>
+      <div className="tile-type">{tile.type}</div>
+      {tile.value && (
+        <div className="tile-value">{tile.value > 0 ? `+${tile.value}` : tile.value}</div>
+      )}
+      {teamsAtPosition.length > 0 && (
+        <div className="tile-tokens">
+          {teamsAtPosition.map(team => (
+            <div
+              key={team.id}
+              className="team-token"
+              style={{ backgroundColor: team.color }}
+              title={team.name}
+            >
+              {getTeamInitials(team.name)}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  )
 
   // Get current team
   const currentTeam = state.teams[state.currentTeamIndex]
@@ -327,37 +360,42 @@ function HostBoard() {
             </div>
           )}
           {map && (
-            <div className="board-tiles">
-              {map.tiles.map((tile) => {
-                // Find teams at this position
-                const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
-                
-                return (
-                  <div key={tile.index} className={`tile tile-${tile.type}`}>
-                    <div className="tile-index">{tile.index}</div>
-                    <div className="tile-symbol">{getTileSymbol(tile.type)}</div>
-                    <div className="tile-type">{tile.type}</div>
-                    {tile.value && (
-                      <div className="tile-value">{tile.value > 0 ? `+${tile.value}` : tile.value}</div>
-                    )}
-                    {teamsAtPosition.length > 0 && (
-                      <div className="tile-tokens">
-                        {teamsAtPosition.map(team => (
-                          <div
-                            key={team.id}
-                            className="team-token"
-                            style={{ backgroundColor: team.color }}
-                            title={team.name}
-                          >
-                            {getTeamInitials(team.name)}
-                          </div>
-                        ))}
+            <>
+              {hasGridLayout ? (
+                // Grid layout for 2D boards
+                <div className="board-grid">
+                  {map.tiles.map((tile) => {
+                    const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
+                    
+                    return (
+                      <div 
+                        key={tile.index} 
+                        className={`tile tile-${tile.type}`}
+                        style={{
+                          gridColumn: tile.pos!.x + 1,
+                          gridRow: tile.pos!.y + 1,
+                        }}
+                      >
+                        {renderTileContent(tile, teamsAtPosition)}
                       </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                // Linear layout for 1D boards
+                <div className="board-tiles">
+                  {map.tiles.map((tile) => {
+                    const teamsAtPosition = state.teams.filter(team => team.position === tile.index)
+                    
+                    return (
+                      <div key={tile.index} className={`tile tile-${tile.type}`}>
+                        {renderTileContent(tile, teamsAtPosition)}
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </>
           )}
         </div>
 

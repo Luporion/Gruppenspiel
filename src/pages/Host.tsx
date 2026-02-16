@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { loadSampleData, loadAllMinigames } from '../utils/dataLoader'
+import { loadSampleData, loadAllMinigames, loadMap } from '../utils/dataLoader'
 import { generateClassicMap } from '../engine/mapGenerator'
 import type { Team, MinigameDefinition, MapDefinition } from '../types'
 import { useHotkeys } from '../utils/useHotkeys'
 import { useGlobalControls } from '../utils/useGlobalControls'
 import MinigameSelectionModal from '../components/MinigameSelectionModal'
 import './Host.css'
+
+// Map ID constants
+const GRID_MAP_ID = 'grid_map'
+const CLASSIC_MAP_ID = 'sample_map'
 
 function Host() {
   const navigate = useNavigate()
@@ -32,12 +36,19 @@ function Host() {
   useEffect(() => {
     Promise.all([
       loadAllMinigames(),
-      loadSampleData()
-    ]).then(([minigames, { map }]) => {
+      loadSampleData(),
+      loadMap(GRID_MAP_ID).catch((error) => {
+        console.info('Grid map not available, using only classic board:', error.message);
+        return null;
+      })
+    ]).then(([minigames, { map }, gridMap]) => {
       // Sort minigames by name (create new array to avoid mutation)
       const sortedMinigames = [...minigames].sort((a, b) => a.name.localeCompare(b.name));
       setAvailableMinigames(sortedMinigames)
-      setAvailableMaps([map])
+      // Add both sample map and grid map if available
+      const maps = [map]
+      if (gridMap) maps.push(gridMap)
+      setAvailableMaps(maps)
       // Set default selections only if not already set
       setSelectedMapId(prev => prev || map.id)
       setEnabledMinigameIds(prev => prev.length > 0 ? prev : sortedMinigames.map(m => m.id))
@@ -118,17 +129,33 @@ function Host() {
       }
     })
 
-    // Generate map for Classic Board
-    if (selectedMapId === 'sample_map') {
+    // Helper to generate fallback map
+    const generateFallbackMap = () => {
       const mapSeed = Date.now();
       const generatedMap = generateClassicMap({
         boardLength,
         seed: mapSeed,
       });
-      
       dispatch({
         type: 'SET_MAP',
         payload: { map: generatedMap, seed: mapSeed }
+      });
+    };
+
+    // Generate map for Classic Board or load predefined map
+    if (selectedMapId === CLASSIC_MAP_ID) {
+      generateFallbackMap();
+    } else if (selectedMapId === GRID_MAP_ID) {
+      // Load the grid map directly
+      loadMap(GRID_MAP_ID).then(gridMap => {
+        dispatch({
+          type: 'SET_MAP',
+          payload: { map: gridMap }
+        });
+      }).catch(error => {
+        console.error('Error loading grid map:', error);
+        // Fallback to generated map if grid map fails to load
+        generateFallbackMap();
       });
     }
 
