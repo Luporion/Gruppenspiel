@@ -9,6 +9,10 @@ import { useGlobalControls } from '../utils/useGlobalControls'
 import MinigameSelectionModal from '../components/MinigameSelectionModal'
 import './Host.css'
 
+// Map ID constants
+const GRID_MAP_ID = 'grid_map'
+const CLASSIC_MAP_ID = 'sample_map'
+
 function Host() {
   const navigate = useNavigate()
   const { state, dispatch, resetSave } = useGameStore()
@@ -33,7 +37,7 @@ function Host() {
     Promise.all([
       loadAllMinigames(),
       loadSampleData(),
-      loadMap('grid_map').catch((error) => {
+      loadMap(GRID_MAP_ID).catch((error) => {
         console.debug('Grid map not available:', error.message);
         return null;
       })
@@ -139,11 +143,11 @@ function Host() {
     };
 
     // Generate map for Classic Board or load predefined map
-    if (selectedMapId === 'sample_map') {
+    if (selectedMapId === CLASSIC_MAP_ID) {
       generateFallbackMap();
-    } else if (selectedMapId === 'grid_map') {
+    } else if (selectedMapId === GRID_MAP_ID) {
       // Load the grid map directly
-      loadMap('grid_map').then(gridMap => {
+      loadMap(GRID_MAP_ID).then(gridMap => {
         dispatch({
           type: 'SET_MAP',
           payload: { map: gridMap }

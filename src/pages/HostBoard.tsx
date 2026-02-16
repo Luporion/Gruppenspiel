@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../engine/useGameStore'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { loadMap } from '../utils/dataLoader'
 import { checkWinConditions } from '../utils/winConditions'
 import type { MapDefinition } from '../types'
@@ -100,10 +100,11 @@ function HostBoard() {
   }
 
   // Check if map has grid layout (all tiles have pos coordinates)
-  const hasGridLayout = () => {
+  // Memoized to avoid recalculating on every render
+  const hasGridLayout = useMemo(() => {
     if (!map) return false
     return map.tiles.every(tile => tile.pos !== undefined)
-  }
+  }, [map])
 
   // Get current team
   const currentTeam = state.teams[state.currentTeamIndex]
@@ -334,7 +335,7 @@ function HostBoard() {
           )}
           {map && (
             <>
-              {hasGridLayout() ? (
+              {hasGridLayout ? (
                 // Grid layout for 2D boards
                 <div className="board-grid">
                   {map.tiles.map((tile) => {
@@ -346,8 +347,8 @@ function HostBoard() {
                         key={tile.index} 
                         className={`tile tile-${tile.type}`}
                         style={{
-                          gridColumn: tile.pos?.x !== undefined ? tile.pos.x + 1 : 1,
-                          gridRow: tile.pos?.y !== undefined ? tile.pos.y + 1 : 1,
+                          gridColumn: tile.pos!.x + 1,
+                          gridRow: tile.pos!.y + 1,
                         }}
                       >
                         <div className="tile-index">{tile.index}</div>
