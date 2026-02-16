@@ -55,6 +55,15 @@ function Host() {
     })
   }, [])
 
+  // Sync board length with selected map (for fixed maps)
+  useEffect(() => {
+    const selectedMap = availableMaps.find(m => m.id === selectedMapId)
+    if (selectedMap && selectedMapId !== CLASSIC_MAP_ID) {
+      // For fixed maps (not Classic Board), set board length to match map
+      setBoardLength(selectedMap.length)
+    }
+  }, [selectedMapId, availableMaps])
+
   // If game has already started, navigate to board
   useEffect(() => {
     if (state.phase === 'board' || state.phase === 'minigame') {
@@ -274,7 +283,14 @@ function Host() {
               onChange={e => setBoardLength(parseInt(e.target.value) || 10)}
               min="10"
               className="setting-input"
+              disabled={selectedMapId !== CLASSIC_MAP_ID}
+              title={selectedMapId !== CLASSIC_MAP_ID ? "Board length is fixed by selected map" : ""}
             />
+            {selectedMapId !== CLASSIC_MAP_ID && (
+              <small style={{ color: 'rgba(255, 255, 255, 0.6)', display: 'block', marginTop: '0.25rem' }}>
+                (Fixed by selected map)
+              </small>
+            )}
           </div>
 
           {winCondition === 'pointsAfterRounds' && (
